@@ -1,40 +1,52 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
-import Form from "next/form";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../_components/ui/button";
-import { Icon } from "@iconify/react";
+import { Input } from "../_components/ui/input";
+import { useSession } from "next-auth/react";
+import Form from "next/form";
+import { Separator } from "../_components/ui/separator";
+import { Icon } from "@iconify-icon/react";
+import Link from "next/link";
 
 export default function Login() {
-	const { data: session, status } = useSession();
+	const [formData, setFormData] = useState({ email: "", password: "" });
+	const [error, setError] = useState("");
 	const router = useRouter();
-
+	const { status } = useSession();
+	const [loading, setLoading] = useState(false);
+	const searchParams = useSearchParams();
 	useEffect(() => {
-		if (status === "authenticated") {
-			router.push("/");
+		//if error in query params
+		if (searchParams.get("error")) {
+			setError(searchParams.get("error"));
 		}
-	}, [status, router]);
-	const [formData, setFormData] = useState({});
+	}, [searchParams]);
 
 	const handleSubmit = async (e) => {
+		setLoading(true);
 		e.preventDefault();
-		setFormData({
-			email: e.target.email.value,
-			password: e.target.password.value,
-		});
-
+		setError("");
 		if (!formData.email || !formData.password) {
-			alert("Please fill in all the fields");
+			setError("All fields are required");
+			setLoading(false);
 			return;
+		}
+
+		const result = await signIn("credentials", {
+			email: formData.email,
+			password: formData.password,
+			redirect: false,
+			redirectTo: "/",
+		});
+		console.log(result);
+		if (result.code === null) {
+			router.push("/");
+			setLoading(false);
 		} else {
-			signIn("credentials", {
-				username: formData.email,
-				password: formData.password,
-				callbackUrl: "/",
-			});
+			setError(result.code);
+			setLoading(false);
 		}
 	};
 
@@ -42,57 +54,83 @@ export default function Login() {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
+	const login = async (provider) => {
+		const result = await signIn(provider, {
+			redirect: false,
+			callbackUrl: "/login",
+		});
+		console.log(result);
+	};
+
 	return (
 		<div className="flex flex-col items-center gap-6 w-full max-w-md m-auto mt-32 p-6 bg-white shadow-lg rounded-lg border-2">
 			<h1 className="text-2xl font-bold mb-4">Login</h1>
-			<Form
-				onSubmit={handleSubmit}
-				className="flex flex-col gap-4 w-full"
-				onChange={handleChange}>
-				<div className="flex flex-col gap-2">
-					<label htmlFor="email" className="text-sm font-medium">
+			<Form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
+				{error && <p className="text-red-500">{error}</p>}
+				<div className="flex flex-col gap-1 ">
+					<label htmlFor="email" className="text-sm">
 						Email
 					</label>
-					<input
-						type="text"
+					<Input
+						type="email"
 						name="email"
 						id="email"
-						className="border-gray-300 border-2 outline-none p-2 rounded-lg focus:border-blue-500"
+						value={formData.email}
+						placeholder="abc@example.com"
+						onChange={handleChange}
+						className="required:border-red-500"
+						autoComplete="false"
 					/>
 				</div>
-				<div className="flex flex-col gap-2">
-					<label htmlFor="password" className="text-sm font-medium">
+				<div className="flex flex-col gap-1 ">
+					<label htmlFor="password" className="text-sm">
 						Password
 					</label>
-					<input
+					<Input
 						type="password"
 						name="password"
 						id="password"
-						className="border-gray-300 border-2 outline-none p-2 rounded-lg focus:border-blue-500"
+						value={formData.password}
+						placeholder="********"
+						onChange={handleChange}
+						autoComplete="false"
 					/>
 				</div>
 				<Button
-					variant="default"
 					type="submit"
-					className="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+					variant="default"
+					isLoading={loading}
+					loadingtext="Logging in">
 					Login
 				</Button>
 			</Form>
-			<div className="flex flex-col gap-4 w-full mt-4">
+			<Separator />
+			<div className="flex flex-col gap-4 w-full">
 				<Button
+					type="button"
 					variant="outline"
-					onClick={() => signIn("google")}
+					onClick={() => login("google")}
 					className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
 					<Icon icon="flat-color-icons:google" width="1.5rem" height="1.5rem" />
 					Login with Google
 				</Button>
 				<Button
+					type="button"
 					variant="outline"
-					onClick={() => signIn("github")}
+					onClick={() => login("github")}
 					className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
 					<Icon icon="mdi:github" width="2rem" height="2rem" />
 					Login with Github
 				</Button>
+			</div>
+			{/* don't have an account */}
+			<div className="flex items-center gap-2">
+				<p>Don&apos;t have an account ?</p>
+				<Link
+					href="/signup"
+					className="text-slate-500 hover:underline  font-medium">
+					Register Now
+				</Link>
 			</div>
 		</div>
 	);

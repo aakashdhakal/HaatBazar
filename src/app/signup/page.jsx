@@ -1,21 +1,47 @@
 "use client";
 import Form from "next/form";
 import { useState } from "react";
-import z from "zod";
 import { Button } from "../_components/ui/button";
 import { Input } from "../_components/ui/input";
 import { Icon } from "@iconify-icon/react";
+import { signIn } from "next-auth/react";
+import { Separator } from "../_components/ui/separator";
+import Link from "next/link";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export function Signup() {
-	const [formData, setFormData] = useState({});
+	const [formData, setFormData] = useState({
+		name: "",
+		email: "",
+		password: "",
+	});
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [accountLinkMessage, setAccountLinkMessage] = useState("");
+	const { data: session, status } = useSession();
+
+	useEffect(() => {
+		if (status === "authenticated" && session?.user) {
+			setFormData((prevFormData) => ({
+				...prevFormData,
+				name: session.user.name,
+				email: session.user.email,
+			}));
+			setAccountLinkMessage(
+				`You are trying to signup with ${session.user.email}. If this is not you, please change the details.`,
+			);
+		}
+	}, [status, session]);
 
 	const handleSubmit = async (e) => {
+		setLoading(true);
 		const { name, email, password } = e.target.elements;
 		e.preventDefault();
 		setError("");
 		if (name.value === "" || email.value === "" || password.value === "") {
 			setError("All fields are required");
+			setLoading(false);
 			return;
 		} else {
 			setFormData({
@@ -30,8 +56,16 @@ export function Signup() {
 			});
 			if (res.status === 200) {
 				setError("Signup successful");
+				await signIn("credentials", {
+					email: formData.email,
+					password: formData.password,
+					redirect: true,
+					callbackUrl: "/", // Redirect to dashboard or any other page
+				});
+				setLoading(false);
 			} else {
 				setError("Signup failed");
+				setLoading(false);
 			}
 		}
 	};
@@ -42,31 +76,77 @@ export function Signup() {
 
 	return (
 		<div className="flex flex-col items-center gap-6 w-full max-w-md m-auto mt-32 p-6 bg-white shadow-lg rounded-lg border-2">
-			<h1 className="text-2xl font-bold mb-4">Signup</h1>
+			<h1 className="text-2xl font-bold mb-4">Register your account</h1>
+			{accountLinkMessage && (
+				<p className="text-sm text-gray-500 text-left">{accountLinkMessage}</p>
+			)}
 			<Form
-				className="flex flex-col gap-4 w-max"
+				className="flex flex-col gap-4 w-full"
 				onSubmit={handleSubmit}
 				onChange={handleChange}>
 				{error && <p className="text-red-500">{error}</p>}
-				<div className="flex gap-4 items-center">
-					<label htmlFor="name">Name</label>
-					<Input type="text" name="name" id="name" />
+				<div className="flex flex-col gap-1">
+					<label htmlFor="name" className="text-sm">
+						Name
+					</label>
+					<Input
+						type="text"
+						name="name"
+						id="name"
+						className="required:border-red-500"
+						placeholder="Rajesh Hamal"
+						autoComplete="false"
+						defaultValue={formData.name}
+					/>
 				</div>
-				<div className="flex gap-4 items-center">
-					<label htmlFor="email">Email</label>
-					<Input type="text" name="email" id="email" />
+				<div className="flex flex-col gap-1">
+					<label htmlFor="email" className="text-sm">
+						Email
+					</label>
+					<Input
+						type="email"
+						name="email"
+						id="email"
+						defaultValue={formData.email}
+						placeholder="abc@example.com"
+						onChange={handleChange}
+						className="required:border-red-500"
+						autoComplete="false"
+					/>
 				</div>
-				<div className="flex gap-4 items-center">
-					<label htmlFor="password">Password</label>
-					<Input type="password" name="password" id="password" />
+				<div className="flex flex-col gap-1">
+					<label htmlFor="password" className="text-sm">
+						Password
+					</label>
+					<Input
+						type="password"
+						name="password"
+						id="password"
+						className="required:border-red-500"
+						autoComplete="false"
+						placeholder="********"
+					/>
 				</div>
-				<Button type="submit" variant="default">
+				<Button
+					type="submit"
+					variant="default"
+					isLoading={loading}
+					loadingtext="Signing up">
 					Sign Up
 				</Button>
-				<div className="flex flex-col gap-4 w-full mt-4">
+			</Form>
+			<Separator />
+			{accountLinkMessage === null && (
+				<div className="flex flex-col gap-4 w-full">
 					<Button
+						type="button"
 						variant="outline"
-						onClick={() => signIn("google")}
+						onClick={() =>
+							signIn("google", {
+								signUp: true,
+								redirect: false,
+							})
+						}
 						className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
 						<Icon
 							icon="flat-color-icons:google"
@@ -76,14 +156,29 @@ export function Signup() {
 						Signup with Google
 					</Button>
 					<Button
+						type="button"
 						variant="outline"
-						onClick={() => signIn("github")}
+						onClick={() =>
+							signIn("github", {
+								signUp: true,
+								redirect: false,
+							})
+						}
 						className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
 						<Icon icon="mdi:github" width="2rem" height="2rem" />
 						Signup with Github
 					</Button>
 				</div>
-			</Form>
+			)}
+			{/* don't have an account */}
+			<div className="flex items-center gap-2">
+				<p>Alreday have an account ?</p>
+				<Link
+					href="/login"
+					className="text-slate-500 hover:underline  font-medium">
+					Login
+				</Link>
+			</div>
 		</div>
 	);
 }

@@ -51,7 +51,7 @@ const Button = React.forwardRef(
 							width="1.5rem"
 							height="1.5rem"
 						/>
-						{props.loadingText || "Loading"}
+						{props.loadingtext || "Loading"}
 					</>
 				) : (
 					props.children

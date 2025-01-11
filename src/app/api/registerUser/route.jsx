@@ -1,5 +1,5 @@
 "use server";
-import dbConnect from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
 import User from "@/app/modals/userModal";
 import bcrypt from "bcryptjs";
 

@@ -1,5 +1,6 @@
 import withAuth from "next-auth/middleware";
 import { NextResponse } from "next/server";
+export { auth as middleware } from "@/auth";
 
 export const config = {
 	matcher: ["/dashboard", "/admin"],

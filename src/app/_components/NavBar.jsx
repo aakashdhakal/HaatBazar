@@ -1,6 +1,5 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { options } from "../api/auth/[...nextauth]/option";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import AlertDialogComponent from "./AlertDialog";
@@ -11,7 +10,7 @@ import UserAvatar from "./UserAvatar";
 import DropDown from "./DropDown";
 
 export function NavBar() {
-	const { data: session, status } = useSession(options);
+	const { data: session, status } = useSession();
 
 	return (
 		<nav className="bg-white p-4 px-16  flex justify-between items-center border-b-2 border-gray-200">

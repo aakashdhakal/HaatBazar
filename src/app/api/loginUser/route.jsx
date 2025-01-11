@@ -1,5 +1,5 @@
 "use server";
-import dbConnect from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
 import User from "@/app/models/User";
 import { getSession } from "next-auth/client";
 

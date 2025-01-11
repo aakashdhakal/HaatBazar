@@ -1,2 +1,2 @@
 "use server"
-import dbConnect from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";

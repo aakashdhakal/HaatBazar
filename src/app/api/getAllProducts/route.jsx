@@ -1,5 +1,5 @@
 "use server";
-import dbConnect from "@/app/lib/db";
+import { dbConnect } from "@/app/lib/db";
 import Product from "@/app/modals/productModal";
 
 export async function POST(req, res) {

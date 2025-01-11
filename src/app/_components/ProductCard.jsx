@@ -4,12 +4,19 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Icon } from "@iconify/react";
 import { useToast } from "../hooks/use-toast";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function ProductCard({ product }) {
 	const { toast } = useToast();
-	const { session, status } = useSession();
+	const { session, status } = {
+		session: {
+			user: {
+				name: "John Doe",
+				profilePic: "https://randomuser.me/api/portraits",
+			},
+		},
+		status: "loading",
+	};
 	const [loading, setLoading] = useState(false);
 
 	const addToCart = () => {
@@ -41,6 +48,8 @@ export default function ProductCard({ product }) {
 					alt={product.name}
 					fill="responsive"
 					className="rounded-lg object-cover"
+					priority={true}
+					sizes="100%"
 				/>
 			</div>
 			<h2 className="text-l font-semibold text-gray-800">{product.name}</h2>
