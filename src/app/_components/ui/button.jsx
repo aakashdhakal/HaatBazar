@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
@@ -6,7 +7,7 @@ import { Icon } from "@iconify/react";
 import { cn } from "@/app/lib/utils";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 relative",
 	{
 		variants: {
 			variant: {
@@ -36,7 +37,10 @@ const buttonVariants = cva(
 );
 
 const Button = React.forwardRef(
-	({ className, variant, size, asChild = false, isLoading, ...props }, ref) => {
+	(
+		{ className, variant, size, asChild = false, isLoading, badge, ...props },
+		ref,
+	) => {
 		const Comp = asChild ? Slot : "button";
 		return (
 			<Comp
@@ -51,10 +55,15 @@ const Button = React.forwardRef(
 							width="1.5rem"
 							height="1.5rem"
 						/>
-						{props.loadingtext || "Loading"}
+						{props.loadingtext}
 					</>
 				) : (
 					props.children
+				)}
+				{badge && (
+					<span className="absolute top-0 right-0 inline-flex items-center justify-center p-1 w-4 h-4 rounded-full text-[10px] font-bold leading-none text-white bg-black ">
+						{badge}
+					</span>
 				)}
 			</Comp>
 		);

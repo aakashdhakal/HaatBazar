@@ -1,17 +1,22 @@
 "use server";
 import { dbConnect } from "@/app/lib/db";
 import Product from "@/app/modals/productModal";
+import getAllProducts from "@/app/actions/products";
+import { get } from "mongoose";
+
+// // //----------------------------------------------------------
+// import User from "../../modals/userModal";
+// import Account from "../../modals/accountModal";
+// // import Session from "../modals/sessionModal";
+// // import VerificationToken from "../modals/verificationTokenModal";
+
+// // Account.createCollection();
+// // Session.createCollection();
+// // VerificationToken.createCollection();
+
+// // //----------------------------------------------------------
 
 export async function POST(req, res) {
-	await dbConnect();
-
-	try {
-		const products = await Product.find({});
-		return new Response(JSON.stringify(products), { status: 200 });
-	} catch (error) {
-		console.error("Error fetching products:", error);
-		return new Response(JSON.stringify({ error: "Failed to fetch products" }), {
-			status: 500,
-		});
-	}
+	const products = await getAllProducts();
+	res.json(products);
 }

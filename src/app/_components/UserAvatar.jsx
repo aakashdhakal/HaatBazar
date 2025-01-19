@@ -1,13 +1,31 @@
+"use client";
+import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Icon } from "@iconify-icon/react";
+import { useState } from "react";
 
 export default function UserAvatar({ src, size }) {
+	const [hasError, setHasError] = useState(false);
+
 	return (
 		<Avatar>
-			<AvatarImage src={src} alt="User Avatar" />
-			<AvatarFallback>
-				<Icon icon="gridicons:user" width="1.5rem" height="1.5rem" />
-			</AvatarFallback>
+			{!hasError && (
+				<AvatarImage
+					src={src}
+					alt="User Avatar"
+					onError={() => setHasError(true)}
+				/>
+			)}
+			{hasError && (
+				<AvatarFallback>
+					<Image
+						src="/profile.jpg"
+						alt="User Avatar"
+						width={size || 40}
+						height={size || 40}
+						className="rounded-full"
+					/>
+				</AvatarFallback>
+			)}
 		</Avatar>
 	);
 }

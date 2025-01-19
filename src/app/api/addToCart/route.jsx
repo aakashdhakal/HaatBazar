@@ -1,19 +1,17 @@
-import Cart from "@/app/modals/cartModal";
+import { addToCart } from "@/app/actions/cart";
+import { dbConnect } from "@/app/lib/db";
 
-export default async function POST(req, res) {
-	const { userId, productId, quantity } = req.body;
-	const cart = await Cart.findOne({ userId, "products.productId": productId });
-	if (cart) {
-		await Cart.findOneAndUpdate(
-			{ userId, "products.productId": productId },
-			{ $inc: { "products.$.quantity": quantity } },
-		);
-	} else {
-		await Cart.findOneAndUpdate(
-			{ userId },
-			{ $push: { products: { productId, quantity } } },
-		);
+export async function POST(req, res) {
+	await dbConnect();
+	try {
+		const productId = req.body.productId;
+		const quantity = req.body.quantity || 1;
+		const cart = await addToCart({ productId, quantity });
+		return new Response(JSON.stringify(cart), { status: 200 });
+	} catch (error) {
+		console.error("Error adding to cart:", error);
+		return new Response(JSON.stringify({ error: "Failed to add to cart" }), {
+			status: 500,
+		});
 	}
-	res.status(200).json({ message: "Added to cart" });
 }
-// Compare this snippet from src/app/modals/productModal.jsx:

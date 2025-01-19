@@ -1,4 +1,4 @@
-import Link from "next/link";
+"use client";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -22,10 +22,6 @@ export default function DropDown({ trigger, items, label }) {
 						{item}
 					</DropdownMenuItem>
 				))}
-				{/* <DropdownMenuItem>Profile</DropdownMenuItem>
-				<DropdownMenuItem>Billing</DropdownMenuItem>
-				<DropdownMenuItem>Team</DropdownMenuItem>
-				<DropdownMenuItem>Subscription</DropdownMenuItem> */}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

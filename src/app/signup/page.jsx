@@ -9,6 +9,7 @@ import { Separator } from "../_components/ui/separator";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export function Signup() {
 	const [formData, setFormData] = useState({
@@ -20,19 +21,21 @@ export function Signup() {
 	const [loading, setLoading] = useState(false);
 	const [accountLinkMessage, setAccountLinkMessage] = useState("");
 	const { data: session, status } = useSession();
-
+	const searchParams = useSearchParams();
 	useEffect(() => {
-		if (status === "authenticated" && session?.user) {
+		const email = searchParams.get("email");
+		const name = searchParams.get("name");
+		if (email && name) {
 			setFormData((prevFormData) => ({
 				...prevFormData,
-				name: session.user.name,
-				email: session.user.email,
+				email,
+				name,
 			}));
 			setAccountLinkMessage(
-				`You are trying to signup with ${session.user.email}. If this is not you, please change the details.`,
+				"Your account is linked with google account. Please fill the form to complete the registration",
 			);
 		}
-	}, [status, session]);
+	}, [searchParams]);
 
 	const handleSubmit = async (e) => {
 		setLoading(true);
@@ -60,7 +63,7 @@ export function Signup() {
 					email: formData.email,
 					password: formData.password,
 					redirect: true,
-					callbackUrl: "/", // Redirect to dashboard or any other page
+					redirectTo: "/",
 				});
 				setLoading(false);
 			} else {
@@ -136,15 +139,15 @@ export function Signup() {
 				</Button>
 			</Form>
 			<Separator />
-			{accountLinkMessage === null && (
+			{accountLinkMessage === "" && (
 				<div className="flex flex-col gap-4 w-full">
 					<Button
 						type="button"
 						variant="outline"
 						onClick={() =>
 							signIn("google", {
-								signUp: true,
 								redirect: false,
+								redirectTo: "/",
 							})
 						}
 						className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
@@ -155,27 +158,14 @@ export function Signup() {
 						/>
 						Signup with Google
 					</Button>
-					<Button
-						type="button"
-						variant="outline"
-						onClick={() =>
-							signIn("github", {
-								signUp: true,
-								redirect: false,
-							})
-						}
-						className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
-						<Icon icon="mdi:github" width="2rem" height="2rem" />
-						Signup with Github
-					</Button>
 				</div>
 			)}
 			{/* don't have an account */}
-			<div className="flex items-center gap-2">
+			<div className="flex items-center gap-2 text-sm">
 				<p>Alreday have an account ?</p>
 				<Link
 					href="/login"
-					className="text-slate-500 hover:underline  font-medium">
+					className="text-slate-500 hover:underline font-medium text-sm">
 					Login
 				</Link>
 			</div>

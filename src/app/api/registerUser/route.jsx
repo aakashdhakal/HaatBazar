@@ -13,10 +13,20 @@ export async function POST(req) {
 		// Check if the user already exists
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
-			return new Response(
-				JSON.stringify({ message: "Email is already in use" }),
-				{ status: 400 },
-			);
+			if (existingUser.password === null) {
+				await User.findOneAndUpdate({ email }, { password: hashedPassword });
+				return new Response(
+					JSON.stringify({ message: "Password Updated Successfully" }),
+					{
+						status: 200,
+					},
+				);
+			} else {
+				return new Response(
+					JSON.stringify({ message: "Email is already in use" }),
+					{ status: 400 },
+				);
+			}
 		}
 
 		// Create a new user

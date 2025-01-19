@@ -1,7 +1,7 @@
-import { getServerSession } from "next-auth";
+import { auth } from "../auth";
 
 export async function Dashboard() {
-	const session = await getServerSession();
+	const session = await auth();
 	return (
 		<>
 			<h1>U are logged in</h1>

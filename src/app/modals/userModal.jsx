@@ -1,5 +1,3 @@
-"use server";
-
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(
@@ -15,19 +13,22 @@ const UserSchema = new mongoose.Schema(
 		},
 		password: {
 			type: String,
+			default: null,
 			required: true,
 		},
 		role: {
 			type: String,
 			default: "user",
+			required: true,
 		},
-		profilePic: {
+		emailVerified: {
+			type: Date,
+			default: null,
+		},
+		image: {
 			type: String,
-			default: "/profile.png",
-		},
-		isVerified: {
-			type: Boolean,
-			default: false,
+			default: "profile.jpg",
+			required: true,
 		},
 	},
 	{
@@ -35,6 +36,6 @@ const UserSchema = new mongoose.Schema(
 	},
 );
 
-const User = mongoose.models.User || mongoose.model("User", UserSchema);
+const User = mongoose.models?.User || mongoose.model("User", UserSchema);
 
 export default User;

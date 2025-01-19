@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../_components/ui/button";
 import { Input } from "../_components/ui/input";
 import { useSession } from "next-auth/react";
@@ -23,7 +23,6 @@ export default function Login() {
 			setError(searchParams.get("error"));
 		}
 	}, [searchParams]);
-
 	const handleSubmit = async (e) => {
 		setLoading(true);
 		e.preventDefault();
@@ -40,10 +39,12 @@ export default function Login() {
 			redirect: false,
 			redirectTo: "/",
 		});
-		console.log(result);
+
 		if (result.code === null) {
 			router.push("/");
 			setLoading(false);
+		} else if (result.code.includes("/signup")) {
+			redirect(result.code);
 		} else {
 			setError(result.code);
 			setLoading(false);
@@ -54,19 +55,11 @@ export default function Login() {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const login = async (provider) => {
-		const result = await signIn(provider, {
-			redirect: false,
-			callbackUrl: "/login",
-		});
-		console.log(result);
-	};
-
 	return (
 		<div className="flex flex-col items-center gap-6 w-full max-w-md m-auto mt-32 p-6 bg-white shadow-lg rounded-lg border-2">
 			<h1 className="text-2xl font-bold mb-4">Login</h1>
 			<Form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
-				{error && <p className="text-red-500">{error}</p>}
+				{error && <p className="text-red-500 text-center">{error}</p>}
 				<div className="flex flex-col gap-1 ">
 					<label htmlFor="email" className="text-sm">
 						Email
@@ -104,31 +97,29 @@ export default function Login() {
 					Login
 				</Button>
 			</Form>
-			<Separator />
+			<Separator decorative="true" />
+			{/* login with google */}
 			<div className="flex flex-col gap-4 w-full">
 				<Button
 					type="button"
 					variant="outline"
-					onClick={() => login("google")}
+					onClick={() =>
+						signIn("google", {
+							redirect: false,
+							redirectTo: "/",
+						})
+					}
 					className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
 					<Icon icon="flat-color-icons:google" width="1.5rem" height="1.5rem" />
 					Login with Google
 				</Button>
-				<Button
-					type="button"
-					variant="outline"
-					onClick={() => login("github")}
-					className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">
-					<Icon icon="mdi:github" width="2rem" height="2rem" />
-					Login with Github
-				</Button>
 			</div>
 			{/* don't have an account */}
 			<div className="flex items-center gap-2">
-				<p>Don&apos;t have an account ?</p>
+				<p className="text-sm">Don&apos;t have an account ?</p>
 				<Link
 					href="/signup"
-					className="text-slate-500 hover:underline  font-medium">
+					className="text-slate-500 hover:underline font-medium text-sm">
 					Register Now
 				</Link>
 			</div>
