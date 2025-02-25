@@ -7,6 +7,7 @@ import { Toaster } from "./_components/ui/toaster";
 import ReactQueryProvider from "./_components/ReactQueryProvider";
 import { CartProvider } from "./context/CartContext";
 import { WishListProvider } from "./context/WishListContext";
+import { SidebarProvider, SidebarTrigger } from "./_components/SideBar";
 
 const poppins = Poppins({
 	weight: "400",
@@ -28,7 +29,6 @@ export default function RootLayout({ children }) {
 						<CartProvider>
 							<WishListProvider>
 								<NavBar />
-								{/* <SideBar /> */}
 								<main className="p-4">{children}</main>
 								<Toaster />
 							</WishListProvider>

@@ -30,6 +30,12 @@ const UserSchema = new mongoose.Schema(
 			default: "profile.jpg",
 			required: true,
 		},
+		shippingAddress: {
+			type: [String],
+		},
+		billingAddress: {
+			type: [String],
+		},
 	},
 	{
 		timestamps: true,

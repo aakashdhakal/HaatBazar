@@ -37,6 +37,7 @@ const authConfig = {
                 if (profile.email === "anamoldhakal22@gmail.com") {
                     userRole = "admin";
                 }
+                let user = await checkEmailExists(profile.email);
                 return {
                     ...profile,
                     role: userRole,
@@ -61,16 +62,17 @@ const authConfig = {
                     } else if (userFound.password === null) {
                         throw new InvalidMethod();
                     } else {
-                        const matchPassword = await bcrypt.compare(
+                        const matchPassword = bcrypt.compare(
                             credentials.password,
                             userFound.password,
                         );
-                        if (await matchPassword) {
+                        if (matchPassword) {
                             return {
                                 id: userFound._id,
                                 name: userFound.name,
                                 email: userFound.email,
                                 profilePic: userFound.profilePic,
+                                role: userFound.role,
                             };
                         } else {
                             throw new InvalidCredentials();

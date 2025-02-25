@@ -8,38 +8,111 @@ import UserAvatar from "./UserAvatar";
 import DropDown from "./DropDown";
 import { Skeleton } from "./ui/skeleton";
 import { Icon } from "@iconify-icon/react";
-import { getNoOfCartItems } from "../actions/cart";
+import { getCart } from "../actions/cart";
 import { getNoOfWishListItems } from "../actions/wishList";
 import { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useWishList } from "../context/WishListContext";
+import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	navigationMenuTriggerStyle,
+} from "./ui/navigation-menu";
+import { Input } from "./ui/input";
 
 export function NavBar() {
 	const { data: session, status } = useSession();
-	const { cartItemCount, setCartItemCount } = useCart();
+	const { cartItems, setCartItems } = useCart({});
 	const { wishListItemsCount, setWishListItemsCount } = useWishList();
 
 	useEffect(() => {
 		const fetchCartItemsCount = async () => {
-			setCartItemCount(await getNoOfCartItems());
+			setCartItems(await getCart());
 		};
 		const fetchWishListItemsCount = async () => {
 			setWishListItemsCount(await getNoOfWishListItems());
 		};
 		fetchCartItemsCount();
 		fetchWishListItemsCount();
-	}, [setCartItemCount, setWishListItemsCount]);
+	}, [setCartItems, setWishListItemsCount]);
 
 	return (
 		<nav className="bg-white p-4 px-16 flex justify-between items-center border-b-2 border-gray-200">
 			<Link href="/" className="text-2xl font-semibold">
 				HAATBAZAAR
 			</Link>
+			{/* <NavigationMenu>
+				<NavigationMenuList>
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
+							<Link href="/products" className="text-base">
+								Products
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
+							<Link href="/categories" className="text-base">
+								Categories
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
+							<Link href="/about" className="text-base">
+								About Us
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
+							<Link href="/contact" className="text-base">
+								Contact Us
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+					<NavigationMenuItem>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
+							<Link href="/faq" className="text-base">
+								FAQ
+							</Link>
+						</NavigationMenuLink>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+			</NavigationMenu> */}
+			{/* search bar */}
+			<div className="flex items-center gap-4 border border-gray-200 rounded-lg w-[40%]">
+				<Input
+					type="text"
+					placeholder="Search for products..."
+					className="border-none outline-none bg-gray-100 p-2 rounded-lg focus-visible:ring-transparent w-full"
+				/>
+				<Button variant="ghost" size="icon">
+					<Icon
+						icon="mdi:magnify"
+						width="1.5rem"
+						height="1.5rem"
+						className="text-gray-400 w-max"
+					/>
+				</Button>
+			</div>
 			<div className="flex items-center gap-6">
 				<Button variant="ghost" size="icon" badge={wishListItemsCount}>
 					<Icon icon="iconamoon:heart-light" width="1.7rem" height="1.7rem" />
 				</Button>
-				<Button variant="ghost" size="icon" badge={cartItemCount || ""}>
+				<Button variant="ghost" size="icon" badge={cartItems.length || ""}>
 					<Link href="/cart">
 						<Icon
 							icon="solar:cart-large-outline"
