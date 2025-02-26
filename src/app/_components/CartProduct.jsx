@@ -60,7 +60,7 @@ export default function CartProduct({ product, onRemove }) {
 	return (
 		<div className="flex w-full gap-4 items-center justify-between border-b border-gray-200 p-4">
 			<div className="flex gap-4 items-center w-[25%] ">
-				<Checkbox />
+				{/* <Checkbox /> */}
 				<Image
 					src={product.image}
 					alt={product.name}

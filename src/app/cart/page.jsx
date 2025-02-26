@@ -178,7 +178,7 @@ export default function Cart() {
 	};
 
 	return (
-		<div className="flex items-start  gap-16 w-full  justify-center p-8">
+		<div className="flex items-start  gap-16 w-full  justify-center py-8 container mx-auto">
 			<div className="w-full flex justify-start flex-col gap-4">
 				<div className="flex gap-4 items-center p-4 bg-gray-100 text-gray-500 rounded-lg text-center w-full">
 					{/* checkbox */}

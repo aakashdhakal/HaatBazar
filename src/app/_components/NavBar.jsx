@@ -39,7 +39,7 @@ export function NavBar() {
 	}, [setCartItems, setWishListItemsCount]);
 
 	return (
-		<nav className="bg-white p-4 px-16 flex justify-between items-center border-b-2 border-gray-200">
+		<nav className="bg-white flex justify-between items-center border-b-2 border-gray-200 p-4 container mx-auto ">
 			<Link href="/" className="text-2xl font-semibold">
 				HAATBAZAAR
 			</Link>
@@ -93,7 +93,7 @@ export function NavBar() {
 				</NavigationMenuList>
 			</NavigationMenu> */}
 			{/* search bar */}
-			<div className="flex items-center gap-4 border border-gray-200 rounded-lg w-[40%]">
+			<div className="flex items-center gap-4 border border-gray-400 rounded-lg w-[40%] focus-within:ring-1 focus-within:ring-black">
 				<Input
 					type="text"
 					placeholder="Search for products..."

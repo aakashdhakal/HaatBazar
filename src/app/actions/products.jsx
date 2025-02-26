@@ -1,3 +1,4 @@
+"use server";
 import { dbConnect } from "../lib/db";
 import Product from "../modals/productModal";
 
@@ -21,15 +22,16 @@ export default async function getAllProducts() {
 
 export async function getProductById(id) {
 	await dbConnect();
-
+	console.log(id);
 	try {
 		const product = await Product.findById(id);
 		if (!product) {
-			return new Response(JSON.stringify({ error: "Product not found" }), {
-				status: 404,
-			});
+			return { error: "Product not found", status: 404 };
 		}
-		return product.toObject();
+		return {
+			...product.toObject(),
+			_id: product._id.toString(),
+		};
 	} catch (error) {
 		console.error("Error fetching product:", error);
 		return new Response(JSON.stringify({ error: "Failed to fetch product" }), {

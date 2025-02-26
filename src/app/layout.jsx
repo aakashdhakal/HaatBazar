@@ -1,13 +1,11 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "./_components/NavBar";
-// import { SideBar } from "./_components/SideBar";
 import AuthProvider from "./_components/AuthProvider";
 import { Toaster } from "./_components/ui/toaster";
 import ReactQueryProvider from "./_components/ReactQueryProvider";
 import { CartProvider } from "./context/CartContext";
 import { WishListProvider } from "./context/WishListContext";
-import { SidebarProvider, SidebarTrigger } from "./_components/SideBar";
 
 const poppins = Poppins({
 	weight: "400",
