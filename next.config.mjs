@@ -17,6 +17,24 @@ const nextConfig = {
             {
                 hostname: "havmor.ca",
             },
+            {
+                hostname: "images.unsplash.com",
+            },
+            {
+                hostname: "cdn.pixabay.com",
+            },
+            {
+                hostname: "i.pinimg.com",
+            },
+            {
+                hostname: "cdn.dribbble.com",
+            },
+            {
+                hostname: "source.unsplash.com",
+            },
+            {
+                hostname: "randomuser.me",
+            }
         ]
     },
     async headers() {

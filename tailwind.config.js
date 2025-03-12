@@ -3,7 +3,7 @@ export const darkMode = ["class"];
 export const content = [
 	"./app/**/*.{js,ts,jsx,tsx,mdx}",
 	"./pages/**/*.{js,ts,jsx,tsx,mdx}",
-	"./components/**/*.{js,ts,jsx,tsx,mdx}",
+	"@/components/**/*.{js,ts,jsx,tsx,mdx}",
 
 	// Or if using `src` directory:
 	"./src/**/*.{js,ts,jsx,tsx,mdx}",
@@ -27,11 +27,15 @@ export const theme = {
 				foreground: 'hsl(var(--popover-foreground))'
 			},
 			primary: {
-				DEFAULT: '#000000',
+				DEFAULT: '#195a24',
+				light: '#2a7735', // lighter shade
+				dark: '#124419', // darker shade
 				foreground: 'hsl(var(--primary-foreground))'
 			},
 			secondary: {
-				DEFAULT: 'hsl(var(--secondary))',
+				DEFAULT: '#ee6d0c',
+				light: '#f5863a', // lighter shade
+				dark: '#d5600a', // darker shade
 				foreground: 'hsl(var(--secondary-foreground))'
 			},
 			muted: {
