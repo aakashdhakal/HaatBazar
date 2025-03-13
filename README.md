@@ -1,13 +1,16 @@
 # 🛒 HAATBAZAR | Fresh Grocery E-commerce
 
 <div align="center">
-    <img src="public/logo.png" alt="HAATBAZAR Logo" width="200" />
+    <img src="public/logoSideText.png" alt="HAATBAZAR Logo" width="500" />
     <p><i>Fresh farm produce delivered to your doorstep</i></p>
 </div>
 
 ## 📋 Overview
 
-HAATBAZAR is a modern e-commerce platform specializing in fresh groceries and produce. Built with Next.js 14 and MongoDB, it offers a seamless shopping experience with features like user authentication, cart management, wishlist functionality, and multiple payment options including Khalti integration.
+HAATBAZAR is a modern e-commerce platform specializing in fresh groceries and
+produce. Built with Next.js 14 and MongoDB, it offers a seamless shopping
+experience with features like user authentication, cart management, wishlist
+functionality, and multiple payment options including Khalti integration.
 
 ## ✨ Features
 
@@ -36,49 +39,54 @@ HAATBAZAR is a modern e-commerce platform specializing in fresh groceries and pr
 1. Clone the repository
 2. Install dependencies
 3. Set up environment variables
-     - Create a `.env.local` file in the root directory with the following:
+   - Create a `.env.local` file in the root directory with the following:
 4. Run the development server
 5. Open `http://localhost:3000` in your browser
 
 ## 📁 Project Structure
 
-<!-- Add project structure details here -->
-
-## 📱 Screenshots
-
-<div align="center">
-    <img src="public/screenshots/home.png" alt="Home Page" width="400" />
-    <p>Home Page</p>
-    
-    <img src="public/screenshots/product.png" alt="Product Page" width="400" />
-    <p>Product Page</p>
-    
-    <img src="public/screenshots/cart.png" alt="Shopping Cart" width="400" />
-    <p>Shopping Cart</p>
-    
-    <img src="public/screenshots/checkout.png" alt="Checkout Page" width="400" />
-    <p>Checkout Page</p>
-</div>
+```
+haatbazar/
+├── public/               # Static assets
+├── src/
+│   ├── app/
+│   │   ├── (auth)/       # Authentication pages
+│   │   ├── (pages)/      # Main application pages
+│   │   ├── (server)/     # Server actions
+│   │   └── api/          # API routes
+│   ├── components/       # Reusable UI components
+│   ├── context/          # React context providers
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utility functions
+│   └── models/           # MongoDB schema models
+├── .env.local            # Environment variables
+├── next.config.js        # Next.js configuration
+└── tailwind.config.js    # Tailwind CSS configuration
+```
 
 ## ⚙️ Key Functionalities
 
 ### Authentication
+
 - User registration with email/password
 - Social login with Google
 - Secure session management
 
 ### Product Management
+
 - Comprehensive product details
 - Product categorization
 - Search functionality
 
 ### Cart & Checkout
+
 - Real-time cart updates
 - Address management
 - Multiple payment options
 - Order confirmation
 
 ### User Dashboard
+
 - Order history
 - Wishlist management
 - Profile settings
@@ -94,19 +102,10 @@ HAATBAZAR is a modern e-commerce platform specializing in fresh groceries and pr
 
 The application is configured for easy deployment on Vercel.
 
-## 👥 Contributors
-
-<div align="center">
-    <a href="https://github.com/yourusername">
-        <img src="https://github.com/yourusername.png" width="100px;" alt="Developer" style="border-radius:50%"/>
-        <br />
-        <sub><b>Your Name</b></sub>
-    </a>
-</div>
-
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for
+details.
 
 <div align="center">
     <p>Made with ❤️ in Nepal</p>
