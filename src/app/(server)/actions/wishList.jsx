@@ -81,3 +81,26 @@ export async function getNoOfWishListItems() {
 		return wishlist.products.length;
 	}
 }
+
+// Remove a product from the wishlist
+
+export async function removeFromWishList(product) {
+	let session = await auth();
+	if (session === null) return false;
+
+	const userId = session.user.id;
+
+	// Find the user's wishlist
+	let wishlist = await WishList.findOne({ userId });
+	if (!wishlist) {
+		return false;
+	} else {
+		// Remove the product from the wishlist
+		wishlist.products = wishlist.products.filter(
+			(item) => item.productId.toString() !== product._id.toString(),
+		);
+		await wishlist.save();
+		let noOfItems = await getNoOfWishListItems();
+		return { status: "success", message: "Removed from wishlist", noOfItems };
+	}
+}

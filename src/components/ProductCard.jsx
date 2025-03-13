@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
-import { useToast } from "../hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { addToCart, getCart } from "@/app/(server)/actions/cart";
 import { addToWishList } from "@/app/(server)/actions/wishList";
@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
 	const [loading, setLoading] = useState({ cart: false, wishlist: false });
 	const { setCartItems } = useCart({});
 	const { setWishListItemsCount } = useWishList();
-	const { toast } = useToast();
+	const { toast, success, error } = useToast();
 	const { data: session } = useSession();
 
 	// const discountPercentage = product.originalPrice
@@ -32,9 +32,11 @@ export default function ProductCard({ product }) {
 		await addToCart({ _id: product._id, quantity: 1 });
 		setCartItems(await getCart());
 		if (session) {
-			toast({ title: product.name + " added to the cart" });
+			success({
+				title: product.name + " added to the cart",
+			});
 		} else {
-			toast({ title: "Please login to add items to the cart" });
+			error({ title: "Please login to add items to the cart" });
 		}
 		setLoading((prev) => ({ ...prev, cart: false }));
 	};
@@ -45,7 +47,9 @@ export default function ProductCard({ product }) {
 		setLoading((prev) => ({ ...prev, wishlist: true }));
 		const data = await addToWishList({ _id: product._id });
 		setWishListItemsCount(data.noOfItems);
-		toast({ title: product.name + " added to the wishlist" });
+		success({
+			title: product.name + " added to the wishlist",
+		});
 		setLoading((prev) => ({ ...prev, wishlist: false }));
 	};
 
@@ -87,31 +91,26 @@ export default function ProductCard({ product }) {
 				<div className="p-3 flex-grow flex flex-col">
 					{/* Category tag - small but noticeable */}
 					{product.category && (
-						<span className="text-xs text-primary font-medium bg-primary/5 px-2 py-0.5 rounded mb-1.5 inline-block">
+						<span className="text-xs text-primary font-medium bg-primary/5 px-2 py-0.5 rounded mb-1.5 inline-block w-max">
 							{product.category}
 						</span>
 					)}
 
 					{/* Product name - larger and more prominent */}
-					<h3 className="font-semibold text-sm text-gray-800 line-clamp-2 mb-1">
+					<h3 className="font-semibold text-base text-gray-800 line-clamp-2 mb-1">
 						{product.name}
 					</h3>
-
-					{/* Weight info */}
-					<span className="text-xs text-gray-500 mb-2">
-						{product.weight || product.quantity || "500g"}
-					</span>
 
 					{/* Price section with clear hierarchy */}
 					<div className="mt-auto">
 						<div className="flex items-center justify-between mb-2">
 							<div className="flex items-baseline gap-1.5">
-								<span className="font-bold text-base text-gray-900">
-									Rs{product.price}
+								<span className="text-sm text-gray-900">
+									Rs {product.price}
 								</span>
 								{product.originalPrice && (
-									<span className="text-xs text-gray-400 line-through">
-										Rs{product.originalPrice}
+									<span className="text-sm text-gray-400 line-through">
+										Rs {product.originalPrice}
 									</span>
 								)}
 							</div>

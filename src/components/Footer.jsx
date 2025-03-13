@@ -14,9 +14,9 @@ export default function Footer() {
 					<div className="md:col-span-3 space-y-4">
 						<Link href="/" className="flex items-center justify-center">
 							<Image
-								src="/logoWithText.png"
+								src="/logoSideText.png"
 								alt="HAATBAZAR Logo"
-								width={100}
+								width={150}
 								height={100}
 							/>
 						</Link>

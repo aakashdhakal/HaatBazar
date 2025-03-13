@@ -21,8 +21,8 @@ export default async function getAllProducts() {
 }
 
 export async function getProductById(id) {
+	console.log("getProductById", id);
 	await dbConnect();
-	console.log(id);
 	try {
 		const product = await Product.findById(id);
 		if (!product) {

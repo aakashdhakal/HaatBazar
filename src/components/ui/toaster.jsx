@@ -1,6 +1,5 @@
 "use client";
 
-import { useToast } from "@/hooks/use-toast";
 import {
 	Toast,
 	ToastClose,
@@ -8,7 +7,9 @@ import {
 	ToastProvider,
 	ToastTitle,
 	ToastViewport,
+	ToastWithIcon,
 } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 
 export function Toaster() {
 	const { toasts } = useToast();
@@ -16,17 +17,25 @@ export function Toaster() {
 	return (
 		<ToastProvider>
 			{toasts.map(function ({ id, title, description, action, ...props }) {
+				// Use the enhanced ToastWithIcon component for all toasts
 				return (
-					<Toast key={id} {...props}>
-						<div className="grid gap-1">
-							{title && <ToastTitle>{title}</ToastTitle>}
-							{description && (
-								<ToastDescription>{description}</ToastDescription>
-							)}
+					<ToastWithIcon
+						key={id}
+						title={title}
+						description={description}
+						action={action}
+						{...props}>
+						<div className="flex items-start gap-2">
+							<div>
+								{title && <ToastTitle>{title}</ToastTitle>}
+								{description && (
+									<ToastDescription>{description}</ToastDescription>
+								)}
+							</div>
 						</div>
 						{action}
 						<ToastClose />
-					</Toast>
+					</ToastWithIcon>
 				);
 			})}
 			<ToastViewport />
