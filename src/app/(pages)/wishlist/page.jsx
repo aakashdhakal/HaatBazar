@@ -21,7 +21,7 @@ export default function WishlistPage() {
 	const [wishlistItems, setWishlistItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [loadingStates, setLoadingStates] = useState({});
-	const { toast, success, error } = useToast();
+	const { success, error } = useToast();
 	const { data: session, status } = useSession();
 	const router = useRouter();
 	const { setCartItems } = useCart({});
@@ -144,25 +144,22 @@ export default function WishlistPage() {
 	// Empty wishlist
 	if (wishlistItems.length === 0) {
 		return (
-			<div className="max-w-7xl mx-auto px-4 py-8">
-				<h1 className="text-2xl font-bold mb-6 text-gray-900">My Wishlist</h1>
-				<div className="flex flex-col items-center justify-center py-16">
-					<div className="text-primary/70 mb-6">
-						<Icon icon="mdi:heart-outline" className="w-24 h-24" />
-					</div>
-					<h2 className="text-xl font-semibold mb-2 text-gray-800">
-						Your wishlist is empty
-					</h2>
-					<p className="text-gray-500 mb-8 text-center max-w-md">
-						Items added to your wishlist will appear here. Start exploring our
-						products and add your favorites!
-					</p>
-					<Link href="/">
-						<Button className="bg-primary hover:bg-primary-dark text-white">
-							Start Shopping
-						</Button>
-					</Link>
+			<div className="flex flex-col items-center justify-center py-16 px-4">
+				<div className="text-primary/80 mb-6">
+					<Icon icon="mdi:heart-outline" className="h-16 w-16" />
 				</div>
+				<h1 className="text-2xl font-bold text-gray-900 mb-2">
+					Your wishlist is empty
+				</h1>
+				<p className="text-gray-500 mb-8 text-center max-w-md">
+					Looks like you haven&apos;t added any items to your cart yet. Browse
+					our products and start shopping!
+				</p>
+				<Link href="/">
+					<Button className="bg-primary hover:bg-primary-dark text-white">
+						Continue Shopping
+					</Button>
+				</Link>
 			</div>
 		);
 	}
@@ -214,12 +211,12 @@ export default function WishlistPage() {
 							<div className="flex justify-between items-center">
 								<div className="flex items-baseline">
 									<span className="text-gray-900 font-medium">
-										Rs {product.price?.toFixed(2)}
+										Rs {product.price}
 									</span>
 									{product.originalPrice &&
 										product.originalPrice > product.price && (
 											<span className="text-gray-500 text-xs line-through ml-2">
-												Rs {product.originalPrice?.toFixed(2)}
+												Rs {product.originalPrice}
 											</span>
 										)}
 								</div>

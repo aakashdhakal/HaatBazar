@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSession } from "next-auth/react";
 import Form from "next/form";
-import { Icon } from "@iconify-icon/react";
+import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -17,6 +17,7 @@ export default function Login() {
 	const { status } = useSession();
 	const [loading, setLoading] = useState(false);
 	const searchParams = useSearchParams();
+	const [showPassword, setShowPassword] = useState(false);
 
 	useEffect(() => {
 		if (searchParams.get("error")) {
@@ -58,238 +59,296 @@ export default function Login() {
 	};
 
 	return (
-		<div className="flex flex-col md:flex-row justify-center items-center sm:px-6 lg:px-8 m-4">
-			{/* Left side - Form */}
-			<div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg sm:mx-auto md:mx-0 md:mr-8 border border-gray-100 flex flex-col gap-6">
-				<div className="text-center flex flex-col items-center gap-4">
-					<h2 className="text-2xl font-extrabold text-gray-900">
-						Welcome back
-					</h2>
-					<p className="text-sm text-gray-500">
-						Sign in to your account to continue
-					</p>
-				</div>
+		<div className="min-h-screen w-full flex bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+			{/* Background decoration */}
 
-				{error && (
-					<div className="mb-4 bg-red-50 text-red-700 p-3 rounded-md border border-red-100 flex items-center">
-						<Icon
-							icon="mdi:alert-circle"
-							width="20"
-							height="20"
-							className="mr-2"
-						/>
-						<p className="text-sm">{error}</p>
-					</div>
-				)}
-
-				<Form className="space-y-6" onSubmit={handleSubmit}>
-					<div>
-						<label
-							htmlFor="email"
-							className="block text-sm font-medium text-gray-700">
-							Email address
-						</label>
-						<div className="mt-1 relative rounded-md">
-							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-								<Icon
-									icon="mdi:email-outline"
-									width="18"
-									height="18"
-									className="text-gray-400"
-								/>
-							</div>
-							<Input
-								type="email"
-								name="email"
-								id="email"
-								value={formData.email}
-								placeholder="you@example.com"
-								onChange={handleChange}
-								className="pl-10 focus:ring-primary focus:border-primary"
-								required
-							/>
-						</div>
-					</div>
-
-					<div>
-						<label
-							htmlFor="password"
-							className="block text-sm font-medium text-gray-700">
-							Password
-						</label>
-						<div className="mt-1 relative rounded-md">
-							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-								<Icon
-									icon="mdi:lock-outline"
-									width="18"
-									height="18"
-									className="text-gray-400"
-								/>
-							</div>
-							<Input
-								type="password"
-								name="password"
-								id="password"
-								value={formData.password}
-								placeholder="••••••••"
-								onChange={handleChange}
-								className="pl-10 focus:ring-primary focus:border-primary"
-								required
-							/>
-						</div>
-					</div>
-
-					<div className="flex items-center justify-between">
-						<div className="flex items-center">
-							<input
-								id="remember_me"
-								name="remember_me"
-								type="checkbox"
-								className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-							/>
-							<label
-								htmlFor="remember_me"
-								className="ml-2 block text-sm text-gray-700">
-								Remember me
-							</label>
-						</div>
-
-						<div className="text-sm">
-							<Link
-								href="/forgot-password"
-								className="text-primary hover:text-primary-dark">
-								Forgot password?
-							</Link>
-						</div>
-					</div>
-
-					<div>
-						<Button
-							type="submit"
-							disabled={loading}
-							className="w-full flex justify-center py-2.5 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-200">
-							{loading ? (
-								<div className="flex items-center">
-									<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-									<span>Signing in...</span>
+			<div className="flex w-full max-w-screen-xl m-auto p-4 md:p-8 z-10">
+				<div className="w-full flex flex-col lg:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white h-max">
+					{/* Left side - Banner (promotional content) */}
+					<div className="hidden lg:block lg:w-[45%] bg-gradient-to-br from-primary to-primary-dark relative overflow-hidden">
+						<div className="relative z-10 flex flex-col h-full p-10 lg:p-12 justify-between">
+							{/* Banner content */}
+							<div>
+								<div className="flex items-center mb-12">
+									<Image
+										src="/HaatBazar-White.png"
+										alt="FreshMart"
+										width={130}
+										height={130}
+										className="w-auto h-10"
+									/>
 								</div>
-							) : (
-								"Sign in"
+								<div className="mb-10">
+									<h1 className="font-heading text-4xl font-bold text-white mb-4 leading-tight">
+										Your Everyday Fresh Groceries
+									</h1>
+									<p className="text-white/90 text-lg leading-relaxed">
+										Shop with confidence from our carefully curated selection of
+										premium products
+									</p>
+								</div>
+
+								<div className="space-y-6 mt-10">
+									<div className="flex items-start gap-4">
+										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
+											<Icon
+												icon="mdi:truck-fast-outline"
+												width="22"
+												height="22"
+												className="text-white"
+											/>
+										</div>
+										<div>
+											<h3 className="text-white font-medium text-lg mb-1">
+												Fast Delivery
+											</h3>
+											<p className="text-white/80">
+												Same-day delivery available in select areas
+											</p>
+										</div>
+									</div>
+
+									<div className="flex items-start gap-4">
+										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
+											<Icon
+												icon="mdi:sprout"
+												width="22"
+												height="22"
+												className="text-white"
+											/>
+										</div>
+										<div>
+											<h3 className="text-white font-medium text-lg mb-1">
+												Fresh & Organic
+											</h3>
+											<p className="text-white/80">
+												Locally sourced organic products
+											</p>
+										</div>
+									</div>
+
+									<div className="flex items-start gap-4">
+										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
+											<Icon
+												icon="mdi:ticket-percent"
+												width="22"
+												height="22"
+												className="text-white"
+											/>
+										</div>
+										<div>
+											<h3 className="text-white font-medium text-lg mb-1">
+												Member Benefits
+											</h3>
+											<p className="text-white/80">
+												Exclusive discounts for registered members
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Right side - Form */}
+					<div className="w-full lg:w-[55%] p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+						<div className="max-w-md mx-auto w-full">
+							{/* Mobile logo and back button */}
+							<div className="flex items-center justify-between mb-8 lg:hidden">
+								<div className="flex items-center gap-2">
+									<div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+										<Icon
+											icon="mdi:shopping"
+											className="h-5 w-5 text-primary"
+										/>
+									</div>
+									<span className="font-heading text-lg font-bold text-gray-900">
+										FreshMart
+									</span>
+								</div>
+								<Link href="/" className="p-2 rounded-full hover:bg-gray-100">
+									<Icon icon="mdi:arrow-left" className="h-5 w-5" />
+								</Link>
+							</div>
+
+							{/* Form header */}
+							<div className="mb-8">
+								<h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+									Welcome back
+								</h2>
+								<p className="text-gray-600">
+									Sign in to your account to continue shopping
+								</p>
+							</div>
+
+							{/* Error message */}
+							{error && (
+								<div className="mb-6 bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-start gap-3 animate-fadeIn shadow-sm">
+									<Icon
+										icon="mdi:alert-circle"
+										width="20"
+										height="20"
+										className="flex-shrink-0 mt-0.5"
+									/>
+									<p className="text-sm">{error}</p>
+								</div>
 							)}
-						</Button>
-					</div>
-				</Form>
 
-				<div>
-					<div className="relative">
-						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-gray-200"></div>
+							{/* Login form */}
+							<Form onSubmit={handleSubmit} className="space-y-6">
+								<div className="space-y-5">
+									<div className="space-y-2.5">
+										<label
+											htmlFor="email"
+											className="block text-sm font-medium text-gray-700">
+											Email address
+										</label>
+										<div className="relative">
+											<div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+												<Icon
+													icon="mdi:email-outline"
+													width="18"
+													height="18"
+													className="text-gray-400"
+												/>
+											</div>
+											<Input
+												type="email"
+												name="email"
+												id="email"
+												value={formData.email}
+												placeholder="you@example.com"
+												onChange={handleChange}
+												className="pl-11 h-12 w-full rounded-md border-gray-200 bg-gray-50/70 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+												required
+											/>
+										</div>
+									</div>
+
+									<div className="space-y-2.5">
+										<div className="flex items-center justify-between">
+											<label
+												htmlFor="password"
+												className="block text-sm font-medium text-gray-700">
+												Password
+											</label>
+											<Link
+												href="/forgot-password"
+												className="text-xs font-medium text-primary hover:text-primary-dark transition-colors underline-offset-2 hover:underline">
+												Forgot password?
+											</Link>
+										</div>
+										<div className="relative">
+											<div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+												<Icon
+													icon="mdi:lock-outline"
+													width="18"
+													height="18"
+													className="text-gray-400"
+												/>
+											</div>
+											<Input
+												type={showPassword ? "text" : "password"}
+												name="password"
+												id="password"
+												value={formData.password}
+												placeholder="••••••••"
+												onChange={handleChange}
+												className="pl-11 pr-11 h-12 w-full rounded-md border-gray-200 bg-gray-50/70 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+												required
+											/>
+											<button
+												type="button"
+												className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+												onClick={() => setShowPassword(!showPassword)}>
+												<Icon
+													icon={
+														showPassword
+															? "mdi:eye-off-outline"
+															: "mdi:eye-outline"
+													}
+													width="18"
+													height="18"
+												/>
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<div className="flex items-center">
+									<input
+										id="remember_me"
+										name="remember_me"
+										type="checkbox"
+										className="h-4 w-4 accent-primary text-primary rounded focus:ring-primary border-gray-300 cursor-pointer"
+									/>
+									<label
+										htmlFor="remember_me"
+										className="ml-2 block text-sm text-gray-700 cursor-pointer">
+										Remember me for 30 days
+									</label>
+								</div>
+
+								<Button
+									type="submit"
+									disabled={loading}
+									className="w-full h-12 text-base font-medium rounded-xl bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 shadow-md hover:shadow-lg">
+									{loading ? (
+										<div className="flex items-center justify-center gap-2">
+											<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+											<span>Signing in...</span>
+										</div>
+									) : (
+										"Sign in"
+									)}
+								</Button>
+
+								<div className="relative flex items-center">
+									<div className="flex-grow border-t border-gray-200"></div>
+									<span className="flex-shrink-0 px-4 text-sm text-gray-500">
+										Or continue with
+									</span>
+									<div className="flex-grow border-t border-gray-200"></div>
+								</div>
+
+								<Button
+									type="button"
+									onClick={() =>
+										signIn("google", { redirect: false, redirectTo: "/" })
+									}
+									className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-200 rounded-md hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md w-full"
+									variant="outline">
+									<Icon icon="flat-color-icons:google" width="18" height="18" />
+									<span className="font-medium">Google</span>
+								</Button>
+
+								<div className="text-center pt-4">
+									<p className="text-sm text-gray-600">
+										Don&apos;t have an account?{" "}
+										<Link
+											href="/signup"
+											className="font-medium text-secondary hover:text-secondary-dark transition-colors hover:underline underline-offset-2">
+											Create an account
+										</Link>
+									</p>
+								</div>
+							</Form>
+
+							<p className="text-xs text-gray-500 text-center mt-8">
+								By signing in, you agree to our{" "}
+								<Link
+									href="/terms"
+									className="underline underline-offset-2 hover:text-gray-700">
+									Terms of Service
+								</Link>{" "}
+								and{" "}
+								<Link
+									href="/privacy"
+									className="underline underline-offset-2 hover:text-gray-700">
+									Privacy Policy
+								</Link>
+							</p>
 						</div>
-						<div className="relative flex justify-center text-sm">
-							<span className="px-4 bg-white text-gray-500">
-								Or continue with
-							</span>
-						</div>
-					</div>
-
-					<div className="mt-6">
-						<Button
-							type="button"
-							onClick={() =>
-								signIn("google", { redirect: false, redirectTo: "/" })
-							}
-							className="w-full flex items-center justify-center gap-2 py-2.5 border border-gray-200 rounded-md hover:bg-gray-50 transition duration-200"
-							variant="outline">
-							<Icon icon="flat-color-icons:google" width="20" height="20" />
-							<span>Google</span>
-						</Button>
-					</div>
-				</div>
-
-				<div className="text-center">
-					<p className="text-sm text-gray-600">
-						Don&apos;t have an account?{" "}
-						<Link
-							href="/signup"
-							className="text-secondary font-medium hover:text-secondary-dark transition-colors">
-							Create an account
-						</Link>
-					</p>
-				</div>
-			</div>
-
-			{/* Right side - Image/Banner (visible on md and up) */}
-			<div className="hidden md:block max-w-sm">
-				<div className="bg-gradient-to-br from-primary/90 to-primary text-white p-8 rounded-lg shadow-lg">
-					<h3 className="text-xl font-bold mb-4">Fresh Groceries Delivered</h3>
-					<p className="mb-6">
-						Get fresh vegetables, fruits and groceries delivered to your
-						doorstep.
-					</p>
-
-					<div className="flex flex-col gap-4">
-						<div className="flex items-center gap-3">
-							<div className="p-2 bg-white/20 rounded-full">
-								<Icon
-									icon="mdi:truck-delivery-outline"
-									width="20"
-									height="20"
-									className="text-white"
-								/>
-							</div>
-							<span className="text-sm">Fast delivery to your home</span>
-						</div>
-
-						<div className="flex items-center gap-3">
-							<div className="p-2 bg-white/20 rounded-full">
-								<Icon
-									icon="mdi:leaf"
-									width="20"
-									height="20"
-									className="text-white"
-								/>
-							</div>
-							<span className="text-sm">Farm-fresh quality products</span>
-						</div>
-
-						<div className="flex items-center gap-3">
-							<div className="p-2 bg-white/20 rounded-full">
-								<Icon
-									icon="mdi:tag-outline"
-									width="20"
-									height="20"
-									className="text-white"
-								/>
-							</div>
-							<span className="text-sm">Special member discounts</span>
-						</div>
-					</div>
-
-					<div className="mt-8 pt-6 border-t border-white/20 flex justify-between items-center">
-						<div className="flex -space-x-2">
-							<Image
-								className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-								src="https://randomuser.me/api/portraits/women/17.jpg"
-								alt="Customer profile"
-								width={32}
-								height={32}
-							/>
-							<Image
-								className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-								src="https://randomuser.me/api/portraits/men/4.jpg"
-								alt="Customer profile"
-								width={32}
-								height={32}
-							/>
-							<Image
-								className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-								src="https://randomuser.me/api/portraits/women/3.jpg"
-								alt="Customer profile"
-								width={32}
-								height={32}
-							/>
-						</div>
-						<span className="text-sm">Join 2,500+ happy customers</span>
 					</div>
 				</div>
 			</div>

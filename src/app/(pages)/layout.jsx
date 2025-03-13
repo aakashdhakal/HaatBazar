@@ -1,12 +1,11 @@
-import Home from "./(pages)/(home)/page";
 import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
-export default function Index() {
+export default function PagesLayout({ children }) {
 	return (
 		<>
 			<NavBar />
-			<Home />
+			<main className="min-h-96 bg-gray-50">{children}</main>
 			<Footer />
 		</>
 	);

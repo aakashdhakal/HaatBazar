@@ -14,7 +14,7 @@ export async function initiateKhaltiPayment(order) {
 			quantity: item.quantity,
 			unit_price: item.price * 100,
 		})),
-		return_url: "http://localhost:3000/cart",
+		return_url: "http://localhost:3000/orders",
 		website_url: "http://localhost:3000",
 		purchase_order_name: "Test Product",
 		purchase_order_id: order.transactionUuid,

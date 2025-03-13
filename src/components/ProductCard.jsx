@@ -14,7 +14,7 @@ export default function ProductCard({ product }) {
 	const [loading, setLoading] = useState({ cart: false, wishlist: false });
 	const { setCartItems } = useCart({});
 	const { setWishListItemsCount } = useWishList();
-	const { toast, success, error } = useToast();
+	const { success, error } = useToast();
 	const { data: session } = useSession();
 
 	// const discountPercentage = product.originalPrice
@@ -29,12 +29,12 @@ export default function ProductCard({ product }) {
 		e.preventDefault();
 		e.stopPropagation();
 		setLoading((prev) => ({ ...prev, cart: true }));
-		await addToCart({ _id: product._id, quantity: 1 });
-		setCartItems(await getCart());
 		if (session) {
+			await addToCart({ _id: product._id, quantity: 1 });
 			success({
 				title: product.name + " added to the cart",
 			});
+			setCartItems(await getCart());
 		} else {
 			error({ title: "Please login to add items to the cart" });
 		}
@@ -45,11 +45,15 @@ export default function ProductCard({ product }) {
 		e.preventDefault();
 		e.stopPropagation();
 		setLoading((prev) => ({ ...prev, wishlist: true }));
-		const data = await addToWishList({ _id: product._id });
-		setWishListItemsCount(data.noOfItems);
-		success({
-			title: product.name + " added to the wishlist",
-		});
+		if (session) {
+			const data = await addToWishList({ _id: product._id });
+			success({
+				title: product.name + " added to the cart",
+			});
+			setWishListItemsCount(data.noOfItems);
+		} else {
+			error({ title: "Please login to add items to the cart" });
+		}
 		setLoading((prev) => ({ ...prev, wishlist: false }));
 	};
 

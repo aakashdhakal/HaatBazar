@@ -256,12 +256,12 @@ const ProductPage = ({ params }) => {
 						<div className="mb-4">
 							<div className="flex items-baseline">
 								<span className="text-2xl font-bold text-gray-900">
-									Rs {product.price?.toFixed(2)}
+									Rs {product.price}
 								</span>
 								{product.originalPrice &&
 									product.originalPrice > product.price && (
 										<span className="ml-2 text-gray-500 line-through">
-											Rs {product.originalPrice?.toFixed(2)}
+											Rs {product.originalPrice}
 										</span>
 									)}
 							</div>
@@ -633,7 +633,7 @@ const ProductPage = ({ params }) => {
 								</p>
 								<div className="mt-2">
 									<span className="text-gray-900 font-medium">
-										Rs {[120, 180, 60, 80][i - 1].toFixed(2)}
+										Rs {[120, 180, 60, 80][i - 1]}
 									</span>
 								</div>
 								<Button className="w-full mt-3 bg-primary/10 hover:bg-primary hover:text-white text-primary">

@@ -1,13 +1,10 @@
-import Home from "./(pages)/(home)/page";
 import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
-export default function Index() {
+export default function AuthLayout({ children }) {
 	return (
 		<>
-			<NavBar />
-			<Home />
-			<Footer />
+			<main className="min-h-screen">{children}</main>
 		</>
 	);
 }

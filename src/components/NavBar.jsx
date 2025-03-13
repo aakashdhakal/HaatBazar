@@ -95,21 +95,19 @@ export function NavBar() {
 					</Link>
 				</div>
 
-				{/* Search Bar - Updated with brand colors */}
-				<div className="hidden md:flex flex-1 max-w-md mx-8">
-					<div className="relative w-full flex border border-gray-200 rounded-full focus-within:border-primary overflow-hidden">
-						<Input
-							type="text"
-							placeholder="Search fresh vegetables, fruits..."
-							className="w-full py-2 pl-4 pr-10 text-sm border-none outline-none rounded-full focus:outline-none focus:border-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-						/>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-gray-400 hover:text-primary hover:bg-transparent">
-							<Icon icon="mdi:magnify" className="h-5 w-5" />
-						</Button>
-					</div>
+				{/* Search Bar - Redesigned */}
+				<div className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-gray-300 overflow-hidden">
+					<Input
+						type="text"
+						placeholder="Search products..."
+						className="w-full py-2 bg-gray-50 border-none outline-none ring-0 rounded-md text-sm 
+											focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none transition-colors"
+					/>
+					<Button
+						variant="ghost"
+						className="h-7 w-7bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors rounded-none">
+						<Icon icon="mdi:magnify" className="h-4 w-4" />
+					</Button>
 				</div>
 
 				{/* Action Buttons - Updated with brand colors */}
@@ -160,6 +158,17 @@ export function NavBar() {
 							trigger={<UserAvatar src={session.user.profilePic} />}
 							label={session.user.name}
 							items={[
+								...(session.user.role === "admin"
+									? [
+											<Link
+												key="admin"
+												href="/dashboard"
+												className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:text-primary">
+												<Icon icon="mdi:shield-account" className="h-4 w-4" />
+												<span>Dashboard</span>
+											</Link>,
+									  ]
+									: []),
 								<Link
 									key="profile"
 									href="/profile"
@@ -181,6 +190,7 @@ export function NavBar() {
 									<Icon icon="mdi:cog" className="h-4 w-4" />
 									<span>Settings</span>
 								</Link>,
+
 								<AlertDialogComponent
 									varient="ghost"
 									key="logout"

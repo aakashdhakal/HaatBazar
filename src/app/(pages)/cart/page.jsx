@@ -38,20 +38,17 @@ const decodeData = (data) => {
 export default function Cart() {
 	const router = useRouter();
 	const parameters = useSearchParams();
-	const data = parameters.get("data");
-	const khaltiStatus = parameters.get("status");
+	const encodedData = parameters.get("data");
+	const khaltiData = parameters.getAll("khalti");
 
 	useEffect(() => {
-		if (data) {
-			const payment = decodeData(data);
+		if (encodedData) {
+			const payment = decodeData(encodedData);
 			if (payment.status === "COMPLETE") {
 				// Handle successful payment
 			}
 		}
-		if (khaltiStatus === "Completed") {
-			// Handle successful Khalti payment
-		}
-	}, [data, khaltiStatus]);
+	}, [encodedData]);
 
 	const { cartItems, setCartItems } = useCart({});
 	const [totalPrice, setTotalPrice] = useState(0);
@@ -145,7 +142,7 @@ export default function Cart() {
 						product_code: "EPAYTEST",
 						signature: signature,
 						signed_field_names: "total_amount,transaction_uuid,product_code",
-						success_url: "http://localhost:3000/cart",
+						success_url: "http://localhost:3000/orders",
 						tax_amount: 0,
 						total_amount: totalAmount,
 						transaction_uuid: transactionUuid,
@@ -205,16 +202,16 @@ export default function Cart() {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 py-8">
+		<div className="max-w-7xl mx-auto px-4 py-8 ">
 			<h1 className="text-2xl font-bold mb-6 text-gray-900">Shopping Cart</h1>
 
 			<div className="flex flex-col lg:flex-row gap-8">
 				{/* Cart Items Section */}
 				<div className="w-full lg:w-2/3">
 					<div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-						<div className="bg-gray-50 p-4 border-b border-gray-100">
+						<div className="bg-primary bg-opacity-5 p-4 border-b border-gray-100">
 							<div className="grid grid-cols-12 gap-2 text-sm font-medium text-gray-500">
-								<div className="col-span-6 md:col-span-6">Product</div>
+								<div className="col-span-4 md:col-span-4">Product</div>
 								<div className="col-span-2 text-center hidden md:block">
 									Price
 								</div>
@@ -222,6 +219,9 @@ export default function Cart() {
 									Quantity
 								</div>
 								<div className="col-span-3 md:col-span-2 text-right">Total</div>
+								<div className="col-span-3 md:col-span-2 text-right">
+									Action
+								</div>
 							</div>
 						</div>
 
@@ -264,7 +264,7 @@ export default function Cart() {
 						<div className="space-y-4 mb-6">
 							<div className="flex justify-between text-sm">
 								<span className="text-gray-600">Subtotal</span>
-								<span className="font-medium">Rs {totalPrice.toFixed(2)}</span>
+								<span className="font-medium">Rs {totalPrice}</span>
 							</div>
 
 							<div className="flex justify-between text-sm">
@@ -273,7 +273,7 @@ export default function Cart() {
 									{shippingFee === 0 ? (
 										<span className="text-primary">FREE</span>
 									) : (
-										`Rs ${shippingFee.toFixed(2)}`
+										`Rs ${shippingFee}`
 									)}
 								</span>
 							</div>
@@ -283,7 +283,7 @@ export default function Cart() {
 							<div className="flex justify-between">
 								<span className="font-medium text-gray-900">Total</span>
 								<span className="font-bold text-lg text-gray-900">
-									Rs {(totalPrice + shippingFee).toFixed(2)}
+									Rs {totalPrice + shippingFee}
 								</span>
 							</div>
 						</div>

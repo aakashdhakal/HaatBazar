@@ -22,3 +22,25 @@ export async function createOrder(order) {
 	}
 	// Return the newly created order
 }
+
+export async function getOrders() {
+	await dbConnect();
+	const session = await auth();
+	const orders = await Order.find({ user: session.user.id });
+
+	// Return the array of objects
+	console.log(orders);
+	return orders;
+}
+
+export async function getAllOrders() {
+	await dbConnect();
+	const orders = await Order.find({});
+	return orders;
+}
+
+export async function getOrderById(id) {
+	await dbConnect();
+	const order = await Order.findById(id);
+	return order;
+}

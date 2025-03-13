@@ -21,7 +21,6 @@ export default async function getAllProducts() {
 }
 
 export async function getProductById(id) {
-	console.log("getProductById", id);
 	await dbConnect();
 	try {
 		const product = await Product.findById(id);
@@ -35,6 +34,41 @@ export async function getProductById(id) {
 	} catch (error) {
 		console.error("Error fetching product:", error);
 		return new Response(JSON.stringify({ error: "Failed to fetch product" }), {
+			status: 500,
+		});
+	}
+}
+
+export async function createProduct(data) {
+	await dbConnect();
+	try {
+		const product = await Product.create(data);
+		return {
+			...product.toObject(),
+			_id: product._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error creating product:", error);
+		return new Response(JSON.stringify({ error: "Failed to create product" }), {
+			status: 500,
+		});
+	}
+}
+
+export async function updateProduct(id, data) {
+	await dbConnect();
+	try {
+		const product = await Product.findByIdAndUpdate(id, data, { new: true });
+		if (!product) {
+			return { error: "Product not found", status: 404 };
+		}
+		return {
+			...product.toObject(),
+			_id: product._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error updating product:", error);
+		return new Response(JSON.stringify({ error: "Failed to update product" }), {
 			status: 500,
 		});
 	}

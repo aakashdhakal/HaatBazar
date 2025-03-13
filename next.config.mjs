@@ -6,7 +6,10 @@ const nextConfig = {
                 hostname: "png.pngtree.com",
             },
             {
-                hostname: "lh3.googleusercontent.com",
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+                port: '',
+                pathname: '/**',
             },
             {
                 hostname: "avatars.githubusercontent.com",

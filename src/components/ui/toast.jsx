@@ -12,7 +12,7 @@ const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
 	<ToastPrimitives.Viewport
 		ref={ref}
 		className={cn(
-			"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+			"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] gap-4 sm:gap-2",
 			className,
 		)}
 		{...props}
@@ -25,14 +25,14 @@ const toastVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: "border bg-background text-foreground",
+				default: "bg-white border-gray-200 text-foreground shadow-md",
 				success:
-					"border-primary/20 bg-primary/10 text-primary-dark group-[.dark]:border-primary/30 group-[.dark]:bg-primary/20",
+					"bg-primary/90 border-primary/30 text-white font-medium shadow-md dark:bg-primary/80",
 				error:
-					"border-destructive/20 bg-destructive/10 text-destructive group-[.dark]:border-destructive/30 group-[.dark]:bg-destructive/20",
+					"bg-destructive/90 border-destructive/30 text-white font-medium shadow-md dark:bg-destructive/80",
 				warning:
-					"border-secondary/20 bg-secondary/10 text-secondary-dark group-[.dark]:border-secondary/30 group-[.dark]:bg-secondary/20",
-				info: "border-blue-500/20 bg-blue-500/10 text-blue-700 group-[.dark]:border-blue-500/30 group-[.dark]:bg-blue-500/20",
+					"bg-secondary/90 border-secondary/30 text-white font-medium shadow-md dark:bg-secondary/80",
+				info: "bg-blue-500/90 border-blue-500/30 text-white font-medium shadow-md dark:bg-blue-500/80",
 			},
 		},
 		defaultVariants: {
@@ -56,7 +56,7 @@ const ToastAction = React.forwardRef(({ className, ...props }, ref) => (
 	<ToastPrimitives.Action
 		ref={ref}
 		className={cn(
-			"inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.variant-default]:border-muted-foreground/20 group-[.variant-default]:hover:bg-muted group-[.variant-default]:hover:text-foreground group-[.variant-default]:focus:ring-primary group-[.variant-success]:border-primary/30 group-[.variant-success]:hover:border-primary/30 group-[.variant-success]:hover:bg-primary group-[.variant-success]:hover:text-primary-foreground group-[.variant-success]:focus:ring-primary group-[.variant-error]:border-destructive/30 group-[.variant-error]:hover:border-destructive/30 group-[.variant-error]:hover:bg-destructive group-[.variant-error]:hover:text-destructive-foreground group-[.variant-error]:focus:ring-destructive",
+			"inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.variant-default]:border-gray-200 group-[.variant-default]:hover:bg-gray-100 group-[.variant-default]:hover:text-foreground group-[.variant-default]:focus:ring-primary group-[.variant-success]:bg-white/20 group-[.variant-success]:text-white group-[.variant-success]:hover:bg-white group-[.variant-success]:hover:text-primary group-[.variant-success]:focus:ring-white group-[.variant-error]:bg-white/20 group-[.variant-error]:text-white group-[.variant-error]:hover:bg-white group-[.variant-error]:hover:text-destructive group-[.variant-error]:focus:ring-white",
 			className,
 		)}
 		{...props}
@@ -68,7 +68,7 @@ const ToastClose = React.forwardRef(({ className, ...props }, ref) => (
 	<ToastPrimitives.Close
 		ref={ref}
 		className={cn(
-			"absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.variant-success]:text-primary/80 group-[.variant-success]:hover:text-primary group-[.variant-error]:text-destructive/80 group-[.variant-error]:hover:text-destructive group-[.variant-warning]:text-secondary/80 group-[.variant-warning]:hover:text-secondary",
+			"absolute right-1 top-1 rounded-md p-1 opacity-70 transition-opacity hover:opacity-100 focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.variant-success]:text-white group-[.variant-error]:text-white group-[.variant-warning]:text-white group-[.variant-info]:text-white",
 			className,
 		)}
 		toast-close=""
@@ -81,7 +81,7 @@ ToastClose.displayName = ToastPrimitives.Close.displayName;
 const ToastTitle = React.forwardRef(({ className, ...props }, ref) => (
 	<ToastPrimitives.Title
 		ref={ref}
-		className={cn("text-sm font-semibold [&+div]:text-xs", className)}
+		className={cn("text-sm font-bold", className)}
 		{...props}
 	/>
 ));
@@ -103,20 +103,17 @@ const ToastIcon = ({ variant }) => {
 	switch (variant) {
 		case "success":
 			return (
-				<Icon icon="mdi:check-circle" className="text-primary h-5 w-5 mr-2" />
+				<Icon icon="mdi:check-circle" className="text-white h-5 w-5 mr-2" />
 			);
 		case "error":
 			return (
-				<Icon
-					icon="mdi:alert-circle"
-					className="text-destructive h-5 w-5 mr-2"
-				/>
+				<Icon icon="mdi:alert-circle" className="text-white h-5 w-5 mr-2" />
 			);
 		case "warning":
-			return <Icon icon="mdi:alert" className="text-secondary h-5 w-5 mr-2" />;
+			return <Icon icon="mdi:alert" className="text-white h-5 w-5 mr-2" />;
 		case "info":
 			return (
-				<Icon icon="mdi:information" className="text-blue-500 h-5 w-5 mr-2" />
+				<Icon icon="mdi:information" className="text-white h-5 w-5 mr-2" />
 			);
 		default:
 			return null;

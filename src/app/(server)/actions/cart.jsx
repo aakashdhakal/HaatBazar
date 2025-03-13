@@ -88,7 +88,7 @@ export async function getNoOfCartItems() {
 	}
 }
 
-export async function updateQuantity(product) {
+export async function updateQuantity({ productId, quantity }) {
 	let session = await auth();
 	if (session === null) return false;
 
@@ -102,15 +102,14 @@ export async function updateQuantity(product) {
 	} else {
 		// Find the product in the cart
 		const item = cart.products.find(
-			(item) => item.productId.toString() === product._id.toString(),
+			(item) => item.productId.toString() === productId.toString(),
 		);
 		if (!item) {
 			// If product is not in the cart, return false
-			console.log("Product not found in cart");
 			return false;
 		} else {
 			// Update the quantity of the product
-			item.quantity = product.quantity;
+			item.quantity = quantity;
 			await cart.save();
 			return true;
 		}
