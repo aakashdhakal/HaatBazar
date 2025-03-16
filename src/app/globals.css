@@ -79,9 +79,7 @@
 		--sidebar-border: 240 3.7% 15.9%;
 		--sidebar-ring: 217.2 91.2% 59.8%;
 	}
-}
 
-@layer base {
 	* {
 		@apply border-border;
 	}
@@ -104,11 +102,28 @@
 		width: auto;
 		height: auto;
 	}
-}
 
+	/* General purpose font classes */
+	.font-primary {
+		font-family: var(--font-primary);
+	}
 
+	.font-secondary {
+		font-family: var(--font-secondary);
+	}
 
-@layer base {
+	.font-serif {
+		font-family: var(--font-serif);
+	}
+
+	.font-heading {
+		font-family: var(--font-heading);
+	}
+
+	.font-dashboard {
+		font-family: var(--font-dashboard);
+	}
+
 	* {
 		@apply border-border outline-ring/50;
 	}
@@ -131,26 +146,7 @@
 	border-radius: 10px;
 }
 
-/* General purpose font classes */
-.font-primary {
-	font-family: var(--font-primary);
-}
 
-.font-secondary {
-	font-family: var(--font-secondary);
-}
-
-.font-serif {
-	font-family: var(--font-serif);
-}
-
-.font-heading {
-	font-family: var(--font-heading);
-}
-
-.font-dashboard {
-	font-family: var(--font-dashboard);
-}
 
 h1,
 h2,
@@ -159,4 +155,9 @@ h4,
 h5,
 h6 {
 	font-family: var(--font-heading);
+}
+
+p,
+span {
+	font-family: var(--font-secondary);
 }

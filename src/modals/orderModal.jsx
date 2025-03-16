@@ -7,6 +7,21 @@ const orderSchema = new mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		paymentInfo: {
+			transactionUuid: {
+				type: String,
+				required: true,
+			},
+			method: {
+				type: String,
+				required: true,
+			},
+			status: {
+				type: String,
+				enum: ["pending", "paid", "refunded"],
+				default: "pending",
+			},
+		},
 		products: [
 			{
 				product: {
@@ -38,8 +53,8 @@ const orderSchema = new mongoose.Schema(
 		},
 		status: {
 			type: String,
-			enum: ["pending", "completed", "cancelled"],
-			default: "pending",
+			enum: ["processing", "delivered", "cancelled", "returned", "shipped"],
+			default: "processing",
 		},
 	},
 	{

@@ -8,48 +8,19 @@ import { useCart } from "@/context/CartContext";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createOrder } from "@/app/(server)/actions/order";
 import { initiateKhaltiPayment } from "@/app/(server)/actions/payment";
 import { fetchUserAddress } from "@/app/(server)/actions/users";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { HmacSHA256 } from "crypto-js";
-import Base64 from "crypto-js/enc-base64";
-
-const hash = (message) => {
-	const secretKey = process.env.NEXT_PUBLIC_ESEWA_SECRET_KEY;
-	return Base64.stringify(HmacSHA256(message, secretKey));
-};
-
-const decodeData = (data) => {
-	const decoded = JSON.parse(atob(data));
-	return decoded;
-};
+import { hashData } from "@/lib/utils";
+import SelectComponent from "@/components/Select";
+import { clearCart } from "@/app/(server)/actions/cart";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Cart() {
 	const router = useRouter();
-	const parameters = useSearchParams();
-	const encodedData = parameters.get("data");
-	const khaltiData = parameters.getAll("khalti");
-
-	useEffect(() => {
-		if (encodedData) {
-			const payment = decodeData(encodedData);
-			if (payment.status === "COMPLETE") {
-				// Handle successful payment
-			}
-		}
-	}, [encodedData]);
-
 	const { cartItems, setCartItems } = useCart({});
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [paymentMethod, setPaymentMethod] = useState("esewa");
@@ -62,6 +33,7 @@ export default function Cart() {
 	const [shippingAddress, setShippingAddress] = useState("");
 	const [billingAddress, setBillingAddress] = useState("");
 	const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+	const { success } = useToast();
 
 	useEffect(() => {
 		const fetchCartItems = async () => {
@@ -104,7 +76,6 @@ export default function Cart() {
 			setIsAddressModalOpen(true);
 			return;
 		}
-
 		setLoading(true);
 		const transactionUuid = Math.floor(Math.random() * 1000000);
 		const totalAmount = totalPrice + shippingFee;
@@ -112,13 +83,17 @@ export default function Cart() {
 		try {
 			const orderResponse = await createOrder({
 				products: cartItems.map((item) => ({
-					productId: item._id,
+					product: item._id,
 					quantity: item.quantity,
 					price: item.price,
 				})),
 				billingAddress,
 				shippingAddress,
 				totalAmount,
+				paymentInfo: {
+					transactionUuid,
+					method: paymentMethod,
+				},
 			});
 
 			if (!orderResponse) {
@@ -128,7 +103,7 @@ export default function Cart() {
 			// Process payment based on selected method
 			switch (paymentMethod) {
 				case "esewa":
-					const signature = hash(
+					const signature = hashData(
 						`total_amount=${totalAmount},transaction_uuid=${transactionUuid},product_code=EPAYTEST`,
 					);
 					const form = document.createElement("form");
@@ -178,6 +153,14 @@ export default function Cart() {
 		}
 	};
 
+	const handleClearCart = async () => {
+		await clearCart();
+		setCartItems([]);
+		success({
+			title: "Cart cleared",
+			description: "Your cart has been cleared successfully",
+		});
+	};
 	// If cart is empty
 	if (!cartItems.length) {
 		return (
@@ -245,12 +228,18 @@ export default function Cart() {
 								Continue Shopping
 							</Button>
 						</Link>
-
 						{totalPrice < 500 && (
-							<div className="text-sm text-secondary">
+							<div className="text-sm text-secondary text-center">
 								Add Rs {500 - totalPrice} more for free shipping
 							</div>
 						)}
+						<Button
+							variant="destructive"
+							className="flex items-center gap-2 text-sm"
+							onClick={() => handleClearCart()}>
+							<Icon icon="mdi:delete" className="w-4 h-4" />
+							Clear Cart
+						</Button>
 					</div>
 				</div>
 
@@ -432,42 +421,26 @@ export default function Cart() {
 
 							<div className="mb-4">
 								<Label className="mb-1 block">Shipping Address</Label>
-								<Select
-									value={shippingAddress}
-									onValueChange={setShippingAddress}>
-									<SelectTrigger className="w-full">
-										<SelectValue placeholder="Select shipping address" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-											{address.shippingAddress.map((addr, index) => (
-												<SelectItem key={index} value={addr}>
-													{addr}
-												</SelectItem>
-											))}
-										</SelectGroup>
-									</SelectContent>
-								</Select>
+								<SelectComponent
+									options={address.shippingAddress.map((addr) => ({
+										label: addr,
+										value: addr,
+									}))}
+									defaultValue={shippingAddress}
+									onValueChange={setShippingAddress}
+								/>
 							</div>
 
 							<div className="mb-6">
 								<Label className="mb-1 block">Billing Address</Label>
-								<Select
-									value={billingAddress}
-									onValueChange={setBillingAddress}>
-									<SelectTrigger className="w-full">
-										<SelectValue placeholder="Select billing address" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-											{address.billingAddress.map((addr, index) => (
-												<SelectItem key={index} value={addr}>
-													{addr}
-												</SelectItem>
-											))}
-										</SelectGroup>
-									</SelectContent>
-								</Select>
+								<SelectComponent
+									options={address.billingAddress.map((addr) => ({
+										label: addr,
+										value: addr,
+									}))}
+									defaultValue={billingAddress}
+									onValueChange={setBillingAddress}
+								/>
 							</div>
 
 							<div className="flex justify-end gap-3">

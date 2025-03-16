@@ -30,7 +30,7 @@ export default function NotFound() {
 			{/* Support contact */}
 			<div className="text-center">
 				<p className="text-sm text-gray-500">
-					Need help?{" "}
+					Need help?
 					<Link href="/contact" className="text-primary hover:underline">
 						Contact our support team
 					</Link>

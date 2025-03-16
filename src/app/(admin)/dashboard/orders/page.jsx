@@ -693,7 +693,7 @@ export default function Orders() {
 						Previous
 					</Button>
 					<span className="flex items-center gap-1 text-sm">
-						<strong>{currentPage + 1}</strong> of{" "}
+						<strong>{currentPage + 1}</strong> of
 						<strong>{pageCount || 1}</strong>
 					</span>
 					<Button

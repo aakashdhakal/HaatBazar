@@ -1,6 +1,6 @@
 "use server";
 import Cart from "@/modals/cartModal";
-import Product from "@/modals/productModal";
+import Order from "@/modals/orderModal";
 import { auth } from "@/app/auth";
 import { getProductById } from "./products";
 import { revalidatePath } from "next/cache";
@@ -137,4 +137,22 @@ export async function removeFromCart({ productId }) {
 	await cart.save();
 	let noOfItems = await getNoOfCartItems();
 	return { status: "success", message: "Removed from cart", noOfItems };
+}
+
+export async function clearCart() {
+	try {
+		let session = await auth();
+		if (session === null) return false;
+
+		const userId = session.user.id;
+
+		// Find the user's cart
+		let cart = await Cart.deleteOne({ userId: userId });
+		if (!cart) return false;
+
+		return true;
+	} catch (error) {
+		console.error("Error clearing cart:", error);
+		return false;
+	}
 }

@@ -324,7 +324,7 @@ export default function Login() {
 
 								<div className="text-center pt-4">
 									<p className="text-sm text-gray-600">
-										Don&apos;t have an account?{" "}
+										Don&apos;t have an account?
 										<Link
 											href="/signup"
 											className="font-medium text-secondary hover:text-secondary-dark transition-colors hover:underline underline-offset-2">
@@ -335,13 +335,13 @@ export default function Login() {
 							</Form>
 
 							<p className="text-xs text-gray-500 text-center mt-8">
-								By signing in, you agree to our{" "}
+								By signing in, you agree to our
 								<Link
 									href="/terms"
 									className="underline underline-offset-2 hover:text-gray-700">
 									Terms of Service
-								</Link>{" "}
-								and{" "}
+								</Link>
+								and
 								<Link
 									href="/privacy"
 									className="underline underline-offset-2 hover:text-gray-700">
