@@ -1,6 +1,6 @@
 "use server";
 import { dbConnect } from "@/lib/db";
-import { getOrders } from "@/app/server/actions/order";
+import { getOrders } from "@/app/actions/order";
 
 export async function POST(req) {
 	await dbConnect();

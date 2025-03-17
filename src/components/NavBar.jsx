@@ -14,8 +14,8 @@ import UserAvatar from "./UserAvatar";
 import DropDown from "./DropDown";
 
 // Actions and Context
-import { getCart } from "@/app/server/actions/cart";
-import { getNoOfWishListItems } from "@/app/server/actions/wishList";
+import { getCart } from "@/app/actions/cart";
+import { getNoOfWishListItems } from "@/app/actions/wishList";
 import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
 

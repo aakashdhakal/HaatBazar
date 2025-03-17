@@ -7,7 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 import { WishListProvider } from "@/context/WishListContext";
 import { inter, poppins, lora, montserrat, workSans } from "@/components/Fonts";
 import { NavBar } from "@/components/NavBar";
-import { Footer } from "@/components/Footer";
+import Footer from "@/components/Footer";
 
 export const metadata = {
 	title: "HaatBazar - Fresh Groceries Delivered to Your Doorstep",

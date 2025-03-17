@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { getOrders } from "@/app/server/actions/order";
+import { getOrders } from "@/app/actions/order";
 import OrderDetail from "@/components/OrderDetail";
 import SelectComponent from "@/components/Select";
 import { decodeData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { updatePaymentStatus } from "@/app/server/actions/order";
-import { clearCart } from "@/app/server/actions/cart";
+import { updatePaymentStatus } from "@/app/actions/order";
+import { clearCart } from "@/app/actions/cart";
 
 /**
  * OrdersPage Component - Renders a page displaying a user's order history

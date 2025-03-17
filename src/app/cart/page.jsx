@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import CartProduct from "@/components/CartProduct";
-import { getCart } from "@/app/server/actions/cart";
+import { getCart } from "@/app/actions/cart";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
@@ -9,14 +9,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { createOrder } from "@/app/server/actions/order";
-import { initiateKhaltiPayment } from "@/app/server/actions/payment";
-import { fetchUserAddress } from "@/app/server/actions/users";
+import { createOrder } from "@/app/actions/order";
+import { initiateKhaltiPayment } from "@/app/actions/payment";
+import { fetchUserAddress } from "@/app/actions/users";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { hashData } from "@/lib/utils";
 import SelectComponent from "@/components/Select";
-import { clearCart } from "@/app/server/actions/cart";
+import { clearCart } from "@/app/actions/cart";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Cart() {

@@ -1,4 +1,4 @@
-import { addToCart } from "@/app/server/actions/cart";
+import { addToCart } from "@/app/actions/cart";
 import { dbConnect } from "@/lib/db";
 
 export async function POST(req, res) {
