@@ -6,6 +6,8 @@ import ReactQueryProvider from "@/components/ReactQueryProvider";
 import { CartProvider } from "@/context/CartContext";
 import { WishListProvider } from "@/context/WishListContext";
 import { inter, poppins, lora, montserrat, workSans } from "@/components/Fonts";
+import { NavBar } from "@/components/NavBar";
+import { Footer } from "@/components/Footer";
 
 export const metadata = {
 	title: "HaatBazar - Fresh Groceries Delivered to Your Doorstep",
@@ -21,7 +23,9 @@ export default function RootLayout({ children }) {
 						className={`${inter.variable} ${poppins.variable} ${lora.variable} ${montserrat.variable} ${workSans.variable}`}>
 						<CartProvider>
 							<WishListProvider>
+								<NavBar />
 								{children}
+								<Footer />
 								<Toaster />
 							</WishListProvider>
 						</CartProvider>

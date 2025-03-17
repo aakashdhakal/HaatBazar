@@ -5,7 +5,7 @@ import {
 	updateQuantity,
 	removeFromCart,
 	getCart,
-} from "@/app/(server)/actions/cart";
+} from "@/app/server/actions/cart";
 import { useCart } from "@/context/CartContext";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/hooks/use-toast";
