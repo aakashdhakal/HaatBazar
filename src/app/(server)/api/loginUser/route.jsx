@@ -1,6 +1,6 @@
 "use server";
 import { dbConnect } from "@/lib/db";
-import User from "@/app/models/User";
+import User from "@/modals/userModal";
 import { getSession } from "next-auth/client";
 
 export default async function handler(req, res) {
