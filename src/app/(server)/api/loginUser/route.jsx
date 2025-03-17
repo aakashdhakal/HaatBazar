@@ -1,7 +1,7 @@
 "use server";
 import { dbConnect } from "@/lib/db";
 import User from "@/modals/userModal";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
 	await dbConnect();
