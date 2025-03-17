@@ -1,24 +1,74 @@
 /** @type {import('tailwindcss').Config} */
-export const content = [
-    './src/**/*.{js,jsx,ts,tsx}', // Adjust the path according to your project structure
-];
-export const theme = {
-    extend: {
-        colors: {
-            primary: '#1DA1F2',
-            secondary: '#14171A',
-            accent: '#657786',
-            background: '#F5F8FA',
-            surface: '#FFFFFF',
-            error: '#E0245E',
-            info: '#17BF63',
-            success: '#3AA76D',
-            warning: '#FFAD1F',
-        },
-        fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Merriweather', 'serif'],
+module.exports = {
+    darkMode: ["class"],
+    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    theme: {
+        extend: {
+            colors: {
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
+                },
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
+                sidebar: {
+                    DEFAULT: "hsl(var(--sidebar-background))",
+                    foreground: "hsl(var(--sidebar-foreground))",
+                    primary: "hsl(var(--sidebar-primary))",
+                    "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+                    accent: "hsl(var(--sidebar-accent))",
+                    "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+                    border: "hsl(var(--sidebar-border))",
+                    ring: "hsl(var(--sidebar-ring))",
+                },
+                chart: {
+                    1: "hsl(var(--chart-1))",
+                    2: "hsl(var(--chart-2))",
+                    3: "hsl(var(--chart-3))",
+                    4: "hsl(var(--chart-4))",
+                    5: "hsl(var(--chart-5))",
+                },
+            },
+            borderRadius: {
+                lg: "var(--radius)",
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
+            },
+            fontFamily: {
+                primary: "var(--font-primary)",
+                secondary: "var(--font-secondary)",
+                serif: "var(--font-serif)",
+                heading: "var(--font-heading)",
+                dashboard: "var(--font-dashboard)",
+            },
         },
     },
+    plugins: [],
 };
-export const plugins = [];

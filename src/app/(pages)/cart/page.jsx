@@ -192,7 +192,7 @@ export default function Cart() {
 				{/* Cart Items Section */}
 				<div className="w-full lg:w-2/3">
 					<div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-						<div className="bg-primary bg-opacity-5 p-4 border-b border-gray-100">
+						<div className="bg-primary/10 p-4 border-b border-gray-100">
 							<div className="grid grid-cols-12 gap-2 text-sm font-medium text-gray-500">
 								<div className="col-span-4 md:col-span-4">Product</div>
 								<div className="col-span-2 text-center hidden md:block">

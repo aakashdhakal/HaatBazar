@@ -19,6 +19,8 @@ import {
 	AlertTriangleIcon,
 } from "lucide-react";
 
+import UserAvatar from "@/components/UserAvatar";
+
 import InfoCard from "@/components/dashboard/InfoCard";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
@@ -212,14 +214,8 @@ export default async function Dashboard() {
 											key={order.id}
 											className="flex items-center justify-between">
 											<div className="flex items-center gap-3">
-												<Avatar className="h-9 w-9">
-													<AvatarFallback className="bg-primary/10 text-primary">
-														{order.customer
-															.split(" ")
-															.map((n) => n[0])
-															.join("")}
-													</AvatarFallback>
-												</Avatar>
+												<UserAvatar src={order.customer.avatar} size={8} />
+
 												<div>
 													<p className="text-sm font-medium">
 														{order.customer}

@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -167,7 +166,7 @@ export default function DashboardNavbar({ toggleSidebar, collapsed }) {
 						<Button
 							variant="ghost"
 							size="sm"
-							className="relative h-8 overflow-hidden rounded-full">
+							className="relative h-8 overflow-hidden rounded-full ">
 							<UserAvatar src={session.user.profilePic} />
 						</Button>
 					</DropdownMenuTrigger>
