@@ -107,7 +107,7 @@ const authConfig = {
         },
     },
     pages: {
-        signIn: "/login",
+        signIn: "/auth/auth/auth/auth/auth/auth/auth/auth/auth/login",
         signUp: "/signup",
     },
 };
