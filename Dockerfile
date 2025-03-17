@@ -13,6 +13,9 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the application code
 COPY . .
 
+# Remove the .next folder to ensure that the app is built from scratch
+RUN rm -rf .next
+
 # Build the Next.js app
 RUN npm run build
 
