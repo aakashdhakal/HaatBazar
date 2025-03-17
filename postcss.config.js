@@ -1,7 +1,4 @@
-// filepath: d:\TODO-app\ecommerce\postcss.config.js
-module.exports = {
-  plugins: {
+export const plugins = {
     '@tailwindcss/postcss': {},
     autoprefixer: {},
-  },
-}
+};

@@ -81,11 +81,14 @@
 	}
 
 	* {
-		@apply border-border;
+		border: 1px solid var(--border);
 	}
 
 	body {
-		@apply bg-background text-foreground;
+		background-color: rgb(var(--background));
+		/* Apply background color using the variable */
+		color: rgb(var(--foreground));
+		/* apply foreground color using the variable */
 		font-family: var(--font-primary);
 	}
 
@@ -125,11 +128,17 @@
 	}
 
 	* {
-		@apply border-border outline-ring/50;
+		border: 1px solid var(--border);
+		/* Apply border using the variable */
+		outline: 2px solid rgba(var(--ring), 0.5);
 	}
 
 	body {
-		@apply bg-background text-foreground;
+		background-color: rgb(var(--background));
+		/* Apply background color using the variable */
+		color: rgb(var(--foreground));
+		/* apply foreground color using the variable */
+		font-family: var(--font-primary);
 	}
 }
 

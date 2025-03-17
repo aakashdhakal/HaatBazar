@@ -1,66 +1,24 @@
 /** @type {import('tailwindcss').Config} */
-export const darkMode = ["class"];
 export const content = [
-	"./app/**/*.{js,ts,jsx,tsx,mdx}",
-	"./pages/**/*.{js,ts,jsx,tsx,mdx}",
-	"@/components/**/*.{js,ts,jsx,tsx,mdx}",
-
-	// Or if using `src` directory:
-	"./src/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,jsx,ts,tsx}', // Adjust the path according to your project structure
 ];
 export const theme = {
-	extend: {
-		borderRadius: {
-			lg: 'var(--radius)',
-			md: 'calc(var(--radius) - 2px)',
-			sm: 'calc(var(--radius) - 4px)'
-		},
-		colors: {
-			background: 'hsl(var(--background))',
-			foreground: 'hsl(var(--foreground))',
-			card: {
-				DEFAULT: 'hsl(var(--card))',
-				foreground: 'hsl(var(--card-foreground))'
-			},
-			popover: {
-				DEFAULT: 'hsl(var(--popover))',
-				foreground: 'hsl(var(--popover-foreground))'
-			},
-			primary: {
-				DEFAULT: '#195a24',
-				light: '#2a7735', // lighter shade
-				dark: '#124419', // darker shade
-				foreground: 'hsl(var(--primary-foreground))'
-			},
-			secondary: {
-				DEFAULT: '#ee6d0c',
-				light: '#f5863a', // lighter shade
-				dark: '#d5600a', // darker shade
-				foreground: 'hsl(var(--secondary-foreground))'
-			},
-			muted: {
-				DEFAULT: 'hsl(var(--muted))',
-				foreground: 'hsl(var(--muted-foreground))'
-			},
-			accent: {
-				DEFAULT: 'hsl(var(--accent))',
-				foreground: 'hsl(var(--accent-foreground))'
-			},
-			destructive: {
-				DEFAULT: 'hsl(var(--destructive))',
-				foreground: 'hsl(var(--destructive-foreground))'
-			},
-			border: 'hsl(var(--border))',
-			input: 'hsl(var(--input))',
-			ring: 'hsl(var(--ring))',
-			chart: {
-				'1': 'hsl(var(--chart-1))',
-				'2': 'hsl(var(--chart-2))',
-				'3': 'hsl(var(--chart-3))',
-				'4': 'hsl(var(--chart-4))',
-				'5': 'hsl(var(--chart-5))'
-			}
-		}
-	}
+    extend: {
+        colors: {
+            primary: '#1DA1F2',
+            secondary: '#14171A',
+            accent: '#657786',
+            background: '#F5F8FA',
+            surface: '#FFFFFF',
+            error: '#E0245E',
+            info: '#17BF63',
+            success: '#3AA76D',
+            warning: '#FFAD1F',
+        },
+        fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Merriweather', 'serif'],
+        },
+    },
 };
-export const plugins = [require("tailwindcss-animate")];
+export const plugins = [];
