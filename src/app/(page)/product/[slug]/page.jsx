@@ -610,7 +610,7 @@ const ProductPage = ({ params }) => {
 							className="border border-gray-100 rounded-lg shadow-sm hover:shadow-md transition-all bg-white group">
 							<div className="relative aspect-square bg-gray-50">
 								<Image
-									src={`/assets/products/product-${i}.jpg`}
+									src={"/public/sel.jpg"}
 									alt={`Related Product ${i}`}
 									fill
 									sizes="(max-width: 768px) 100vw, 25vw"
