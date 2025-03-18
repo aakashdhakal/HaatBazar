@@ -1,6 +1,6 @@
 import ProductCard from "@/components/ProductCard";
 import { auth } from "@/app/auth";
-import getAllProducts from "@/app/actions/products";
+import getAllProducts from "@/app/(server)/actions/products";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";

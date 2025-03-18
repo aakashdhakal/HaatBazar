@@ -1,10 +1,12 @@
 import { NavBar } from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
-export default function AuthLayout({ children }) {
+export default function PageLayout({ children }) {
 	return (
 		<>
-			<main className="min-h-screen">{children}</main>
+			<NavBar />
+			<main>{children}</main>
+			<Footer />
 		</>
 	);
 }

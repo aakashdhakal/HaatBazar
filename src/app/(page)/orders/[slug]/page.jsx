@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
-import { getOrderById } from "@/app/actions/order";
+import { getOrderById } from "@/app/(server)/actions/order";
 import StatusBadge from "@/components/StatusBadge";
 import { formatDate } from "@/lib/utils";
 

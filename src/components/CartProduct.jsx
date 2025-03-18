@@ -1,7 +1,11 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { updateQuantity, removeFromCart, getCart } from "@/app/actions/cart";
+import {
+	updateQuantity,
+	removeFromCart,
+	getCart,
+} from "@/app/(server)/actions/cart";
 import { useCart } from "@/context/CartContext";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/hooks/use-toast";
