@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@/app/auth";
 import User from "@/modals/userModal";
-import { dbConnect } from "@/lib/db";
+import dbConnect from "@/lib/db";
 
 export async function fetchUserAddress() {
 	await dbConnect();

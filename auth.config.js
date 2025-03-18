@@ -2,7 +2,7 @@ import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import User from "@/modals/userModal";
 import bcrypt from "bcryptjs";
-import { dbConnect } from "@/lib/db";
+import dbConnect from "@/lib/db";
 import { CredentialsSignin } from "next-auth";
 
 async function checkEmailExists(email) {

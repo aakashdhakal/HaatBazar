@@ -1,6 +1,6 @@
 "use server";
 import Order from "@/modals/orderModal";
-import { dbConnect } from "@/lib/db";
+import dbConnect from "@/lib/db";
 import { auth } from "@/app/auth";
 
 // Function to create a new order

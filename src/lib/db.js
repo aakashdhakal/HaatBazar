@@ -18,13 +18,9 @@ async function dbConnect() {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose
-            .connect(MONGODB_URI, {
-                bufferCommands: false,  // ✅ Fix buffering error
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            })
-            .then((mongoose) => mongoose);
+        cached.promise = mongoose.connect(MONGODB_URI, {
+            bufferCommands: false,  // ✅ Fixes buffering issue
+        }).then((mongoose) => mongoose);
     }
 
     cached.conn = await cached.promise;

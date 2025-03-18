@@ -1,5 +1,5 @@
 import { addToCart } from "@/app/(server)/actions/cart";
-import { dbConnect } from "@/lib/db";
+import dbConnect from "@/lib/db";
 
 export async function POST(req, res) {
 	await dbConnect();
