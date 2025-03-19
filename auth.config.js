@@ -3,7 +3,6 @@ import Credentials from "next-auth/providers/credentials";
 import User from "@/modals/userModal";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/db";
-import { CredentialsSignin } from "next-auth";
 
 async function checkEmailExists(email) {
     await dbConnect();
@@ -11,40 +10,21 @@ async function checkEmailExists(email) {
     return user ? user : null;
 }
 
-class InvalidCredentials extends CredentialsSignin {
-    code = "Invalid credentials";
-
-}
-
-class UserNotFound extends CredentialsSignin {
-    code = "The user is not found";
-
-}
-
-class InvalidMethod extends CredentialsSignin {
-    code = "Please use the correct method to login";
-}
-
-// Notice this is only an object, not a full Auth.js instance
 const authConfig = {
     providers: [
         Google({
             allowDangerousEmailAccountLinking: true,
             clientId: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+
             async profile(profile) {
-                let userRole = "user";
-                if (profile.email === "anamoldhakal22@gmail.com") {
-                    userRole = "admin";
-                }
-                let user = await checkEmailExists(profile.email);
                 return {
-                    ...profile,
-                    role: userRole,
                     id: profile.id,
-                    profilePic: profile.image || profile.picture,
+                    name: profile.name,
+                    email: profile.email,
+                    image: profile.picture,
                 };
-            },
+            }
         }),
         Credentials({
             allowDangerousEmailAccountLinking: true,
@@ -58,11 +38,11 @@ const authConfig = {
                 try {
                     const userFound = await checkEmailExists(credentials.email);
                     if (!userFound) {
-                        throw new UserNotFound();
+                        throw new Error("User not found");
                     } else if (userFound.password === null) {
-                        throw new InvalidMethod();
+                        throw new Error("Please use the correct method to login");
                     } else {
-                        const matchPassword = bcrypt.compare(
+                        const matchPassword = await bcrypt.compare(
                             credentials.password,
                             userFound.password,
                         );
@@ -75,7 +55,7 @@ const authConfig = {
                                 role: userFound.role,
                             };
                         } else {
-                            throw new InvalidCredentials();
+                            throw new Error("Invalid credentials");
                         }
                     }
                 } catch (error) {
@@ -85,6 +65,14 @@ const authConfig = {
         }),
     ],
     callbacks: {
+
+        async redirect({ url, baseUrl }) {
+            // Handle redirects properly
+            if (url.startsWith("/linkAccount")) {
+                return `${baseUrl}${url}`;
+            }
+            return url;
+        },
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
@@ -105,12 +93,8 @@ const authConfig = {
             }
             return session;
         },
-    },
-    pages: {
-        signIn: "/auth/auth/auth/auth/auth/auth/auth/auth/auth/login",
-        signUp: "/signup",
+
     },
 };
 
 export default authConfig;
-

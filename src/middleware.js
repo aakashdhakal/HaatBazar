@@ -4,7 +4,7 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(req) {
     const secret = process.env.NEXTAUTH_SECRET;
     if (!secret) {
-        return NextResponse.redirect('/login');
+        return NextResponse.redirect(new URL('/login', req.url));
     }
     const token = await getToken({ req, secret });
     if (!token) {
@@ -14,5 +14,10 @@ export async function middleware(req) {
 }
 
 export const config = {
-    matcher: ["/dashboard/", "/cart/", "/wishlist/", "/orders/:path*"],
+    matcher: [
+        "/dashboard/:path*",
+        "/cart",
+        "/wishlist",
+        "/orders/:path*",
+    ],
 };

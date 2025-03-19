@@ -2,12 +2,11 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
 	{
-		order: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "Order",
+		transactionId: {
+			type: String,
 			required: true,
 		},
-		transactionId: {
+		orderId: {
 			type: String,
 			required: true,
 		},
@@ -22,7 +21,7 @@ const transactionSchema = new mongoose.Schema(
 		},
 		status: {
 			type: String,
-			enum: ["pending", "completed", "failed"],
+			enum: ["pending", "completed", "failed", "refunded"],
 			default: "pending",
 		},
 	},

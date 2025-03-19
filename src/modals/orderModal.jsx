@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { type } from "os";
 
 const orderSchema = new mongoose.Schema(
 	{
@@ -8,19 +9,9 @@ const orderSchema = new mongoose.Schema(
 			required: true,
 		},
 		paymentInfo: {
-			transactionUuid: {
-				type: String,
-				required: true,
-			},
-			method: {
-				type: String,
-				required: true,
-			},
-			status: {
-				type: String,
-				enum: ["pending", "paid", "refunded"],
-				default: "pending",
-			},
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Transaction",
+			required: true,
 		},
 		products: [
 			{

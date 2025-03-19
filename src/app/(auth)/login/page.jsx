@@ -65,7 +65,7 @@ export default function Login() {
 			<div className="flex w-full max-w-screen-xl m-auto p-4 md:p-8 z-10">
 				<div className="w-full flex flex-col lg:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white h-max">
 					{/* Left side - Banner (promotional content) */}
-					<div className="hidden lg:block lg:w-[45%] bg-gradient-to-br from-primary to-primary-dark relative overflow-hidden">
+					<div className="hidden lg:block lg:w-[45%] bg-gradient-to-br from-primary to-secondary relative overflow-hidden">
 						<div className="relative z-10 flex flex-col h-full p-10 lg:p-12 justify-between">
 							{/* Banner content */}
 							<div>
@@ -156,15 +156,13 @@ export default function Login() {
 							{/* Mobile logo and back button */}
 							<div className="flex items-center justify-between mb-8 lg:hidden">
 								<div className="flex items-center gap-2">
-									<div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-										<Icon
-											icon="mdi:shopping"
-											className="h-5 w-5 text-primary"
-										/>
-									</div>
-									<span className="font-heading text-lg font-bold text-gray-900">
-										FreshMart
-									</span>
+									<Image
+										src="/logoSideText.png"
+										alt="HaatBazar"
+										width={130}
+										height={130}
+										className="w-auto h-10"
+									/>
 								</div>
 								<Link href="/" className="p-2 rounded-full hover:bg-gray-100">
 									<Icon icon="mdi:arrow-left" className="h-5 w-5" />
@@ -323,7 +321,7 @@ export default function Login() {
 								</Button>
 
 								<div className="text-center pt-4">
-									<p className="text-sm text-gray-600">
+									<p className="text-sm text-gray-600 flex gap-2 items-center justify-center">
 										Don&apos;t have an account?
 										<Link
 											href="/signup"
