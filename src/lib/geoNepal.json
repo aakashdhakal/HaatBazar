@@ -1,0 +1,1200 @@
+{
+	"SudurPaschim Province": [
+		{
+			"province": "SudurPaschim Province",
+			"district": "Achham",
+			"cities": [
+				"Bayalpata",
+				"Bhatakatiya",
+				"Chaurpati",
+				"Dhakari",
+				"Jayagadh",
+				"Kalagaun",
+				"Kamal bazar",
+				"Kuchikot",
+				"Mellekh",
+				"Srikot",
+				"Thanti",
+				"Turmakhad"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Baitadi",
+			"cities": [
+				"Dehimandau",
+				"Dhungad",
+				"Dilasaini",
+				"Gajari Changgad",
+				"Kesharpur",
+				"Khodpe",
+				"Mulkhatali",
+				"Patan",
+				"Purchaudihat",
+				"Sharmali",
+				"Sitad",
+				"Srikot",
+				"Swopana Taladehi"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Bajhang",
+			"cities": [
+				"Bungal",
+				"Chaudhari",
+				"Chhanna",
+				"Jamatola",
+				"Jaya Prithivi Nagar",
+				"Rayal",
+				"Shayadi",
+				"Talkot",
+				"Thalara"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Bajura",
+			"cities": [
+				"Chhatara",
+				"Dandakot",
+				"Dogadi",
+				"Faiti",
+				"Jukot",
+				"Kolti",
+				"Manakot",
+				"Tate"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Dadeldhura",
+			"cities": [
+				"Ajayameru",
+				"Chipur",
+				"Dandaban",
+				"Gaira Ganesh",
+				"Ganeshpur",
+				"Jogbudha",
+				"Lamikande",
+				"Ugratara"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Darchula",
+			"cities": [
+				"Dandakot",
+				"Duhuti",
+				"Gokule",
+				"Joljibi",
+				"Malikarjun",
+				"Marmalatinath",
+				"Rapla",
+				"Ritha Chaupata",
+				"Sipti",
+				"Sitola"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Doti",
+			"cities": [
+				"Banedungrasen",
+				"Boktan",
+				"Byal",
+				"Daund",
+				"Gadhshera",
+				"Jorayal",
+				"Lanakedareswor",
+				"Mauwa Nagardaha",
+				"Mudbhara",
+				"Sanagaun",
+				"Silgadhi"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Kailali",
+			"cities": [
+				"Atariya",
+				"Bhajani",
+				"Chaumala",
+				"Dododhara",
+				"Hasuliya",
+				"Joshipur",
+				"Lamki",
+				"Masuriya",
+				"Pahalmanpur",
+				"Phaltude",
+				"Phulbari",
+				"Tikapur"
+			]
+		},
+		{
+			"province": "SudurPaschim Province",
+			"district": "Kanchanpur",
+			"cities": [
+				"Airport",
+				"Beldadi",
+				"Chandani",
+				"Jhalari",
+				"Kalika",
+				"Kanchanpur",
+				"Krishnapur",
+				"Pipaladi",
+				"Punarbas",
+				"Suda"
+			]
+		}
+	],
+	"Lumbini Province": [
+		{
+			"province": "Lumbini Province",
+			"district": "Arghakhanchi",
+			"cities": [
+				"Argha",
+				"Arghatosh",
+				"Balkot",
+				"Dhikura",
+				"Hamshapur",
+				"Khana",
+				"Khidim",
+				"Khilji",
+				"Pali",
+				"Subarnakhal",
+				"Thada",
+				"Wangla"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Banke",
+			"cities": [
+				"Bhojbhagawanpur",
+				"Chandranagar",
+				"Chisapani",
+				"Godahana",
+				"Jayaspur",
+				"Khajura",
+				"Khaskusma",
+				"Kohalapur",
+				"Ramjha",
+				"Suiya",
+				"Udayapur"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Bardiya",
+			"cities": [
+				"Baganaha",
+				"Bhurigaun",
+				"Jamuni",
+				"Magaragadi",
+				"Mainapokhar",
+				"Motipur",
+				"Pashupatinagar",
+				"Rajapur",
+				"Sanoshri"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Dang",
+			"cities": [
+				"Bhaluwang",
+				"Ghoraha",
+				"Hapur",
+				"Hekuli",
+				"Jangrahawa",
+				"Jumlepani",
+				"Koilabas",
+				"Lamahi",
+				"Manpur",
+				"Panchakule",
+				"Rampur",
+				"Shantinagar",
+				"Tulsipur",
+				"Urahari"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Eastern Rukum",
+			"cities": []
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Gulmi",
+			"cities": [
+				"Arje",
+				"Bharse",
+				"Birabas",
+				"Chandrakot",
+				"Dhurkot",
+				"Ismadohali",
+				"Majuwa",
+				"Manabhak",
+				"Pipaldanda",
+				"Purkotadha",
+				"Purtighat",
+				"Ridi",
+				"Sringa",
+				"Wami"
+			]
+		},
+		{ "province": "Lumbini Province", "district": "Kapilvastu", "cities": [] },
+		{
+			"province": "Lumbini Province",
+			"district": "Palpa",
+			"cities": [
+				"Argali",
+				"Aryabhanjyang",
+				"Baldengadi",
+				"Chhahara",
+				"Hungi",
+				"Jalpa",
+				"Jhadewa",
+				"Khasyauli",
+				"Madanpokhara",
+				"Palungmainadi",
+				"Rampur",
+				"Sahalkot",
+				"Tahu"
+			]
+		},
+		{ "province": "Lumbini Province", "district": "Parasi", "cities": [] },
+		{
+			"province": "Lumbini Province",
+			"district": "Pyuthan",
+			"cities": [
+				"Baraula",
+				"Bhingri",
+				"Bijuwar",
+				"Dakhaquadi",
+				"Lungbahane",
+				"Machchhi",
+				"Majuwa",
+				"Naya Gaun",
+				"Thulabesi",
+				"Wangesal"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Rolpa",
+			"cities": [
+				"Dahaban",
+				"Ghartigaun",
+				"Himtakura",
+				"Jhenam (Holeri)",
+				"Khungri",
+				"Nerpa",
+				"Shulichaur",
+				"Sirpa",
+				"Thawang"
+			]
+		},
+		{
+			"province": "Lumbini Province",
+			"district": "Rupandehi",
+			"cities": [
+				"Amuwa",
+				"Betkuiya",
+				"Butwal",
+				"Dhakadhai",
+				"Kotihawa",
+				"Lumbini",
+				"Mahadehiya",
+				"Manigram",
+				"Parroha",
+				"Saljhandi",
+				"Sauraha Pharsa",
+				"Siktahan",
+				"Suryapura",
+				"Tenuhawa",
+				"Thutipipal"
+			]
+		}
+	],
+	"Gandaki Province": [
+		{
+			"province": "Gandaki Province",
+			"district": "Baglung",
+			"cities": [
+				"Arnakot",
+				"Balewa Payupata",
+				"Bereng",
+				"Bihukot",
+				"Bongadovan",
+				"Galkot",
+				"Harichaur",
+				"Jaidi Belbagar",
+				"Jhimpa",
+				"Khrwang",
+				"Kusmi Shera",
+				"Pala",
+				"Pandavkhani"
+			]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Gorkha",
+			"cities": [
+				"Aarughat",
+				"Anapipal",
+				"Batase",
+				"Bhachchek",
+				"Bungkot",
+				"Ghyampesal",
+				"Gumda",
+				"Jaubari",
+				"Luintel",
+				"Manakamana",
+				"Saurpani",
+				"Sirdibash"
+			]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Kaski",
+			"cities": [
+				"Bhalam",
+				"Birethanti",
+				"Chapakot",
+				"Gagan Gaunda",
+				"Ghachok",
+				"Majhathana",
+				"Makaikhola",
+				"Naudanda",
+				"Nirmalpokhari",
+				"Pardibandh",
+				"Purunchaur",
+				"Rupakot",
+				"Sildujure"
+			]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Lamjung",
+			"cities": [
+				"Bharate",
+				"Gaunda",
+				"Gilung",
+				"Khudi",
+				"Kunchha",
+				"Maling",
+				"Phaliyasanghu",
+				"Sotipasal",
+				"Sundar Bazar",
+				"Tarkughat"
+			]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Manang",
+			"cities": ["Bhakra", "Dharapani", "Mathillo Manang", "Nar", "Pisang"]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Mustang",
+			"cities": [
+				"Charang",
+				"Chhoser",
+				"Kagbeni",
+				"Lete",
+				"Marpha",
+				"Muktinath",
+				"Mustang",
+				"Thak Tukuche"
+			]
+		},
+		{
+			"province": "Gandaki Province",
+			"district": "Myagdi",
+			"cities": [
+				"Babiyachaur",
+				"Dana",
+				"Darbang",
+				"Galeswor",
+				"Lulang",
+				"Pakhapani",
+				"Rakhu Bhagawati",
+				"Sikha",
+				"Takam",
+				"Xyamarukot"
+			]
+		},
+		{ "province": "Gandaki Province", "district": "Nawalpur", "cities": [] },
+		{
+			"province": "Gandaki Province",
+			"district": "Parbat",
+			"cities": [
+				"Bachchha",
+				"Deurali",
+				"Devisthan",
+				"Hubas",
+				"Karkineta",
+				"Khor Pokhara",
+				"Khurkot",
+				"Lankhudeurali",
+				"Salija",
+				"Setibeni",
+				"Thulipokhari"
+			]
+		},
+		{ "province": "Gandaki Province", "district": "Syangja", "cities": [] },
+		{
+			"province": "Gandaki Province",
+			"district": "Tanahun",
+			"cities": [
+				"Aanbu Khaireni",
+				"Baidi",
+				"Bandipur",
+				"Bhimad",
+				"Devaghat",
+				"Dumre",
+				"Ghiring Sundhara",
+				"Kahunshivapur",
+				"Khairenitar",
+				"Lamagaun",
+				"Manechauka",
+				"Rising Ranipokhari",
+				"Shisha Ghat",
+				"Tuhure Pasal"
+			]
+		}
+	],
+	"Madhesh Province": [
+		{
+			"province": "Madhesh Province",
+			"district": "Bara",
+			"cities": [
+				"Amalekhgunj",
+				"Bariyarpur",
+				"Basantapur",
+				"Dumarwana",
+				"Jeetpur (Bhavanipur)",
+				"Kabahigoth",
+				"Mahendra Adarsha",
+				"Nijgadh",
+				"Parsoni",
+				"Pipradhigoth",
+				"Simara",
+				"Simraungadh",
+				"Umjan"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Dhanusha",
+			"cities": [
+				"Bagachauda",
+				"Chakkar",
+				"Dhalkebar",
+				"Dhanushadham",
+				"Duhabi",
+				"Godar Chisapani",
+				"Jatahi",
+				"Khajuri",
+				"Phulgama",
+				"Raghunathpur",
+				"Sankhuwa Mahendranagar",
+				"Tinkoriya",
+				"Yadukuha"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Mahottari",
+			"cities": [
+				"Balawa",
+				"Bardibash",
+				"Bhangaha",
+				"Gaushala",
+				"Laxminiya",
+				"Loharpatti",
+				"Manara",
+				"Matihani",
+				"Pipara",
+				"Ramgopalpur",
+				"Samsi",
+				"Shreepur"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Parsa",
+			"cities": [
+				"Aadarshanagar",
+				"Bahuari Pidari",
+				"Bindabasini",
+				"Biruwaguthi",
+				"Janakitol",
+				"Jeetpur",
+				"Pakahamainpur",
+				"Parbanipur",
+				"Paterwa Sugauli",
+				"Phokhariya",
+				"Ranigunj",
+				"Shirsiya Khalwatola",
+				"Thori",
+				"Viswa"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Rautahat",
+			"cities": [
+				"Chandra Nigahapur",
+				"Katahariya",
+				"Laxminiya",
+				"Madhopur",
+				"Patharabudhram",
+				"Pipra bazar",
+				"Rajpurpharahadawa",
+				"Samanpur",
+				"Saruatha",
+				"Shivanagar",
+				"Sitalpur"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Saptari",
+			"cities": [
+				"Arnaha",
+				"Bairaba",
+				"Bhagawatpur",
+				"Bhardaha",
+				"Bishnupur",
+				"Bodebarsain",
+				"Chhinnamasta",
+				"Hanuman Nagar",
+				"Kadarwona",
+				"Kalyanpur",
+				"Kanchanpur",
+				"Koiladi",
+				"Pato",
+				"Phattepur",
+				"Praswani",
+				"Rupani",
+				"Sisawa"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Sarlahi",
+			"cities": [
+				"Barahathawa",
+				"Bayalbas",
+				"Brahmapuri",
+				"Chhatauna",
+				"Dumariya",
+				"Hariaun",
+				"Haripur",
+				"Haripurwa",
+				"Harkathawa",
+				"Karmaiya",
+				"Kaudena",
+				"Lalbandi",
+				"Ramnagar(Bahuarwa)",
+				"Sundarpur"
+			]
+		},
+		{
+			"province": "Madhesh Province",
+			"district": "Siraha",
+			"cities": [
+				"Bandipur",
+				"Bariyarpatti",
+				"Bastipur",
+				"Belha",
+				"Bhagawanpur",
+				"Bishnupur",
+				"Dhanagadhi",
+				"Golbazar (Asanpur)",
+				"Kalyanpur",
+				"Lahan",
+				"Madar",
+				"Maheshpur patari",
+				"Mirchaiya",
+				"Sukhipur"
+			]
+		}
+	],
+	"Bagmati Province": [
+		{
+			"province": "Bagmati Province",
+			"district": "Bhaktapur",
+			"cities": [
+				"Dibyashwori",
+				"Dubakot",
+				"Gamcha",
+				"Jorpati",
+				"Kharipati",
+				"Nagarkot",
+				"Tathali",
+				"Thimi"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Chitwan",
+			"cities": ["Jutpani", "Khairahani", "Meghauli", "Patihani", "Phulbari"]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Dhading",
+			"cities": [
+				"Bhumisthan",
+				"Gajuri",
+				"Katunje",
+				"Khanikhola",
+				"Lapa",
+				"Maidi",
+				"Malekhu",
+				"Phulkharka",
+				"Sertung",
+				"Sunaulabazar",
+				"Sunkhani",
+				"Tripureshwor"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Dolakha",
+			"cities": [
+				"Bhusapheda",
+				"Chitre",
+				"Japhekalapani",
+				"Jiri",
+				"Khahare",
+				"Khopachangu",
+				"Lamabagar",
+				"Melung",
+				"Namdu",
+				"Sunkhani"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Kathmandu",
+			"cities": [
+				"Balaju",
+				"Baluwatar",
+				"Bansbari",
+				"Budhanilkantha",
+				"Chabahil",
+				"Dillibazar",
+				"Gauchar",
+				"Kalimati",
+				"Kirtipur",
+				"Manmaiju",
+				"Pashupati",
+				"Pharping",
+				"Sachibalaya",
+				"Sankhu",
+				"Sarbochcha Adalat",
+				"Sundarijal",
+				"Swayambhu",
+				"Thankot",
+				"Tokha Saraswati",
+				"Tribhuvan University"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Kavrepalanchok",
+			"cities": [
+				"Banepa",
+				"Dapcha",
+				"Dolal Ghat",
+				"Ghartichhap",
+				"Mangaltar",
+				"Panauti",
+				"Panchkhal",
+				"Phalante"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Lalitpur",
+			"cities": [
+				"Bhattedanda",
+				"Chapagaun",
+				"Darabartole",
+				"Dhapakhel",
+				"Godawari",
+				"Gotikhel",
+				"Imadol",
+				"Lubhu",
+				"Pyutar"
+			]
+		},
+		{ "province": "Bagmati Province", "district": "Makwanpur", "cities": [] },
+		{
+			"province": "Bagmati Province",
+			"district": "Nuwakot",
+			"cities": [
+				"Bhadratar",
+				"Chokade",
+				"Deurali",
+				"Devighat",
+				"Kahule",
+				"Kharanitar",
+				"Nuwakot",
+				"Pokharichapadanda",
+				"Ramabati",
+				"Ranipauwa",
+				"Rautbesi",
+				"Taruka",
+				"Thansingh"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Ramechhap",
+			"cities": [
+				"Betali",
+				"Bhirpani",
+				"Doramba",
+				"Duragaun",
+				"Hiledevi",
+				"Kathjor",
+				"Khimti",
+				"Puranagaun",
+				"Saghutar",
+				"Those"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Rasuwa",
+			"cities": ["Dhaibung", "Ramkali", "Rasuwa", "Syaphru Besi"]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Sindhuli",
+			"cities": [
+				"Bahun Tilpung",
+				"Belghari",
+				"Bhiman",
+				"Dakaha",
+				"Dudhauli",
+				"Gwaltar",
+				"Jhanga Jholi",
+				"Kapilakot",
+				"Khurkot",
+				"Netrakali",
+				"Pipalmadhiratanpur",
+				"Solpa"
+			]
+		},
+		{
+			"province": "Bagmati Province",
+			"district": "Sindhupalchok",
+			"cities": [
+				"Atarpur",
+				"Balephi",
+				"Barabise",
+				"Bhotsipa",
+				"Dubachaur",
+				"Gyalthum",
+				"Jalbire",
+				"Kodari",
+				"Lamosanghu",
+				"Melamchi Bahunepati",
+				"Nawalpur",
+				"Pangtang",
+				"Thangapaldhap"
+			]
+		}
+	],
+	"Koshi Province": [
+		{
+			"province": "Koshi Province",
+			"district": "Bhojpur",
+			"cities": [
+				"Baikunthe",
+				"Bastim",
+				"Bhulke",
+				"Deurali",
+				"Dilpa Annapurna",
+				"Dingla",
+				"Dobhane",
+				"Kulung Agrakhe",
+				"Pyauli",
+				"Ranibas",
+				"Timma",
+				"Tiwari Bhanjyang",
+				"Walangkha",
+				"Yaku"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Dhankuta",
+			"cities": [
+				"Ankhisalla",
+				"Arknaule",
+				"Bhedetar",
+				"Chungmang",
+				"Dandabazar",
+				"Dhankuta",
+				"Hile",
+				"Leguwa",
+				"Mare Katahare",
+				"Mudhebash",
+				"Muga",
+				"Pakhribash",
+				"Rajarani",
+				"Teliya"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Ilam",
+			"cities": [
+				"Aaitabare",
+				"Cheesa Pani Panchami",
+				"Gajurmukhi",
+				"Gitpur",
+				"Harkatebazar",
+				"Jamuna",
+				"Mangal Bare",
+				"Nayabazar",
+				"Nepaltar",
+				"Pashupatinagar",
+				"Phikal"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Jhapa",
+			"cities": [
+				"Baniyani",
+				"Birtamod",
+				"Budhabare",
+				"Chandragadhi",
+				"Damak",
+				"Dhulabari",
+				"Dudhe",
+				"Durgapur",
+				"Gauradaha",
+				"Gaurigunj",
+				"Goldhap",
+				"Jhapa",
+				"Kankarbhitta",
+				"Rajgadh",
+				"Sanishchare",
+				"Shivagunj",
+				"Topagachhi"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Khotang",
+			"cities": [
+				"Aiselukharka",
+				"Buipa",
+				"Chisapani",
+				"Halesi mahadevasthan",
+				"Jalpa",
+				"Khotang",
+				"Lamidanda",
+				"Manebhanjyang",
+				"Sapteshworichhitapokhari",
+				"Simpani",
+				"Wakshila"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Morang",
+			"cities": [
+				"Banigama",
+				"Bansbari",
+				"Bayarban",
+				"Bhaudaha",
+				"Biratnagar Bazar",
+				"Chunimari",
+				"Dadarberiya",
+				"Haraincha",
+				"Jhorahat",
+				"Kerabari",
+				"Letang",
+				"Madhumalla",
+				"Rangeli",
+				"Rani Sikiyahi",
+				"Sanischare",
+				"Sorabhag",
+				"Urlabari"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Okhaldhunga",
+			"cities": [
+				"Bigutar",
+				"Chyanam",
+				"Gamanangtar",
+				"Ghorakhori",
+				"Khani Bhanjyang",
+				"Khiji Phalate",
+				"Mane Bhanjyang",
+				"Moli",
+				"Ragani",
+				"Rampur",
+				"Rumjatar"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Panchthar",
+			"cities": [
+				"Ambarpur",
+				"Chyangthapu",
+				"Limba",
+				"Mauwa",
+				"Medibung",
+				"Mehelbote",
+				"Namluwa",
+				"Nawamidanda",
+				"Rabi",
+				"Yangnam",
+				"Yasok"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Sankhuwasabha",
+			"cities": [
+				"Ankhibhui",
+				"Bahrabishe",
+				"Chainpur",
+				"Chandanpur",
+				"Hatiya",
+				"Hedangana",
+				"Madi",
+				"Mamling",
+				"Manebhanjyang",
+				"Shidhakali",
+				"Tamku",
+				"Tumlingtar",
+				"Wana"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Solukhumbu",
+			"cities": [
+				"Himaganga",
+				"Jubu",
+				"Lukla",
+				"Namche Bazar",
+				"Necha",
+				"Nele",
+				"Shishakhola",
+				"Sotang"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Sunsari",
+			"cities": [
+				"Aurabari",
+				"Bakalauri",
+				"Bhutaha",
+				"Chatara",
+				"Chhitaha",
+				"Chimadi",
+				"Dewangunj",
+				"Dharan",
+				"Duhabi",
+				"Inarauwa",
+				"Itahari",
+				"Jhumka",
+				"Laukahee",
+				"Madhuvan",
+				"Mahendra Nagar",
+				"Mangalbare",
+				"Simariya"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Taplejung",
+			"cities": [
+				"Change",
+				"Dobhan",
+				"Hangpang",
+				"Khokling",
+				"Olangchunggola",
+				"Pedang",
+				"Sadeba",
+				"Sinam",
+				"Siwang",
+				"Taplejung",
+				"Thechambu",
+				"Thokimba"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Terhathum",
+			"cities": [
+				"Basantapur",
+				"Hamarjung",
+				"Iwa",
+				"Jirikhimti",
+				"Morahang",
+				"Mulpani",
+				"Pokalawang",
+				"Sudap",
+				"Tinjure"
+			]
+		},
+		{
+			"province": "Koshi Province",
+			"district": "Udayapur",
+			"cities": [
+				"Baraha",
+				"Beltar",
+				"Bhutar",
+				"Hadiya",
+				"Katari",
+				"Pokhari",
+				"Rampur Jhilke",
+				"Ratapani (Thoksila)",
+				"Rauta Murkuchi",
+				"Sorung Chhabise",
+				"Udayapur Gadhi"
+			]
+		}
+	],
+	"Karnali Province": [
+		{
+			"province": "Karnali Province",
+			"district": "Dailekh",
+			"cities": [
+				"Byastada",
+				"Dhungeshwor",
+				"Dullu",
+				"Gaidabaj",
+				"Jambu Kandha",
+				"Malika",
+				"Naumule",
+				"Rakam Karnali Province"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Dolpa",
+			"cities": [
+				"Foksundo",
+				"Juphal",
+				"Kaigaun",
+				"Liku",
+				"Namdo",
+				"Sarmi",
+				"Tripurakot"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Humla",
+			"cities": ["Darma", "Lali", "Muchu", "Sarkegadh", "Srinagar"]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Jajarkot",
+			"cities": [
+				"Dalli",
+				"Dashera",
+				"Dhime",
+				"Garkhakot",
+				"Karkigaun",
+				"Ragda",
+				"Rokaya gaun (Limsa)",
+				"Thalaraikar"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Jumla",
+			"cities": [
+				"Chautha",
+				"Dillichaur",
+				"Hatsinja",
+				"Kalikakhetu",
+				"Malikathata",
+				"Narakot",
+				"Tatopani"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Kalikot",
+			"cities": [
+				"Jubitha",
+				"Kalikot",
+				"Kotbada",
+				"Mehalmudi",
+				"Padamghat",
+				"Sanniraskot",
+				"Thirpu"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Mugu",
+			"cities": [
+				"Dhainkot",
+				"Gumtha",
+				"Pulu",
+				"Rara",
+				"Rowa",
+				"Sorubarma",
+				"Sukhadhik"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Salyan",
+			"cities": [
+				"Bhalchaur",
+				"Dhanbang",
+				"Kalimati Kalche",
+				"Luham",
+				"Mahaneta",
+				"Maidu",
+				"Malneta",
+				"Ragechour",
+				"Tharmare"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Surkhet",
+			"cities": [
+				"Babiyachaur",
+				"Bheriganga",
+				"Chhinchu",
+				"Garpan",
+				"Gumi",
+				"Gutu",
+				"Kunathari",
+				"Matela",
+				"Ramghat",
+				"Sahare"
+			]
+		},
+		{
+			"province": "Karnali Province",
+			"district": "Western Rukum",
+			"cities": []
+		}
+	]
+}

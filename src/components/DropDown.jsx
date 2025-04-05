@@ -10,7 +10,7 @@ import {
 
 export default function DropDown({ trigger, items, label }) {
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger className="border-none outline-none">
 				{trigger}
 			</DropdownMenuTrigger>

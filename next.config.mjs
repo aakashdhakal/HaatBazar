@@ -2,6 +2,9 @@
 const nextConfig = {
     crossOrigin: 'anonymous',
     images: {
+        dangerouslyAllowSVG: true,
+        contentDispositionType: 'attachment',
+        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
         remotePatterns: [
             {
                 hostname: "png.pngtree.com",
@@ -38,6 +41,9 @@ const nextConfig = {
             },
             {
                 hostname: "randomuser.me",
+            },
+            {
+                hostname: "placehold.co",
             }
         ]
     },

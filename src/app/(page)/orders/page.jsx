@@ -9,7 +9,7 @@ import OrderDetail from "@/components/OrderDetail";
 import SelectComponent from "@/components/Select";
 import { decodeData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
-import { updatePaymentStatus } from "@/app/(server)/actions/order";
+import { updatePaymentStatus } from "@/app/(server)/actions/payment";
 import { clearCart } from "@/app/(server)/actions/cart";
 
 /**
@@ -48,7 +48,6 @@ export default function OrdersPage() {
 		};
 		if (parameters.has("data") || parameters.has("status")) {
 			const searchParams = decodeData(parameters.get("data"));
-			console.log(searchParams.status);
 			switch (searchParams.status) {
 				case "COMPLETE":
 					//return order details from order array whose transactionUid matches searchParams.transactionUid
@@ -58,9 +57,7 @@ export default function OrdersPage() {
 								order.paymentInfo.transactionUuid ===
 								searchParams.transaction_uuid,
 						);
-
 						if (latestOrder && latestOrder.status !== "paid") {
-							console.log(latestOrder._id);
 							changeOrderStatus(latestOrder._id, "paid");
 						}
 					}
@@ -154,9 +151,9 @@ export default function OrdersPage() {
 			<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
 				<div className="flex flex-col md:flex-row justify-between gap-4">
 					{/* Status filter and Sort options */}
-					<div className="flex flex-col sm:flex-row gap-3 sm:items-center">
+					<div className="flex flex-col sm:flex-row gap-6 sm:items-center">
 						{/* Filter by Status dropdown */}
-						<div className="flex-shrink-0">
+						<div className="flex-shrink-0 flex flex-col gap-1">
 							<label
 								htmlFor="filter"
 								className="block text-sm font-medium text-gray-700 mb-1">
@@ -164,6 +161,7 @@ export default function OrdersPage() {
 							</label>
 							<SelectComponent
 								defaultValue="all"
+								className="w-96"
 								options={[
 									{ label: "All", value: "all" },
 									{ label: "Pending", value: "pending" },
@@ -177,7 +175,7 @@ export default function OrdersPage() {
 							/>
 						</div>
 						{/* Sort by dropdown */}
-						<div className="flex-shrink-0">
+						<div className="flex-shrink-0 flex flex-col gap-1">
 							<label
 								htmlFor="sort"
 								className="block text-sm font-medium text-gray-700 mb-1">

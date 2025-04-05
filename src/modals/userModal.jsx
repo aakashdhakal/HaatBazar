@@ -30,12 +30,58 @@ const UserSchema = new mongoose.Schema(
 			default: "profile.jpg",
 			required: true,
 		},
-		shippingAddress: {
-			type: [String],
+		dateOfBirth: {
+			type: Date,
+			default: null,
 		},
-		billingAddress: {
-			type: [String],
-		},
+		shippingAddress: [
+			{
+				province: {
+					type: String,
+					required: true,
+				},
+				district: {
+					type: String,
+					required: true,
+				},
+				city: {
+					type: String,
+					required: true,
+				},
+				street: {
+					type: String,
+					required: true,
+				},
+				ZIP: {
+					type: String,
+					required: true,
+				},
+			},
+		],
+		billingAddress: [
+			{
+				province: {
+					type: String,
+					required: true,
+				},
+				district: {
+					type: String,
+					required: true,
+				},
+				city: {
+					type: String,
+					required: true,
+				},
+				street: {
+					type: String,
+					required: true,
+				},
+				ZIP: {
+					type: String,
+					required: true,
+				},
+			},
+		],
 	},
 	{
 		timestamps: true,

@@ -15,19 +15,24 @@ export default function AlertDialogComponent(props) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button variant={props.varient}>{props.triggerText}</Button>
+				<Button
+					variant={props.varient}
+					className={props.triggerClassname}
+					size={props.size}>
+					{props.triggerText}
+				</Button>
 			</AlertDialogTrigger>
-			<AlertDialogContent>
+			<AlertDialogContent className="w-full">
 				<AlertDialogHeader>
 					<AlertDialogTitle>{props.alertTitle}</AlertDialogTitle>
-					<AlertDialogDescription>
+					<AlertDialogDescription asChild>
 						{props.alertDescription}
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>{props.cancelText}</AlertDialogCancel>
 					<AlertDialogAction asChild>
-						<Button variant="default" onClick={props.action}>
+						<Button variant="destructive" onClick={props.action}>
 							{props.actionText}
 						</Button>
 					</AlertDialogAction>

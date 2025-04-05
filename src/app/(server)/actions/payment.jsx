@@ -1,6 +1,7 @@
 "use server";
 import { auth } from "@/app/auth";
 import { redirect } from "next/navigation";
+import Transaction from "@/modals/transactionModal";
 
 export async function initiateKhaltiPayment(order) {
 	const session = await auth();
@@ -56,5 +57,44 @@ export async function initiateKhaltiPayment(order) {
 	const data = await response.json();
 	if (data) {
 		redirect(data.payment_url);
+	}
+}
+
+export async function createPayment(payment) {
+	try {
+		const paymentDetails = {
+			transactionId: payment.transactionId,
+			amount: payment.amount,
+			paymentMethod: payment.paymentMethod,
+		};
+		console.log(paymentDetails);
+		const createdPayment = await Transaction.create(paymentDetails);
+		return {
+			...createdPayment.toObject(),
+			_id: createdPayment._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error creating payment:", error);
+		throw new Error("Payment creation failed");
+	}
+}
+
+export async function updatePaymentStatus(transactionId, status) {
+	try {
+		const payment = await Transaction.findOneAndUpdate(
+			{ transactionId },
+			{ status },
+			{ new: true },
+		);
+		if (!payment) {
+			throw new Error("Payment not found");
+		}
+		return {
+			...payment._doc,
+			_id: payment._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error updating payment status:", error);
+		throw new Error("Payment status update failed");
 	}
 }

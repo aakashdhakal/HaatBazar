@@ -12,26 +12,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		strategy: "jwt",
 	},
 	...authConfig,
-	events: {
-		signIn: async ({ isNewUser, user }) => {
-			//empty signin event to prevent default error handling.
-		},
-		signOut: async ({ session }) => {
-			//empty signout event to prevent default error handling.
-		},
-		createUser: async ({ user }) => {
-			//empty createUser event to prevent default error handling.
-		},
-		linkAccount: async ({ user, account, profile }) => {
-			//empty linkAccount event to prevent default error handling.
-		},
-		session: async ({ session, token }) => {
-			//empty session event to prevent default error handling.
-		},
-	},
 	pages: {
 		signIn: "/login",
 		signUp: "/signup",
-		linkAccount: "/linkAccount", // Add this line
+		newUser: "/newUser",
 	},
 });

@@ -84,7 +84,7 @@ export default function Signup() {
 						email: email.value,
 						password: password.value,
 						redirect: true,
-						callbackUrl: "/linkAccount",
+						callbackUrl: "/newUser",
 					});
 				}, 1000);
 			} else {
@@ -419,7 +419,7 @@ export default function Signup() {
 										<Button
 											type="button"
 											onClick={() =>
-												signIn("google", { callbackUrl: "/linkAccount" })
+												signIn("google", { callbackUrl: "/newUser" })
 											}
 											className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-200 rounded-md hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md w-full"
 											variant="outline">

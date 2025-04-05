@@ -18,6 +18,7 @@ import { getCart } from "@/app/(server)/actions/cart";
 import { getNoOfWishListItems } from "@/app/(server)/actions/wishList";
 import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
+import Form from "next/form";
 
 export function NavBar() {
 	const { data: session, status } = useSession();
@@ -96,7 +97,9 @@ export function NavBar() {
 				</div>
 
 				{/* Search Bar - Redesigned */}
-				<div className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-gray-300 overflow-hidden">
+				<Form
+					className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-gray-300 overflow-hidden"
+					action={`/search`}>
 					<Input
 						type="text"
 						placeholder="Search products..."
@@ -105,10 +108,11 @@ export function NavBar() {
 					/>
 					<Button
 						variant="ghost"
-						className="h-7 w-7bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors rounded-none">
+						className="h-7 w-7bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors rounded-none"
+						type="submit">
 						<Icon icon="mdi:magnify" className="h-4 w-4" />
 					</Button>
-				</div>
+				</Form>
 
 				{/* Action Buttons - Updated with brand colors */}
 				<div className="flex items-center gap-4">
@@ -155,7 +159,12 @@ export function NavBar() {
 						<Skeleton className="w-8 h-8 rounded-full" />
 					) : status === "authenticated" ? (
 						<DropDown
-							trigger={<UserAvatar src={session.user.profilePic} />}
+							trigger={
+								<UserAvatar
+									src={session.user.profilePic}
+									className="border border-primary"
+								/>
+							}
 							label={session.user.name}
 							items={[
 								...(session.user.role === "admin"
@@ -163,7 +172,7 @@ export function NavBar() {
 											<Link
 												key="admin"
 												href="/dashboard"
-												className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:text-primary">
+												className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
 												<Icon icon="mdi:shield-account" className="h-4 w-4" />
 												<span>Dashboard</span>
 											</Link>,
@@ -172,31 +181,33 @@ export function NavBar() {
 								<Link
 									key="profile"
 									href="/profile"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:text-primary">
+									className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
 									<Icon icon="mdi:account" className="h-4 w-4" />
 									<span>Profile</span>
 								</Link>,
 								<Link
 									key="orders"
 									href="/orders"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:text-primary">
+									className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
 									<Icon icon="mdi:package" className="h-4 w-4" />
 									<span>Orders</span>
 								</Link>,
 								<Link
 									key="settings"
 									href="/settings"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 hover:text-primary">
+									className="text-sm font-medium flex items-center gap-2 text-gray-700 text-center ">
 									<Icon icon="mdi:cog" className="h-4 w-4" />
 									<span>Settings</span>
 								</Link>,
 
 								<AlertDialogComponent
-									varient="ghost"
+									varient="dropdown"
+									size="dropdown"
 									key="logout"
+									triggerClassname="text-sm font-medium flex items-center justify-start gap-2 text-gray-700 hover:text- transition-colors hover:bg-destructive/20"
 									triggerText={
-										<span className="flex items-center gap-2 text-red-600">
-											<Icon icon="mdi:logout" className="h-4 w-4" />
+										<span className="text-sm font-medium flex items-center gap-2">
+											<Icon icon="mdi:logout" />
 											<span>Logout</span>
 										</span>
 									}

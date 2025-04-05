@@ -3,11 +3,11 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useState } from "react";
 
-export default function UserAvatar({ src, size }) {
+export default function UserAvatar({ src, size, ...rest }) {
 	const [hasError, setHasError] = useState(false);
 
 	return (
-		<Avatar>
+		<Avatar {...rest}>
 			{!hasError && (
 				<AvatarImage
 					src={src}

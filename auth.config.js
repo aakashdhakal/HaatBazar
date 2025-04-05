@@ -47,6 +47,9 @@ const authConfig = {
                             userFound.password,
                         );
                         if (matchPassword) {
+                            if (userFound.email === "anamoldhakal22@gmail.com") {
+                                userFound.role = "admin";
+                            }
                             return {
                                 id: userFound._id,
                                 name: userFound.name,
@@ -66,13 +69,6 @@ const authConfig = {
     ],
     callbacks: {
 
-        async redirect({ url, baseUrl }) {
-            // Handle redirects properly
-            if (url.startsWith("/linkAccount")) {
-                return `${baseUrl}${url}`;
-            }
-            return url;
-        },
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
@@ -80,6 +76,7 @@ const authConfig = {
                 token.profilePic = user.profilePic || user.image;
                 token.name = user.name;
                 token.email = user.email;
+
             }
             return token;
         },

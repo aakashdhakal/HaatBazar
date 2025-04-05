@@ -4,17 +4,22 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "./ui/select";
+} from "@/components/ui/select";
 
-export default function SelectComponent({ label, options, ...rest }) {
+export default function SelectComponent({ label, options = [], ...rest }) {
 	return (
 		<Select {...rest}>
-			<SelectTrigger>
-				<SelectValue>{label}</SelectValue>
+			<SelectTrigger className="max-w-full overflow-hidden">
+				{/* Added overflow-hidden */}
+				<SelectValue placeholder={label} />
+				{/* Added truncate */}
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
 				{options.map((option, index) => (
-					<SelectItem key={index} value={option.value}>
+					<SelectItem
+						key={index}
+						value={option.value.toString()}
+						className="whitespace-normal">
 						{option.label}
 					</SelectItem>
 				))}

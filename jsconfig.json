@@ -1,7 +1,13 @@
 {
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"jsx": "react-jsx",
+		"allowJs": true,
+		"checkJs": true
+	}
 }
