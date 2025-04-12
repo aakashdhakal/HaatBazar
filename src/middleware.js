@@ -1,3 +1,4 @@
+"use client";
 import { NextResponse } from "next/server";
 import { getSession } from "next-auth/react";
 
