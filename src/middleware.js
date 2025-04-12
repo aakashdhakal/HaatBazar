@@ -1,23 +1,26 @@
-import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import { NextResponse } from "next/server";
+import { auth } from "./app/auth";
 
 export async function middleware(req) {
-    const secret = process.env.NEXTAUTH_SECRET;
-    if (!secret) {
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
-    const token = await getToken({ req, secret });
-    if (!token) {
-        return NextResponse.redirect(new URL('/login', req.url));
-    }
-    return NextResponse.next();
+	const session = await auth();
+	const isAuthenticated = session?.user;
+	if (!isAuthenticated) {
+		const isPublicPath =
+			req.nextUrl.pathname.startsWith("/login") ||
+			req.nextUrl.pathname.startsWith("/register");
+		if (!isPublicPath) {
+			return NextResponse.redirect(new URL("/login", req.url));
+		}
+	} else {
+		const isAuthPath =
+			req.nextUrl.pathname.startsWith("/login") ||
+			req.nextUrl.pathname.startsWith("/register");
+		if (isAuthPath) {
+			return NextResponse.redirect(new URL("/", req.url));
+		}
+	}
 }
 
 export const config = {
-    matcher: [
-        "/dashboard/:path*",
-        "/cart",
-        "/wishlist",
-        "/orders/:path*",
-    ],
+	matcher: ["/dashboard/:path*", "/cart", "/wishlist", "/orders/:path*"],
 };
