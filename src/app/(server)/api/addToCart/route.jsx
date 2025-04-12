@@ -1,3 +1,4 @@
+"use server";
 import { addToCart } from "@/app/(server)/actions/cart";
 import dbConnect from "@/lib/db";
 
