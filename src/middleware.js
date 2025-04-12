@@ -1,24 +1,18 @@
 import { NextResponse } from "next/server";
-import { auth } from "./app/auth";
+import { getSession } from "next-auth/react";
 
 export async function middleware(req) {
-	const session = await auth();
-	const isAuthenticated = session?.user;
-	if (!isAuthenticated) {
-		const isPublicPath =
-			req.nextUrl.pathname.startsWith("/login") ||
-			req.nextUrl.pathname.startsWith("/register");
-		if (!isPublicPath) {
-			return NextResponse.redirect(new URL("/login", req.url));
-		}
-	} else {
-		const isAuthPath =
-			req.nextUrl.pathname.startsWith("/login") ||
-			req.nextUrl.pathname.startsWith("/register");
-		if (isAuthPath) {
-			return NextResponse.redirect(new URL("/", req.url));
-		}
+	const session = await getSession({ req });
+
+	if (!session) {
+		return NextResponse.redirect(new URL("/login", req.url));
 	}
+
+	if (session.user.role !== "admin") {
+		return NextResponse.redirect(new URL("/", req.url));
+	}
+
+	return NextResponse.next();
 }
 
 export const config = {
