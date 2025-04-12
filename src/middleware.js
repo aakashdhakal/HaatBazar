@@ -1,18 +1,15 @@
-"use client";
 import { NextResponse } from "next/server";
-import { getSession } from "next-auth/react";
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(req) {
-	const session = await getSession({ req });
-
-	if (!session) {
+	const secret = process.env.NEXTAUTH_SECRET;
+	if (!secret) {
 		return NextResponse.redirect(new URL("/login", req.url));
 	}
-
-	if (session.user.role !== "admin") {
-		return NextResponse.redirect(new URL("/", req.url));
+	const token = await getToken({ req, secret });
+	if (!token) {
+		return NextResponse.redirect(new URL("/login", req.url));
 	}
-
 	return NextResponse.next();
 }
 
