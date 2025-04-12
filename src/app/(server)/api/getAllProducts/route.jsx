@@ -1,4 +1,3 @@
-"use server";
 import dbConnect from "@/lib/db";
 import Product from "@/modals/productModal";
 import getAllProducts from "@/app/(server)/actions/products";

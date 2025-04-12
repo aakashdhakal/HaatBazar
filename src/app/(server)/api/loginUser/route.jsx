@@ -1,4 +1,3 @@
-"use server";
 import dbConnect from "@/lib/db";
 import User from "@/modals/userModal";
 import { getSession } from "next-auth/react";
