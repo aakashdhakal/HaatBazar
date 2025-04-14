@@ -3,11 +3,20 @@ import Credentials from "next-auth/providers/credentials";
 import User from "@/modals/userModal";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/db";
+import { CredentialsSignin } from "next-auth";
 
 async function checkEmailExists(email) {
 	await dbConnect();
 	const user = await User.findOne({ email: email });
 	return user ? user : null;
+}
+
+class InvalidCredentials extends CredentialsSignin {
+	code = "Invalid Credentials";
+}
+
+class OAuthAccountNotLinked extends CredentialsSignin {
+	code = "Use correct method to log in";
 }
 
 const authConfig = {
@@ -18,10 +27,6 @@ const authConfig = {
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
 			async profile(profile) {
-				if (profile.email === "anamoldhakal22@gmail.com") {
-					profile.role = "admin";
-				}
-
 				return {
 					id: profile.id,
 					name: profile.name,
@@ -42,9 +47,9 @@ const authConfig = {
 				try {
 					const userFound = await checkEmailExists(credentials.email);
 					if (!userFound) {
-						throw new Error("User not found");
+						throw new InvalidCredentials();
 					} else if (userFound.password === null) {
-						throw new Error("Please use the correct method to login");
+						throw new OAuthAccountNotLinked();
 					} else {
 						const matchPassword = await bcrypt.compare(
 							credentials.password,
@@ -62,7 +67,7 @@ const authConfig = {
 								role: userFound.role,
 							};
 						} else {
-							throw new Error("Invalid credentials");
+							throw new InvalidCredentials();
 						}
 					}
 				} catch (error) {

@@ -9,7 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { createOrder } from "@/app/(server)/actions/order";
 import { initiateKhaltiPayment } from "@/app/(server)/actions/payment";
 import {
@@ -24,8 +24,14 @@ import { useToast } from "@/hooks/use-toast";
 import { DialogComponent } from "@/components/DialogComponent";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createPayment } from "@/app/(server)/actions/payment";
+import { useSession } from "next-auth/react";
 
 export default function Cart() {
+	const { data: session } = useSession();
+	if (!session) {
+		return redirect("/login");
+	}
+
 	const router = useRouter();
 	const { cartItems, setCartItems } = useCart({});
 	const [totalPrice, setTotalPrice] = useState(0);
