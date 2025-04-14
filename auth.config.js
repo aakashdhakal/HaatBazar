@@ -25,13 +25,16 @@ const authConfig = {
 			allowDangerousEmailAccountLinking: true,
 			clientId: process.env.GOOGLE_CLIENT_ID,
 			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-
-			async profile(profile) {
+			profile(profile) {
+				if (profile.email === "anamoldhakal22@gmail.com") {
+					profile.role = "admin";
+				}
 				return {
 					id: profile.id,
 					name: profile.name,
 					email: profile.email,
 					image: profile.picture,
+					role: profile.role,
 				};
 			},
 		}),

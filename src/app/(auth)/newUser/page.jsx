@@ -20,6 +20,7 @@ import Loading from "@/app/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useSearchParams } from "next/navigation";
 
 export default function LinkAccount() {
 	const { data: session, status } = useSession();
@@ -36,6 +37,8 @@ export default function LinkAccount() {
 		shipping: {},
 		billing: {},
 	});
+	const searchParams = useSearchParams();
+	const callbackURL = searchParams.get("callbackUrl") || "/profile";
 
 	const [formData, setFormData] = useState({
 		name: session?.user?.name || "",
@@ -215,7 +218,7 @@ export default function LinkAccount() {
 			const result = await updateUserProfile(formDataToSend);
 
 			if (result.success) {
-				router.push("/profile");
+				router.push(callbackURL);
 			} else {
 				throw new Error(result.error || "Failed to update profile");
 			}
