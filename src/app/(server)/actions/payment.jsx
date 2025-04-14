@@ -62,15 +62,14 @@ export async function initiateKhaltiPayment(order) {
 
 export async function createPayment(payment) {
 	try {
-		const paymentDetails = {
+		const createdPayment = await Transaction.create({
 			transactionId: payment.transactionId,
 			amount: payment.amount,
 			paymentMethod: payment.paymentMethod,
-		};
-		console.log(paymentDetails);
-		const createdPayment = await Transaction.create(paymentDetails);
+		});
+
+		// Return just what you need, _id as string
 		return {
-			...createdPayment.toObject(),
 			_id: createdPayment._id.toString(),
 		};
 	} catch (error) {
@@ -81,6 +80,7 @@ export async function createPayment(payment) {
 
 export async function updatePaymentStatus(transactionId, status) {
 	try {
+		console.log("Updating payment status:", transactionId, status); // Debugging line
 		const payment = await Transaction.findOneAndUpdate(
 			{ transactionId },
 			{ status },

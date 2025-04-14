@@ -11,6 +11,7 @@ import { decodeData } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { updatePaymentStatus } from "@/app/(server)/actions/payment";
 import { clearCart } from "@/app/(server)/actions/cart";
+import { getOrderByTransactionId } from "@/app/(server)/actions/order";
 
 /**
  * OrdersPage Component - Renders a page displaying a user's order history
@@ -42,27 +43,39 @@ export default function OrdersPage() {
 			try {
 				await clearCart();
 				await updatePaymentStatus(orderId, status);
+				console.log("Order status updated successfully:", orderId, status);
 			} catch (error) {
 				console.error("Error updating order status:", error);
 			}
 		};
-		if (parameters.has("data") || parameters.has("status")) {
-			const searchParams = decodeData(parameters.get("data"));
-			switch (searchParams.status) {
-				case "COMPLETE":
-					//return order details from order array whose transactionUid matches searchParams.transactionUid
-					if (orders.length > 0) {
-						const latestOrder = orders.find(
-							(order) =>
-								order.paymentInfo.transactionUuid ===
-								searchParams.transaction_uuid,
-						);
-						if (latestOrder && latestOrder.status !== "paid") {
-							changeOrderStatus(latestOrder._id, "paid");
-						}
-					}
+
+		const getLatestOrder = async (transactionId) => {
+			try {
+				const order = await getOrderByTransactionId(transactionId);
+				return order;
+			} catch (error) {
+				console.error("Error fetching latest order:", error);
+				return null;
 			}
-		}
+		};
+
+		const handlePaymentUpdate = async () => {
+			if (parameters.has("data") || parameters.has("status")) {
+				const searchParams = decodeData(parameters.get("data"));
+				if (searchParams.status === "COMPLETE" && orders.length > 0) {
+					const latestOrder = await getLatestOrder(searchParams.transactionUid); // <-- awaited properly
+					if (latestOrder && latestOrder.status !== "paid") {
+						console.log("latestOrder", latestOrder);
+						await changeOrderStatus(
+							latestOrder.paymentInfo.transactionId,
+							"paid",
+						);
+					}
+				}
+			}
+		};
+
+		handlePaymentUpdate(); // call the async function
 	}, [orders, parameters]);
 
 	// Effect hook to fetch orders data when component mounts

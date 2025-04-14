@@ -7,8 +7,31 @@ const transactionSchema = new mongoose.Schema(
 			required: true,
 		},
 		amount: {
-			type: Number,
-			required: true,
+			product: {
+				type: Number,
+				required: true,
+				description: "Total price of products before fees/discounts",
+			},
+			shipping: {
+				type: Number,
+				default: 0,
+				description: "Shipping fee",
+			},
+			discount: {
+				type: Number,
+				default: 0,
+				description: "Discount applied (positive number)",
+			},
+			other: {
+				type: Number,
+				default: 0,
+				description: "Other fees (e.g. tax, processing)",
+			},
+			total: {
+				type: Number,
+				required: true,
+				description: "Final total amount charged",
+			},
 		},
 		paymentMethod: {
 			type: String,

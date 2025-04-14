@@ -636,6 +636,7 @@ export default function ProductsManagement() {
 			{/* Product Form Dialog */}
 			{showProductDialog && (
 				<DialogComponent
+					className=" min-w-[50vw]"
 					open={showProductDialog}
 					onClose={() => setShowProductDialog(false)}
 					title={currentProduct ? "Edit Product" : "Add New Product"}

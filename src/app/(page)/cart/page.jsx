@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, use } from "react";
 import CartProduct from "@/components/CartProduct";
 import { getCart, clearCart } from "@/app/(server)/actions/cart";
 import { Separator } from "@/components/ui/separator";
@@ -27,11 +27,6 @@ import { createPayment } from "@/app/(server)/actions/payment";
 import { useSession } from "next-auth/react";
 
 export default function Cart() {
-	const { data: session } = useSession();
-	if (!session) {
-		return redirect("/login");
-	}
-
 	const router = useRouter();
 	const { cartItems, setCartItems } = useCart({});
 	const [totalPrice, setTotalPrice] = useState(0);
@@ -149,7 +144,11 @@ export default function Cart() {
 		try {
 			const paymentResponse = await createPayment({
 				transactionId: transactionUuid,
-				amount: totalAmount,
+				amount: {
+					product: totalPrice,
+					shipping: shippingFee,
+					total: totalAmount,
+				},
 				paymentMethod,
 			});
 
@@ -164,7 +163,7 @@ export default function Cart() {
 				totalAmount,
 				paymentInfo: paymentResponse._id,
 			});
-
+			console.log("Order response:", orderResponse);
 			if (!orderResponse) {
 				throw new Error("Error placing order");
 			}

@@ -44,13 +44,14 @@ export async function getProductById(id) {
 
 export async function createProduct(data) {
 	await dbConnect();
-	console.log("Creating product with data:", data);
 	try {
+		console.log("Data received:", data); // Debugging line
 		// Upload the product image if provided
 		if (data.image && typeof data.image !== "string") {
 			const imagePath = await uploadProductImage(data.image, data.name);
 			data.image = imagePath; // Replace the File object with the file path
 		}
+		console.log("Data before saving:", data); // Debugging line
 
 		// Create the product with the updated data
 		const product = await Product.create(data);
@@ -70,6 +71,15 @@ export async function createProduct(data) {
 export async function updateProduct(id, data) {
 	await dbConnect();
 	try {
+		if (data.image && typeof data.image !== "string") {
+			// If there's an existing image, delete it first
+			const oldImagePath = await Product.findById(id).select("image");
+			if (oldImagePath && oldImagePath.image) {
+				await deleteProductImage(imagePath.image);
+			}
+			const imagePath = await uploadProductImage(data.image, data.name);
+			data.image = imagePath; // Replace the File object with the file path
+		}
 		const product = await Product.findByIdAndUpdate(id, data, { new: true });
 		if (!product) {
 			return { error: "Product not found", status: 404 };
@@ -104,49 +114,51 @@ export async function deleteProduct(id) {
 	}
 }
 
-export async function updateStock(stock) {
+export async function decreaseOrderStock(orderItems) {
 	await dbConnect();
+
 	try {
-		// Handle both single product and array of products
-		if (Array.isArray(stock)) {
-			// Handle multiple products
-			const updatePromises = stock.map((item) =>
-				Product.findByIdAndUpdate(item._id, {
-					countInStock: item.countInStock,
-				}),
-			);
+		// Convert single item to array for consistent processing
+		const items = Array.isArray(orderItems) ? orderItems : [orderItems];
 
-			const results = await Promise.all(updatePromises);
-			const notFoundCount = results.filter((r) => !r).length;
+		// Create bulk operations for efficient updates
+		const bulkOps = items.map((item) => ({
+			updateOne: {
+				filter: {
+					_id: item.product, // Product ID
+					countInStock: { $gte: item.quantity }, // Ensure sufficient stock
+				},
+				update: {
+					$inc: { countInStock: -item.quantity }, // Atomically decrement
+				},
+			},
+		}));
 
+		// Execute all updates in a single operation
+		const result = await Product.bulkWrite(bulkOps);
+
+		// Check if all updates were successful
+		console.log("Stock updated successfully:", result);
+		if (result.modifiedCount < items.length) {
+			const failedCount = items.length - result.modifiedCount;
 			return {
-				message: `Updated stock for ${
-					results.length - notFoundCount
-				} products successfully`,
-				notFound: notFoundCount > 0 ? notFoundCount : undefined,
-			};
-		} else {
-			// Handle single product
-			const product = await Product.findByIdAndUpdate(stock._id, {
-				countInStock: stock.countInStock,
-			});
-
-			if (!product) {
-				return { error: "Product not found", status: 404 };
-			}
-
-			return {
-				message: "Product stock updated successfully",
+				success: false,
+				message: `${failedCount} product(s) had insufficient stock or weren't found`,
+				updatedCount: result.modifiedCount,
 			};
 		}
+		return {
+			success: true,
+			message: `Stock decreased for ${result.modifiedCount} products`,
+			updatedCount: result.modifiedCount,
+		};
 	} catch (error) {
-		console.error("Error updating product stock:", error);
-		return new Response(
-			JSON.stringify({ error: "Failed to update product stock" }),
-			{
-				status: 500,
-			},
-		);
+		console.error("Error decreasing product stock:", error);
+		return {
+			success: false,
+			error: "Failed to update product stock",
+			details: error.message,
+		};
 	}
 }
 

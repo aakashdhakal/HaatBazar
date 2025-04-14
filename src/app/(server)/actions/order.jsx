@@ -3,7 +3,7 @@ import Order from "@/modals/orderModal";
 import dbConnect from "@/lib/db";
 import { auth } from "@/app/auth";
 import mongoose from "mongoose";
-import { updateStock } from "./products";
+import { decreaseOrderStock } from "./products";
 
 // Helper function to convert an order to a plain object
 function convertOrderToPlainObject(order) {
@@ -49,37 +49,17 @@ export async function createOrder(orderData) {
 			billingAddress: orderData.billingAddress,
 			shippingAddress: orderData.shippingAddress,
 			totalAmount: orderData.totalAmount,
-			paymentInfo: mongoose.Types.ObjectId(orderData.paymentInfo),
+			paymentInfo: orderData.paymentInfo,
 			status: "processing",
 		});
 
-		// Check for validation errors before saving
-		const validationError = newOrder.validateSync();
-		if (validationError) {
-			console.error(
-				"Validation errors:",
-				JSON.stringify(validationError.errors, null, 2),
-			);
-			return false;
-		}
-
 		// Save the new order to the database
 		const savedOrder = await newOrder.save();
-		await updateStock(orderData.products);
-		return { success: true, order: savedOrder };
+		await decreaseOrderStock(orderData.products);
+
+		return { success: true };
 	} catch (error) {
 		console.error("Error creating order:", error.message);
-
-		// Check for specific types of errors
-		if (error.name === "ValidationError") {
-			console.error(
-				"Validation error details:",
-				JSON.stringify(error.errors, null, 2),
-			);
-		} else if (error.name === "MongoServerError" && error.code === 11000) {
-			console.error("Duplicate key error:", error.keyValue);
-		}
-
 		return { success: false, error: error.message };
 	}
 }
@@ -180,6 +160,35 @@ export async function getOrderById(id) {
 	} catch (error) {
 		console.error("Error fetching order:", error);
 		return null; // Or throw an error, depending on your needs
+	}
+}
+
+export async function getOrderByTransactionId(transactionId) {
+	try {
+		await dbConnect();
+
+		const order = await Order.findOne({
+			"paymentInfo.transactionId": transactionId,
+		})
+			.populate({
+				path: "products.product",
+				select: "name price image brand category description",
+			})
+			.populate({
+				path: "paymentInfo",
+				select: "transactionId amount paymentMethod status",
+			})
+			.lean(); // Use lean() to return plain JavaScript objects
+
+		if (!order) {
+			console.error("Order not found for transactionId:", transactionId);
+			return null;
+		}
+
+		return convertOrderToPlainObject(order);
+	} catch (error) {
+		console.error("Error fetching order by transactionId:", error);
+		return null;
 	}
 }
 
