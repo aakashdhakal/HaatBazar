@@ -12,7 +12,8 @@ import { useSearchParams } from "next/navigation";
 import { updatePaymentStatus } from "@/app/(server)/actions/payment";
 import { clearCart } from "@/app/(server)/actions/cart";
 import { getOrderByTransactionId } from "@/app/(server)/actions/order";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 /**
  * OrdersPage Component - Renders a page displaying a user's order history
  *
