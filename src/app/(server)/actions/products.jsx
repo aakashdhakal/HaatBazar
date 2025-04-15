@@ -163,57 +163,78 @@ export async function decreaseOrderStock(orderItems) {
 	}
 }
 
-async function deleteProductImage(imagePath) {
-	// Construct the full path to the image file
-	const fullPath = path.join(process.cwd(), "public", imagePath);
+async function deleteProductImage(imageUrl) {
+	// Basic validation
+	if (!imageUrl) {
+		throw new Error("Invalid image URL");
+	}
 
 	try {
-		// Check if the file exists before attempting to delete it
-		if (fs.existsSync(fullPath)) {
-			await fs.promises.unlink(fullPath);
-			console.log(`Deleted image at ${fullPath}`);
+		// Make the POST request to the API
+		const response = await fetch(
+			"https://downloadmedia.aakashdhakal.com.np/api/delete-image",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ file_url: imageUrl }),
+			},
+		);
+
+		// Parse the JSON response
+		const responseData = await response.json();
+
+		// Check if the response indicates success
+		if (response.ok && responseData.success) {
+			console.log("Image deleted successfully:", imageUrl);
+			return true; // Indicate success
 		} else {
-			console.warn(`Image not found at ${fullPath}`);
+			throw new Error(
+				`Failed to delete image: ${responseData.error || "Unknown error"}`,
+			);
 		}
 	} catch (error) {
 		console.error("Error deleting product image:", error);
+		throw new Error("Failed to delete product image");
 	}
 }
+
 async function uploadProductImage(file, productName) {
 	// Basic validation
 	if (!file || !file.name || !file.data) {
 		throw new Error("Invalid file object");
 	}
 
-	// Sanitize productName and filename to avoid spaces & special chars
-	const safeProductName = productName.replace(/[^a-z0-9]/gi, "-").toLowerCase();
-	const fileExt = path.extname(file.name);
-	const baseFileName = path.basename(file.name, fileExt);
-	const safeFileName =
-		baseFileName.replace(/[^a-z0-9]/gi, "-").toLowerCase() + fileExt;
+	try {
+		// Prepare the payload for the API
+		const formData = new FormData();
+		formData.append("name", productName);
+		formData.append("image", file);
 
-	// Decode base64 string to binary buffer
-	const fileBuffer = Buffer.from(file.data, "base64");
+		// Make the POST request to the API
+		const response = await fetch(
+			"https://downloadmedia.aakashdhakal.com.np/api/upload-image",
+			{
+				method: "POST",
+				body: formData,
+			},
+		);
 
-	// Set up upload directories
-	const uploadDir = path.join(
-		process.cwd(),
-		"public",
-		"uploads",
-		safeProductName,
-	);
+		// Parse the JSON response
+		const responseData = await response.json();
 
-	// Create directory if it doesn't exist
-	if (!fs.existsSync(uploadDir)) {
-		fs.mkdirSync(uploadDir, { recursive: true });
+		// Check if the response contains the image URL
+		if (response.ok && responseData.image_url) {
+			console.log("Image uploaded successfully:", responseData.image_url);
+			return responseData.image_url; // Return the image URL
+		} else {
+			throw new Error(
+				`Failed to upload image: ${responseData.error || "Unknown error"}`,
+			);
+		}
+	} catch (error) {
+		console.error("Error uploading product image:", error);
+		throw new Error("Failed to upload product image");
 	}
-
-	// Final path to save the file
-	const filePath = path.join(uploadDir, safeFileName);
-
-	// Write file to disk
-	await fs.promises.writeFile(filePath, fileBuffer);
-
-	// Return relative path for frontend use
-	return `/uploads/${safeProductName}/${safeFileName}`;
 }
