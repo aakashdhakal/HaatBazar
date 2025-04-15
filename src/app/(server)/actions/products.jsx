@@ -4,6 +4,7 @@ import Product from "@/modals/productModal";
 import fs from "fs";
 import path from "path";
 import { Buffer } from "buffer";
+import slugify from "slugify";
 
 export default async function getAllProducts() {
 	await dbConnect();
@@ -180,30 +181,31 @@ async function deleteProductImage(imagePath) {
 }
 
 async function uploadProductImage(file, productName) {
-	// Validate the file object
 	if (!file || !file.name || !file.data) {
 		throw new Error("Invalid file object");
 	}
 
-	// Decode the base64 data into a buffer
+	// Decode base64 to buffer
 	const fileBuffer = Buffer.from(file.data, "base64");
 
-	// Create base uploads directory if it doesn't exist
+	// SLUGIFY EVERYTHING
+	const safeProductName = slugify(productName, { lower: true, strict: true });
+	const fileExt = path.extname(file.name);
+	const baseFileName = path.basename(file.name, fileExt);
+	const safeFileName =
+		slugify(baseFileName, { lower: true, strict: true }) + fileExt;
+
+	// Create directories
 	const uploadDir = path.join(process.cwd(), "public", "uploads");
-	if (!fs.existsSync(uploadDir)) {
-		fs.mkdirSync(uploadDir, { recursive: true });
-	}
+	const productDir = path.join(uploadDir, safeProductName);
 
-	// Create product-specific directory
-	const productDir = path.join(uploadDir, productName);
-	if (!fs.existsSync(productDir)) {
-		fs.mkdirSync(productDir, { recursive: true });
-	}
+	if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+	if (!fs.existsSync(productDir)) fs.mkdirSync(productDir, { recursive: true });
 
-	// Save file in the product directory
-	const filePath = path.join(productDir, file.name);
+	// Save the file
+	const filePath = path.join(productDir, safeFileName);
 	await fs.promises.writeFile(filePath, fileBuffer);
 
-	// Return the public path to the image
-	return `/uploads/${productName}/${file.name}`;
+	// Return a public-accessible URL
+	return `/uploads/${safeProductName}/${safeFileName}`;
 }

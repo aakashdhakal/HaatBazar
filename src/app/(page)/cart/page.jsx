@@ -36,7 +36,7 @@ export default function Cart() {
 		}
 	}, [status, router]);
 
-	if (status === "loading") return <p>Loading...</p>;
+	if (status === "loading") return null;
 	if (status === "authenticated") {
 		const { cartItems, setCartItems } = useCart({});
 		const [totalPrice, setTotalPrice] = useState(0);
