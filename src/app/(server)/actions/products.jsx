@@ -4,7 +4,6 @@ import Product from "@/modals/productModal";
 import fs from "fs";
 import path from "path";
 import { Buffer } from "buffer";
-import slugify from "slugify";
 
 export default async function getAllProducts() {
 	await dbConnect();
@@ -50,6 +49,7 @@ export async function createProduct(data) {
 		// Upload the product image if provided
 		if (data.image && typeof data.image !== "string") {
 			const imagePath = await uploadProductImage(data.image, data.name);
+			console.log("Image uploaded to:", imagePath); // Debugging line
 			data.image = imagePath; // Replace the File object with the file path
 		}
 		console.log("Data before saving:", data); // Debugging line
@@ -179,33 +179,41 @@ async function deleteProductImage(imagePath) {
 		console.error("Error deleting product image:", error);
 	}
 }
-
 async function uploadProductImage(file, productName) {
+	// Basic validation
 	if (!file || !file.name || !file.data) {
 		throw new Error("Invalid file object");
 	}
 
-	// Decode base64 to buffer
-	const fileBuffer = Buffer.from(file.data, "base64");
-
-	// SLUGIFY EVERYTHING
-	const safeProductName = slugify(productName, { lower: true, strict: true });
+	// Sanitize productName and filename to avoid spaces & special chars
+	const safeProductName = productName.replace(/[^a-z0-9]/gi, "-").toLowerCase();
 	const fileExt = path.extname(file.name);
 	const baseFileName = path.basename(file.name, fileExt);
 	const safeFileName =
-		slugify(baseFileName, { lower: true, strict: true }) + fileExt;
+		baseFileName.replace(/[^a-z0-9]/gi, "-").toLowerCase() + fileExt;
 
-	// Create directories
-	const uploadDir = path.join(process.cwd(), "public", "uploads");
-	const productDir = path.join(uploadDir, safeProductName);
+	// Decode base64 string to binary buffer
+	const fileBuffer = Buffer.from(file.data, "base64");
 
-	if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-	if (!fs.existsSync(productDir)) fs.mkdirSync(productDir, { recursive: true });
+	// Set up upload directories
+	const uploadDir = path.join(
+		process.cwd(),
+		"public",
+		"uploads",
+		safeProductName,
+	);
 
-	// Save the file
-	const filePath = path.join(productDir, safeFileName);
+	// Create directory if it doesn't exist
+	if (!fs.existsSync(uploadDir)) {
+		fs.mkdirSync(uploadDir, { recursive: true });
+	}
+
+	// Final path to save the file
+	const filePath = path.join(uploadDir, safeFileName);
+
+	// Write file to disk
 	await fs.promises.writeFile(filePath, fileBuffer);
 
-	// Return a public-accessible URL
+	// Return relative path for frontend use
 	return `/uploads/${safeProductName}/${safeFileName}`;
 }
