@@ -23,6 +23,7 @@ import getAllProducts, {
 	createProduct,
 	updateProduct,
 	deleteProduct,
+	uploadProductImage,
 } from "@/app/(server)/actions/products";
 
 export default function ProductsManagement() {
@@ -119,17 +120,19 @@ export default function ProductsManagement() {
 		setShowProductDialog(true);
 	};
 
-	// Handle product form submission
 	const handleProductSubmit = async () => {
 		try {
+			const formData = { ...productFormData };
+
 			if (currentProduct) {
-				await updateProduct(currentProduct._id, productFormData);
+				// If editing, update the product
+				await updateProduct(currentProduct._id, formData);
 				toast({
 					title: "Product updated",
 					description: "Product has been updated successfully",
 				});
 			} else {
-				await createProduct(productFormData);
+				await createProduct(formData);
 				toast({
 					title: "Product created",
 					description: "New product has been created successfully",
@@ -146,6 +149,13 @@ export default function ProductsManagement() {
 		}
 	};
 
+	// Pass the handleImageUpload function to ProductForm
+	const handleImageUpload = (file) => {
+		setProductFormData((prev) => ({
+			...prev,
+			image: file,
+		}));
+	};
 	// Handle product deletion
 	const handleDeleteProduct = async (productId) => {
 		try {
@@ -489,9 +499,9 @@ export default function ProductsManagement() {
 									{product.image ? (
 										<Image
 											src={
-												product.image.startsWith("/uploads")
+												product.image.startsWith("http")
 													? product.image
-													: `/uploads/${product.image}`
+													: `/images/${product.image}`
 											}
 											alt={product.name}
 											fill
@@ -649,6 +659,7 @@ export default function ProductsManagement() {
 							handleInputChange={handleInputChange}
 							imagePreview={imagePreview}
 							onSubmit={handleProductSubmit}
+							handleImageUpload={handleImageUpload} // Pass the function directly
 						/>
 					}
 				/>

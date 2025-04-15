@@ -6,48 +6,35 @@ import { Label } from "@/components/ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import Form from "next/form";
 
 export default function ProductForm({
 	productFormData,
 	handleInputChange,
 	imagePreview,
 	onSubmit,
+	handleImageUpload,
 }) {
 	const [image, setImage] = useState(imagePreview || null);
 
 	// Handle image upload
-	const handleImageUpload = (e) => {
+	const handleImageChange = (e) => {
 		const file = e.target.files[0];
 		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				setImage(reader.result);
-				handleInputChange({
-					target: {
-						name: "image",
-						value: {
-							name: file.name,
-							type: file.type,
-							data: reader.result.split(",")[1],
-						},
-					},
-				});
-			};
-			reader.readAsDataURL(file);
+			setImage(URL.createObjectURL(file)); // Preview the image
+			handleImageUpload(file); // Pass the file to the parent component
 		}
 	};
 
 	// Remove image
 	const removeImage = () => {
 		setImage(null);
-		handleInputChange({ target: { name: "image", value: "" } });
+		handleImageUpload(null); // Clear the image in the parent component
 	};
 
 	return (
-		<Form
+		<form
 			className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4"
-			action={onSubmit}>
+			onSubmit={onSubmit}>
 			{/* Image Upload Section */}
 			<div className="flex flex-col gap-4">
 				<div className="bg-gray-100 rounded-lg p-2 flex flex-col items-center justify-center w-70 h-full">
@@ -77,7 +64,7 @@ export default function ProductForm({
 									type="file"
 									accept="image/*"
 									className="hidden"
-									onChange={handleImageUpload}
+									onChange={handleImageChange} // Correctly handle the file input
 								/>
 							</Label>
 						</div>
@@ -199,6 +186,6 @@ export default function ProductForm({
 			<div className="md:col-span-3 flex justify-end">
 				<Button type="submit">Submit</Button>
 			</div>
-		</Form>
+		</form>
 	);
 }

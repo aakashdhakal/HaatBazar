@@ -80,7 +80,6 @@ export async function createPayment(payment) {
 
 export async function updatePaymentStatus(transactionId, status) {
 	try {
-		console.log("Updating payment status:", transactionId, status); // Debugging line
 		const payment = await Transaction.findOneAndUpdate(
 			{ transactionId },
 			{ status },

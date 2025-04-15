@@ -4,6 +4,7 @@ import Product from "@/modals/productModal";
 import fs from "fs";
 import path from "path";
 import { Buffer } from "buffer";
+import { generateFileName } from "@/lib/utils";
 
 export default async function getAllProducts() {
 	await dbConnect();
@@ -45,14 +46,13 @@ export async function getProductById(id) {
 export async function createProduct(data) {
 	await dbConnect();
 	try {
-		console.log("Data received:", data); // Debugging line
+		console.log("Data received in createProduct:", data); // Debugging line
+
 		// Upload the product image if provided
 		if (data.image && typeof data.image !== "string") {
 			const imagePath = await uploadProductImage(data.image, data.name);
-			console.log("Image uploaded to:", imagePath); // Debugging line
 			data.image = imagePath; // Replace the File object with the file path
 		}
-		console.log("Data before saving:", data); // Debugging line
 
 		// Create the product with the updated data
 		const product = await Product.create(data);
@@ -139,7 +139,6 @@ export async function decreaseOrderStock(orderItems) {
 		const result = await Product.bulkWrite(bulkOps);
 
 		// Check if all updates were successful
-		console.log("Stock updated successfully:", result);
 		if (result.modifiedCount < items.length) {
 			const failedCount = items.length - result.modifiedCount;
 			return {
@@ -187,7 +186,6 @@ async function deleteProductImage(imageUrl) {
 
 		// Check if the response indicates success
 		if (response.ok && responseData.success) {
-			console.log("Image deleted successfully:", imageUrl);
 			return true; // Indicate success
 		} else {
 			throw new Error(
@@ -202,15 +200,21 @@ async function deleteProductImage(imageUrl) {
 
 async function uploadProductImage(file, productName) {
 	// Basic validation
-	if (!file || !file.name || !file.data) {
+	if (!file || !file.name || !file.size) {
 		throw new Error("Invalid file object");
 	}
 
 	try {
+		console.log("File data:", file); // Debugging line
+		console.log("ProductName:", productName); // Debugging line
+
 		// Prepare the payload for the API
 		const formData = new FormData();
-		formData.append("name", productName);
-		formData.append("image", file);
+		const fileName = generateFileName(productName);
+		formData.append("name", fileName);
+		formData.append("image", file); // Append the file object directly
+
+		console.log("FormData prepared:", formData); // Debugging line
 
 		// Make the POST request to the API
 		const response = await fetch(
@@ -226,7 +230,6 @@ async function uploadProductImage(file, productName) {
 
 		// Check if the response contains the image URL
 		if (response.ok && responseData.image_url) {
-			console.log("Image uploaded successfully:", responseData.image_url);
 			return responseData.image_url; // Return the image URL
 		} else {
 			throw new Error(

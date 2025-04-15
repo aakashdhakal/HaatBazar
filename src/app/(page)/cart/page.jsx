@@ -174,7 +174,6 @@ export default function Cart() {
 					totalAmount,
 					paymentInfo: paymentResponse._id,
 				});
-				console.log("Order response:", orderResponse);
 				if (!orderResponse) {
 					throw new Error("Error placing order");
 				}

@@ -8,7 +8,6 @@ const seedDatabase = async () => {
         await mongoose.connect(process.env.MONGODB_URI);
         await Product.deleteMany();
         await Product.insertMany(products);
-        console.log('Database seeded successfully!');
         process.exit();
     } catch (error) {
         console.error('Error seeding database:', error);

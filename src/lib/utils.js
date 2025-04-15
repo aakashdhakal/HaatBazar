@@ -1,6 +1,7 @@
 import { HmacSHA256 } from "crypto-js";
 import Base64 from "crypto-js/enc-base64";
 import geoNepal from "./geoNepal.json";
+import slugify from "slugify";
 
 export function cn(...classes) {
 	return classes.filter(Boolean).join(" ");
@@ -63,4 +64,15 @@ export const formatDateOfBirth = (dateString) => {
 		month: "long",
 		day: "numeric",
 	});
+};
+
+export const generateFileName = (name) => {
+	name = slugify(name, {
+		lower: true,
+		strict: true,
+	});
+	const timestamp = Date.now();
+	const randomNum = Math.floor(Math.random() * 1000);
+	const fileName = `${name}-${timestamp}-${randomNum}`;
+	return fileName;
 };

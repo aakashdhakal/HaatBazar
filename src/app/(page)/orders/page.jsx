@@ -53,7 +53,6 @@ export default function OrdersPage() {
 				try {
 					await clearCart();
 					await updatePaymentStatus(orderId, status);
-					console.log("Order status updated successfully:", orderId, status);
 				} catch (error) {
 					console.error("Error updating order status:", error);
 				}
@@ -77,7 +76,6 @@ export default function OrdersPage() {
 							searchParams.transactionUid,
 						); // <-- awaited properly
 						if (latestOrder && latestOrder.status !== "paid") {
-							console.log("latestOrder", latestOrder);
 							await changeOrderStatus(
 								latestOrder.paymentInfo.transactionId,
 								"paid",
