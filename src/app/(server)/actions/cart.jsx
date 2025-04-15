@@ -59,15 +59,29 @@ export async function getCart() {
 		// Get the products in the cart
 		const products = await Promise.all(
 			cart.products.map(async (item) => {
-				const product = await getProductById(item.productId);
-				return {
-					...product,
-					_id: product._id.toString(),
-					quantity: item.quantity,
-				};
+				try {
+					const product = await getProductById(item.productId);
+					if (!product) {
+						console.warn(`Product not found for ID: ${item.productId}`);
+						return null; // Skip invalid products
+					}
+					return {
+						...product,
+						_id: product._id.toString(),
+						quantity: item.quantity,
+					};
+				} catch (error) {
+					console.error(
+						`Error fetching product with ID: ${item.productId}`,
+						error,
+					);
+					return null; // Skip products that cause errors
+				}
 			}),
 		);
-		return products;
+
+		// Filter out null values (invalid products)
+		return products.filter((product) => product !== null);
 	}
 }
 
