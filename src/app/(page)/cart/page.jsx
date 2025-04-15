@@ -27,7 +27,8 @@ import { createPayment } from "@/app/(server)/actions/payment";
 import { useSession } from "next-auth/react";
 
 export default function Cart() {
-	const router = useRouter();
+	const { data: session, status } = useSession();
+
 	const { cartItems, setCartItems } = useCart({});
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [paymentMethod, setPaymentMethod] = useState("esewa");
