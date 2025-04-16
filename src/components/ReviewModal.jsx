@@ -53,7 +53,7 @@ export function ReviewModal({
 			toast({
 				title: "Login required",
 				description: "Please login to submit a review",
-				variant: "destructive",
+				variant: "error",
 			});
 			return;
 		}
@@ -90,7 +90,7 @@ export function ReviewModal({
 			toast({
 				title: "Failed to submit review",
 				description: err.message || "Please try again",
-				variant: "destructive",
+				variant: "error",
 			});
 		} finally {
 			setLoading(false);

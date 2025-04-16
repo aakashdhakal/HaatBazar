@@ -4,17 +4,32 @@ import getAllProducts from "@/app/(server)/actions/products";
 import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@iconify/react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
 	const products = await getAllProducts();
 	let session = await auth();
 
-	// Get featured products
+	// Get featured products (deals)
 	const featuredProducts = products.slice(0, 4);
 	// Get fresh arrivals
 	const freshArrivals = products.slice(4, 10);
 
-	// Grocery categories
+	// Get category-specific products
+	const vegetables = products
+		.filter((product) => product.category?.toLowerCase() === "vegetables")
+		.slice(0, 4);
+	const fruits = products
+		.filter((product) => product.category?.toLowerCase() === "fruits")
+		.slice(0, 4);
+
+	// Get highest rated products
+	const bestSellers = [...products]
+		.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+		.slice(0, 4);
+
+	// Grocery categories - using the existing ones
 	const categories = [
 		{
 			name: "Vegetables",
@@ -46,12 +61,22 @@ export default async function Home() {
 			icon: "mdi:food-apple",
 			color: "bg-secondary/10 text-secondary",
 		},
+		{
+			name: "Pantry",
+			icon: "mdi:spice",
+			color: "bg-primary/10 text-primary",
+		},
+		{
+			name: "Meat & Seafood",
+			icon: "mdi:fish",
+			color: "bg-secondary/10 text-secondary",
+		},
 	];
 
 	return (
 		<main className="min-h-screen bg-gray-50 container mx-auto">
-			{/* Hero Section */}
-			<section className="bg-white">
+			{/* Hero Section with Search */}
+			<section className="bg-white rounded-lg overflow-hidden">
 				<div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
 					<div className="flex flex-col md:flex-row items-center">
 						<div className="md:w-1/2 p-8 md:p-12 flex flex-col gap-4">
@@ -61,6 +86,7 @@ export default async function Home() {
 							<h1 className="text-3xl md:text-4xl font-bold text-gray-900">
 								Fresh Groceries Delivered to Your Door
 							</h1>
+
 							<p className="text-gray-600">
 								Order fresh vegetables, fruits, and daily essentials with quick
 								delivery in under 30 minutes.
@@ -103,10 +129,10 @@ export default async function Home() {
 				</div>
 			</section>
 
-			{/* Categories */}
-			<section className="py-8 bg-white mt-4 rounded-lg">
+			{/* Categories - Prominently placed for better ecommerce navigation */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
 				<div className="">
-					<div className="flex justify-between items-center mb-5">
+					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-gray-900">
 							Shop by Category
 						</h2>
@@ -117,20 +143,20 @@ export default async function Home() {
 						</Link>
 					</div>
 
-					<div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4">
+					<div className="grid grid-cols-4 md:grid-cols-8 gap-2 md:gap-3">
 						{categories.map((category) => (
 							<Link
 								key={category.name}
 								href={`/category/${category.name.toLowerCase()}`}>
-								<div className="flex flex-col items-center p-3 rounded-lg hover:shadow-md transition-all bg-white border border-gray-100 hover:border-primary/20">
+								<div className="flex flex-col items-center p-2 rounded-lg hover:shadow-md transition-all bg-white border border-gray-100 hover:border-primary/20">
 									<div
-										className={`w-12 h-12 md:w-14 md:h-14 ${category.color} rounded-full flex items-center justify-center mb-2`}>
+										className={`w-10 h-10 md:w-12 md:h-12 ${category.color} rounded-full flex items-center justify-center mb-1`}>
 										<Icon
 											icon={category.icon}
-											className="w-6 h-6 md:w-7 md:h-7"
+											className="w-5 h-5 md:w-6 md:h-6"
 										/>
 									</div>
-									<span className="font-medium text-sm md:text-base text-center">
+									<span className="font-medium text-xs md:text-sm text-center">
 										{category.name}
 									</span>
 								</div>
@@ -141,7 +167,7 @@ export default async function Home() {
 			</section>
 
 			{/* Quick Offers Banner */}
-			<section className="py-4 bg-white mt-4 rounded-lg">
+			<section className="py-3 bg-white mt-4 rounded-lg">
 				<div className="">
 					<div className="bg-secondary/10 border border-secondary/20 rounded-lg p-3 flex items-center gap-3">
 						<Icon icon="mdi:timer-sand" className="w-6 h-6 text-secondary" />
@@ -153,6 +179,11 @@ export default async function Home() {
 								Use code FRESH15 for 15% off on your first order
 							</p>
 						</div>
+						<Link
+							href="/offers"
+							className="ml-auto bg-secondary text-white px-3 py-1.5 rounded-md text-sm hover:bg-secondary/90 transition-colors whitespace-nowrap">
+							Shop Offers
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -160,7 +191,7 @@ export default async function Home() {
 			{/* Today's Deals */}
 			<section className="py-6 bg-white mt-4 rounded-lg">
 				<div className="">
-					<div className="flex justify-between items-center mb-5">
+					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-gray-900">
 							Today&apos;s Deals
 						</h2>
@@ -179,11 +210,103 @@ export default async function Home() {
 				</div>
 			</section>
 
+			{/* Category Products - Vegetables (New ecommerce-focused section) */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
+				<div className="">
+					<div className="flex justify-between items-center mb-4">
+						<div className="flex items-center gap-2">
+							<div className="bg-primary/10 p-2 rounded-full">
+								<Icon icon="mdi:carrot" className="w-5 h-5 text-primary" />
+							</div>
+							<h2 className="text-xl font-bold text-gray-900">
+								Fresh Vegetables
+							</h2>
+						</div>
+						<Link
+							href="/category/vegetables"
+							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
+							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
+						</Link>
+					</div>
+
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						{vegetables.length > 0
+							? vegetables.map((product) => (
+									<ProductCard key={product._id} product={product} />
+							  ))
+							: featuredProducts
+									.slice(0, 4)
+									.map((product) => (
+										<ProductCard key={product._id} product={product} />
+									))}
+					</div>
+				</div>
+			</section>
+
+			{/* Category Products - Fruits (New ecommerce-focused section) */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
+				<div className="">
+					<div className="flex justify-between items-center mb-4">
+						<div className="flex items-center gap-2">
+							<div className="bg-secondary/10 p-2 rounded-full">
+								<Icon
+									icon="game-icons:fruit-bowl"
+									className="w-5 h-5 text-secondary"
+								/>
+							</div>
+							<h2 className="text-xl font-bold text-gray-900">Fresh Fruits</h2>
+						</div>
+						<Link
+							href="/category/fruits"
+							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
+							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
+						</Link>
+					</div>
+
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						{fruits.length > 0
+							? fruits.map((product) => (
+									<ProductCard key={product._id} product={product} />
+							  ))
+							: freshArrivals
+									.slice(0, 4)
+									.map((product) => (
+										<ProductCard key={product._id} product={product} />
+									))}
+					</div>
+				</div>
+			</section>
+
+			{/* Best Sellers - New ecommerce-focused section */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
+				<div className="">
+					<div className="flex justify-between items-center mb-4">
+						<div className="flex items-center gap-2">
+							<div className="bg-primary/10 p-2 rounded-full">
+								<Icon icon="mdi:star" className="w-5 h-5 text-primary" />
+							</div>
+							<h2 className="text-xl font-bold text-gray-900">Best Sellers</h2>
+						</div>
+						<Link
+							href="/best-sellers"
+							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
+							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
+						</Link>
+					</div>
+
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						{bestSellers.map((product) => (
+							<ProductCard key={product._id} product={product} />
+						))}
+					</div>
+				</div>
+			</section>
+
 			{/* Fresh Arrivals */}
 			<section className="py-6 bg-white mt-4 rounded-lg">
 				<div className="">
-					<div className="flex justify-between items-center mb-5">
-						<h2 className="text-xl font-bold text-gray-900">Fresh Arrivals</h2>
+					<div className="flex justify-between items-center mb-4">
+						<h2 className="text-xl font-bold text-gray-900">New Arrivals</h2>
 						<Link
 							href="/fresh"
 							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
@@ -199,79 +322,183 @@ export default async function Home() {
 				</div>
 			</section>
 
-			{/* Features */}
-			<section className="py-8 bg-white mt-4 rounded-lg">
+			{/* Shop by Price - New ecommerce-focused section */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
+				<div className="">
+					<div className="flex justify-between items-center mb-4">
+						<h2 className="text-xl font-bold text-gray-900">Shop by Price</h2>
+					</div>
+
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+						{[
+							{ label: "Under ₹100", range: "0-100", icon: "mdi:currency-inr" },
+							{
+								label: "₹100 - ₹250",
+								range: "100-250",
+								icon: "mdi:currency-inr",
+							},
+							{
+								label: "₹250 - ₹500",
+								range: "250-500",
+								icon: "mdi:currency-inr",
+							},
+							{
+								label: "₹500 & Above",
+								range: "500-max",
+								icon: "mdi:currency-inr",
+							},
+						].map((item) => (
+							<Link
+								key={item.range}
+								href={`/price/${item.range}`}
+								className="flex items-center gap-3 p-4 border border-gray-100 rounded-lg hover:border-primary/20 hover:shadow-sm transition-colors bg-gray-50">
+								<div className="bg-primary/10 p-2 rounded-full">
+									<Icon icon={item.icon} className="w-5 h-5 text-primary" />
+								</div>
+								<span className="font-medium">{item.label}</span>
+							</Link>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* Features - Same as original but with added "Shop Now" links */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
 				<div className="">
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						<div className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:border-primary/20 transition-colors">
-							<div className="bg-primary/10 p-2 rounded-full">
-								<Icon
-									icon="mdi:truck-fast-outline"
-									className="w-5 h-5 text-primary"
-								/>
+						<div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-lg hover:border-primary/20 transition-colors">
+							<div className="flex items-center gap-3">
+								<div className="bg-primary/10 p-2 rounded-full">
+									<Icon
+										icon="mdi:truck-fast-outline"
+										className="w-5 h-5 text-primary"
+									/>
+								</div>
+								<div>
+									<h3 className="font-medium text-sm">Express Delivery</h3>
+									<p className="text-gray-500 text-xs">In under 30 minutes</p>
+								</div>
 							</div>
-							<div>
-								<h3 className="font-medium text-sm">Express Delivery</h3>
-								<p className="text-gray-500 text-xs">In under 30 minutes</p>
-							</div>
+							<Link
+								href="/products"
+								className="text-primary text-xs font-medium hover:underline mt-auto">
+								Shop Now
+							</Link>
 						</div>
-						<div className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:border-secondary/20 transition-colors">
-							<div className="bg-secondary/10 p-2 rounded-full">
-								<Icon icon="mdi:leaf" className="w-5 h-5 text-secondary" />
+						<div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-lg hover:border-secondary/20 transition-colors">
+							<div className="flex items-center gap-3">
+								<div className="bg-secondary/10 p-2 rounded-full">
+									<Icon icon="mdi:leaf" className="w-5 h-5 text-secondary" />
+								</div>
+								<div>
+									<h3 className="font-medium text-sm">Fresh Produce</h3>
+									<p className="text-gray-500 text-xs">Farm to table quality</p>
+								</div>
 							</div>
-							<div>
-								<h3 className="font-medium text-sm">Fresh Produce</h3>
-								<p className="text-gray-500 text-xs">Farm to table quality</p>
-							</div>
+							<Link
+								href="/category/vegetables"
+								className="text-secondary text-xs font-medium hover:underline mt-auto">
+								Shop Vegetables
+							</Link>
 						</div>
-						<div className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:border-primary/20 transition-colors">
-							<div className="bg-primary/10 p-2 rounded-full">
-								<Icon
-									icon="mdi:tag-multiple"
-									className="w-5 h-5 text-primary"
-								/>
+						<div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-lg hover:border-primary/20 transition-colors">
+							<div className="flex items-center gap-3">
+								<div className="bg-primary/10 p-2 rounded-full">
+									<Icon
+										icon="mdi:tag-multiple"
+										className="w-5 h-5 text-primary"
+									/>
+								</div>
+								<div>
+									<h3 className="font-medium text-sm">Best Prices</h3>
+									<p className="text-gray-500 text-xs">Wholesale rates daily</p>
+								</div>
 							</div>
-							<div>
-								<h3 className="font-medium text-sm">Best Prices</h3>
-								<p className="text-gray-500 text-xs">Wholesale rates daily</p>
-							</div>
+							<Link
+								href="/deals"
+								className="text-primary text-xs font-medium hover:underline mt-auto">
+								View Deals
+							</Link>
 						</div>
-						<div className="flex items-center gap-3 p-3 border border-gray-100 rounded-lg hover:border-secondary/20 transition-colors">
-							<div className="bg-secondary/10 p-2 rounded-full">
-								<Icon
-									icon="mdi:cash-refund"
-									className="w-5 h-5 text-secondary"
-								/>
+						<div className="flex flex-col gap-3 p-4 border border-gray-100 rounded-lg hover:border-secondary/20 transition-colors">
+							<div className="flex items-center gap-3">
+								<div className="bg-secondary/10 p-2 rounded-full">
+									<Icon
+										icon="mdi:cash-refund"
+										className="w-5 h-5 text-secondary"
+									/>
+								</div>
+								<div>
+									<h3 className="font-medium text-sm">Easy Returns</h3>
+									<p className="text-gray-500 text-xs">No questions asked</p>
+								</div>
 							</div>
-							<div>
-								<h3 className="font-medium text-sm">Easy Returns</h3>
-								<p className="text-gray-500 text-xs">No questions asked</p>
-							</div>
+							<Link
+								href="/customer-service"
+								className="text-secondary text-xs font-medium hover:underline mt-auto">
+								Learn More
+							</Link>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Download App Section */}
-			<section className="py-8 bg-white mt-4 mb-8 rounded-lg">
-				<div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-6 flex flex-col items-center justify-center">
-					<h2 className="text-xl font-bold mb-2">Download the HaatBazar App</h2>
-					<p className="text-gray-600 mb-4 max-w-md">
-						Get exclusive offers and track your orders in real-time
-					</p>
-					<div className="flex gap-3">
-						<Link
-							href="#"
-							className="flex items-center gap-2 bg-primary text-white py-2 px-4 rounded">
-							<Icon icon="mdi:apple" className="w-5 h-5" />
-							<span>App Store</span>
-						</Link>
-						<Link
-							href="#"
-							className="flex items-center gap-2 bg-secondary text-white py-2 px-4 rounded">
-							<Icon icon="mdi:google-play" className="w-5 h-5" />
-							<span>Google Play</span>
-						</Link>
+			{/* Download App Section - Condensed with more shopping focus */}
+			<section className="py-6 bg-white mt-4 mb-6 rounded-lg">
+				<div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-6">
+					<div className="flex flex-col md:flex-row items-center justify-between">
+						<div className="mb-4 md:mb-0">
+							<h2 className="text-xl font-bold mb-2">Download Our App</h2>
+							<p className="text-gray-600 mb-4 max-w-md">
+								Get exclusive offers and track your orders in real-time
+							</p>
+							<div className="flex gap-3">
+								<Link
+									href="#"
+									className="flex items-center gap-2 bg-primary text-white py-2 px-4 rounded">
+									<Icon icon="mdi:apple" className="w-5 h-5" />
+									<span>App Store</span>
+								</Link>
+								<Link
+									href="#"
+									className="flex items-center gap-2 bg-secondary text-white py-2 px-4 rounded">
+									<Icon icon="mdi:google-play" className="w-5 h-5" />
+									<span>Google Play</span>
+								</Link>
+							</div>
+						</div>
+
+						<div className="flex gap-4">
+							<div className="text-center">
+								<div className="bg-white p-3 rounded-full shadow-sm mb-2">
+									<Icon
+										icon="mdi:phone-check"
+										className="w-6 h-6 text-primary"
+									/>
+								</div>
+								<p className="text-sm font-medium">Quick Ordering</p>
+							</div>
+
+							<div className="text-center">
+								<div className="bg-white p-3 rounded-full shadow-sm mb-2">
+									<Icon
+										icon="mdi:map-marker"
+										className="w-6 h-6 text-secondary"
+									/>
+								</div>
+								<p className="text-sm font-medium">Order Tracking</p>
+							</div>
+
+							<div className="text-center">
+								<div className="bg-white p-3 rounded-full shadow-sm mb-2">
+									<Icon
+										icon="mdi:ticket-percent"
+										className="w-6 h-6 text-primary"
+									/>
+								</div>
+								<p className="text-sm font-medium">Exclusive Deals</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>

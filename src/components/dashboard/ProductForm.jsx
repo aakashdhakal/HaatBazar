@@ -7,6 +7,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Form from "next/form";
+import SelectComponent from "../Select";
 
 export default function ProductForm({
 	productFormData,
@@ -17,6 +18,21 @@ export default function ProductForm({
 	loading,
 }) {
 	const [image, setImage] = useState(imagePreview || null);
+
+	// Predefined categories
+	const categories = [
+		{ label: "Vegetables", value: "Vegetables" },
+		{ label: "Fruits", value: "Fruits" },
+		{ label: "Dairy", value: "Dairy" },
+		{ label: "Bakery", value: "Bakery" },
+		{ label: "Beverages", value: "Beverages" },
+		{ label: "Snacks", value: "Snacks" },
+		{ label: "Pantry", value: "Pantry" },
+		{ label: "Meat & Seafood", value: "Meat & Seafood" },
+		{ label: "Frozen Foods", value: "Frozen Foods" },
+		{ label: "Personal Care", value: "Personal Care" },
+		{ label: "Household", value: "Household" },
+	];
 
 	// Handle image upload
 	const handleImageChange = (e) => {
@@ -31,6 +47,16 @@ export default function ProductForm({
 	const removeImage = () => {
 		setImage(null);
 		handleImageUpload(null); // Clear the image in the parent component
+	};
+
+	// Handle category selection and format it correctly for the parent component
+	const handleCategoryChange = (value) => {
+		handleInputChange({
+			target: {
+				name: "category",
+				value: value,
+			},
+		});
 	};
 
 	return (
@@ -125,16 +151,16 @@ export default function ProductForm({
 					/>
 				</div>
 
+				{/* REPLACED: Category input with select dropdown */}
 				<div className="flex flex-col gap-2">
 					<Label htmlFor="category" className="text-sm font-medium">
 						Category <span className="text-red-500">*</span>
 					</Label>
-					<Input
-						id="category"
-						name="category"
+					<SelectComponent
+						label="Select category"
+						options={categories}
 						value={productFormData.category}
-						onChange={handleInputChange}
-						placeholder="Enter product category"
+						onValueChange={handleCategoryChange}
 						required
 					/>
 				</div>

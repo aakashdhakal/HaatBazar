@@ -100,7 +100,7 @@ export default function SearchPage() {
 			}, 800);
 		} catch (err) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: "Failed to fetch search results. Please try again.",
 			});
@@ -158,10 +158,11 @@ export default function SearchPage() {
 			toast({
 				title: "Added to cart",
 				description: "Item has been added to your cart",
+				variant: "success",
 			});
 		} catch (err) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: err.message || "Failed to add item to cart",
 			});
@@ -174,7 +175,7 @@ export default function SearchPage() {
 	const handleAddToWishlist = async (productId) => {
 		if (!session) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Authentication required",
 				description: "Please login to save items to your wishlist",
 			});
@@ -190,10 +191,11 @@ export default function SearchPage() {
 			toast({
 				title: "Added to wishlist",
 				description: "Item has been added to your wishlist",
+				variant: "success",
 			});
 		} catch (err) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: err.message || "Failed to add item to wishlist",
 			});

@@ -11,11 +11,27 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import UserAvatar from "@/components/UserAvatar";
+import { getCurrentUser } from "@/app/(server)/actions/users";
 
 export default function DashboardSidebar({ collapsed, setCollapsed }) {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const pathname = usePathname();
 	const [mounted, setMounted] = useState(false);
+	const [user, setUser] = useState(null);
+
+	// Add this effect to fetch the database user
+	useEffect(() => {
+		const fetchUser = async () => {
+			if (status === "authenticated") {
+				const userData = await getCurrentUser();
+				console.log("User data:", userData);
+				if (userData) {
+					setUser(userData);
+				}
+			}
+		};
+		fetchUser();
+	}, [status]);
 
 	// Fix hydration issues
 	useEffect(() => {
@@ -198,15 +214,11 @@ export default function DashboardSidebar({ collapsed, setCollapsed }) {
 						"flex items-center gap-3 rounded-md bg-gray-50 p-3",
 						collapsed && "justify-center p-2",
 					)}>
-					<UserAvatar src={session.user.profilePic} />
+					<UserAvatar src={user?.image} />
 					{!collapsed && (
 						<div className="min-w-0 flex-1">
-							<p className="truncate text-sm font-medium">
-								{session?.user?.name}
-							</p>
-							<p className="truncate text-xs text-gray-500">
-								{session?.user?.email}
-							</p>
+							<p className="truncate text-sm font-medium">{user?.name}</p>
+							<p className="truncate text-xs text-gray-500">{user?.email}</p>
 						</div>
 					)}
 				</div>

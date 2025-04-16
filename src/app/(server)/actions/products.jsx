@@ -14,6 +14,7 @@ export default async function getAllProducts() {
 		//convert this to plain object and convert _id to string
 		return products.map((product) => ({
 			...product.toObject(),
+			category: product.category,
 			_id: product._id.toString(),
 		}));
 	} catch (error) {
@@ -160,5 +161,42 @@ export async function decreaseOrderStock(orderItems) {
 			error: "Failed to update product stock",
 			details: error.message,
 		};
+	}
+}
+
+export async function getProductsByCategory(category) {
+	await dbConnect();
+	try {
+		// Create a regex pattern that:
+		// 1. Ignores case sensitivity (i flag)
+		// 2. Makes the trailing 's' optional to handle singular/plural
+		// We'll also remove any hyphens and replace with spaces for slug compatibility
+		const searchCategory = category.replace(/-/g, " ");
+
+		// This pattern handles both singular and plural forms:
+		// - If category ends with 's', it matches the exact plural or without the 's'
+		// - If category doesn't end with 's', it matches the exact singular or with 's' added
+		const regexPattern = searchCategory.endsWith("s")
+			? `^${searchCategory}$|^${searchCategory.slice(0, -1)}$`
+			: `^${searchCategory}$|^${searchCategory}s$`;
+
+		const products = await Product.find({
+			category: { $regex: new RegExp(regexPattern, "i") },
+		});
+
+		if (!products || products.length === 0) {
+			return { error: "No products found in this category", status: 404 };
+		}
+
+		return products.map((product) => ({
+			...product.toObject(),
+			_id: product._id.toString(),
+		}));
+	} catch (error) {
+		console.error("Error fetching products by category:", error);
+		return new Response(
+			JSON.stringify({ error: "Failed to fetch products by category" }),
+			{ status: 500 },
+		);
 	}
 }

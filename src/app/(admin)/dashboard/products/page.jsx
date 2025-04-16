@@ -73,7 +73,7 @@ export default function ProductsManagement() {
 			}
 		} catch (error) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: "Failed to fetch products",
 			});
@@ -131,6 +131,7 @@ export default function ProductsManagement() {
 				toast({
 					title: "Product updated",
 					description: "Product has been updated successfully",
+					variant:"success",
 				});
 			} else {
 				// If creating, create a new product
@@ -138,13 +139,14 @@ export default function ProductsManagement() {
 				toast({
 					title: "Product created",
 					description: "New product has been created successfully",
+					variant:"success",
 				});
 			}
 			setShowProductDialog(false);
 			fetchProducts();
 		} catch (error) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: error.message || "Failed to save product",
 			});
@@ -167,11 +169,12 @@ export default function ProductsManagement() {
 			toast({
 				title: "Product deleted",
 				description: "Product has been deleted successfully",
+				variant: "success",
 			});
 			fetchProducts();
 		} catch (error) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: "Failed to delete product",
 			});
@@ -185,12 +188,13 @@ export default function ProductsManagement() {
 			toast({
 				title: "Products deleted",
 				description: `${selectedProducts.length} products have been deleted`,
+				variant: "success",
 			});
 			setSelectedProducts([]);
 			fetchProducts();
 		} catch (error) {
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: "Failed to delete products",
 			});

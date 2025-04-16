@@ -91,17 +91,17 @@ export function NavBar() {
 				{/* Desktop Navigation - Updated with brand colors */}
 				<div className="hidden md:flex items-center space-x-6">
 					<Link
-						href="/vegetables"
+						href="/category/vegetables"
 						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
 						Vegetables
 					</Link>
 					<Link
-						href="/fruits"
+						href="/category/fruits"
 						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
 						Fruits
 					</Link>
 					<Link
-						href="/dairy"
+						href="/category/dairy"
 						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
 						Dairy
 					</Link>

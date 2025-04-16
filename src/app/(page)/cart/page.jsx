@@ -64,7 +64,7 @@ export default function Cart() {
 			} catch (error) {
 				console.error("Failed to fetch cart items:", error);
 				toast({
-					variant: "destructive",
+					variant: "error",
 					title: "Error",
 					description: "Failed to load your cart. Please try again.",
 				});
@@ -118,7 +118,7 @@ export default function Cart() {
 			} catch (error) {
 				console.error("Failed to fetch addresses:", error);
 				toast({
-					variant: "destructive",
+					variant: "error",
 					title: "Error",
 					description: "Failed to load your addresses.",
 				});
@@ -236,11 +236,12 @@ export default function Cart() {
 			toast({
 				title: "Cart cleared",
 				description: "Your cart has been cleared successfully",
+				variant: "success",
 			});
 		} catch (error) {
 			console.error("Error clearing cart", error);
 			toast({
-				variant: "destructive",
+				variant: "error",
 				title: "Error",
 				description: "Failed to clear your cart.",
 			});

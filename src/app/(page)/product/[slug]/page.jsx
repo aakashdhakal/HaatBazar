@@ -81,7 +81,7 @@ const ProductPage = ({ params }) => {
 			toast({
 				title: "Failed to delete review",
 				description: error.message || "Please try again",
-				variant: "destructive",
+				variant: "error",
 			});
 		} finally {
 			setIsDeleting(false);
@@ -133,7 +133,7 @@ const ProductPage = ({ params }) => {
 			toast({
 				title: "Failed to add to cart",
 				description: "Please try again",
-				variant: "destructive",
+				variant: "error",
 			});
 		} finally {
 			setLoadingAction((prev) => ({ ...prev, cart: false }));
@@ -154,7 +154,7 @@ const ProductPage = ({ params }) => {
 			toast({
 				title: "Failed to add to wishlist",
 				description: "Please try again",
-				variant: "destructive",
+				variant: "error",
 			});
 		} finally {
 			setLoadingAction((prev) => ({ ...prev, wishlist: false }));
