@@ -120,7 +120,8 @@ export default function ProductsManagement() {
 		setShowProductDialog(true);
 	};
 
-	const handleProductSubmit = async () => {
+	const handleProductSubmit = async (e) => {
+		e.preventDefault();
 		try {
 			const formData = { ...productFormData };
 

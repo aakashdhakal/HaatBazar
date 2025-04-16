@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import Form from "next/form";
 
 export default function ProductForm({
 	productFormData,
@@ -32,7 +33,7 @@ export default function ProductForm({
 	};
 
 	return (
-		<form
+		<Form
 			className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4"
 			onSubmit={onSubmit}>
 			{/* Image Upload Section */}
@@ -186,6 +187,6 @@ export default function ProductForm({
 			<div className="md:col-span-3 flex justify-end">
 				<Button type="submit">Submit</Button>
 			</div>
-		</form>
+		</Form>
 	);
 }
