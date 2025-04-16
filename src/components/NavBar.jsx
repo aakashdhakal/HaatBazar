@@ -19,6 +19,7 @@ import { getNoOfWishListItems } from "@/app/(server)/actions/wishList";
 import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
 import Form from "next/form";
+import { getCurrentUser } from "@/app/(server)/actions/users";
 
 export function NavBar() {
 	const { data: session, status } = useSession();
@@ -26,6 +27,21 @@ export function NavBar() {
 	const { wishListItemsCount, setWishListItemsCount } = useWishList();
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const [user, setUser] = useState(null);
+
+	// Add this effect to fetch the database user
+	useEffect(() => {
+		const fetchUser = async () => {
+			if (status === "authenticated") {
+				const userData = await getCurrentUser();
+				console.log("User data:", userData);
+				if (userData) {
+					setUser(userData);
+				}
+			}
+		};
+		fetchUser();
+	}, [status]);
 
 	// Handle cart and wishlist items
 	useEffect(() => {
@@ -161,13 +177,13 @@ export function NavBar() {
 						<DropDown
 							trigger={
 								<UserAvatar
-									src={session.user.profilePic}
+									src={user?.image}
 									className="border border-primary"
 								/>
 							}
-							label={session.user.name}
+							label={user?.name}
 							items={[
-								...(session.user.role === "admin"
+								...(user?.role === "admin"
 									? [
 											<Link
 												key="admin"

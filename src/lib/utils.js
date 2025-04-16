@@ -76,3 +76,81 @@ export const generateFileName = (name) => {
 	const fileName = `${name}-${timestamp}-${randomNum}`;
 	return fileName;
 };
+
+export async function deleteImage(imageUrl) {
+	// Basic validation
+	if (!imageUrl) {
+		throw new Error("Invalid image URL");
+	}
+
+	try {
+		// Make the POST request to the API
+		const response = await fetch(
+			"https://downloadmedia.aakashdhakal.com.np/api/delete-image",
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ file_url: imageUrl }),
+			},
+		);
+
+		// Parse the JSON response
+		const responseData = await response.json();
+
+		// Check if the response indicates success
+		if (response.ok && responseData.message === "Image deleted successfully") {
+			console.log("Image deleted successfully");
+			return true; // Indicate success
+		} else {
+			throw new Error(
+				`Failed to delete image: ${responseData.error || "Unknown error"}`,
+			);
+		}
+	} catch (error) {
+		throw new Error("Failed to delete product image");
+	}
+}
+
+export async function uploadImage(file, name) {
+	// Basic validation
+	if (!file || !file.name || !file.size) {
+		throw new Error("Invalid file object");
+	}
+
+	try {
+		console.log("File data:", file); // Debugging line
+
+		// Prepare the payload for the API
+		const formData = new FormData();
+		const fileName = generateFileName(name);
+		formData.append("name", fileName);
+		formData.append("image", file); // Append the file object directly
+
+		console.log("FormData prepared:", formData); // Debugging line
+
+		// Make the POST request to the API
+		const response = await fetch(
+			"https://downloadmedia.aakashdhakal.com.np/api/upload-image",
+			{
+				method: "POST",
+				body: formData,
+			},
+		);
+
+		// Parse the JSON response
+		const responseData = await response.json();
+
+		// Check if the response contains the image URL
+		if (response.ok && responseData.image_url) {
+			return responseData.image_url; // Return the image URL
+		} else {
+			throw new Error(
+				`Failed to upload image: ${responseData.error || "Unknown error"}`,
+			);
+		}
+	} catch (error) {
+		throw new Error("Failed to upload product image");
+	}
+}

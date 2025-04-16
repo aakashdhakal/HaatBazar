@@ -63,7 +63,7 @@ export const authConfig = {
 								id: userFound._id,
 								name: userFound.name,
 								email: userFound.email,
-								profilePic: userFound.profilePic,
+								profilePic: userFound.image,
 								role: userFound.role,
 							};
 						} else {
@@ -81,11 +81,17 @@ export const authConfig = {
 			if (user) {
 				token.role = user.role;
 				token.id = user.id;
+				token.email = user.email;
+				token.name = user.name;
+				token.profilePic = user.image;
 			}
 			return token;
 		},
 		async session({ session, token }) {
 			if (token) {
+				session.user.email = token.email;
+				session.user.name = token.name;
+				session.user.profilePic = token.image;
 				session.user.role = token.role;
 				session.user.id = token.id;
 			}

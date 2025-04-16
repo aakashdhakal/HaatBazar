@@ -4,7 +4,7 @@ import Product from "@/modals/productModal";
 import fs from "fs";
 import path from "path";
 import { Buffer } from "buffer";
-import { generateFileName } from "@/lib/utils";
+import { uploadImage, deleteImage } from "@/lib/utils";
 
 export default async function getAllProducts() {
 	await dbConnect();
@@ -50,7 +50,7 @@ export async function createProduct(data) {
 
 		// Upload the product image if provided
 		if (data.image && typeof data.image !== "string") {
-			const imagePath = await uploadProductImage(data.image, data.name);
+			const imagePath = await uploadImage(data.image, data.name);
 			data.image = imagePath; // Replace the File object with the file path
 		}
 
@@ -76,9 +76,9 @@ export async function updateProduct(id, data) {
 			// If there's an existing image, delete it first
 			const oldImagePath = await Product.findById(id).select("image");
 			if (oldImagePath && oldImagePath.image) {
-				await deleteProductImage(imagePath.image);
+				await deleteImage(oldImagePath.image); // Delete the old image from the server
 			}
-			const imagePath = await uploadProductImage(data.image, data.name);
+			const imagePath = await uploadImage(data.image, data.name);
 			data.image = imagePath; // Replace the File object with the file path
 		}
 		const product = await Product.findByIdAndUpdate(id, data, { new: true });
@@ -101,7 +101,7 @@ export async function deleteProduct(id) {
 	await dbConnect();
 	try {
 		const product = await Product.findByIdAndDelete(id);
-		await deleteProductImage(product.image); // Delete the image from the server
+		await deleteImage(product.image); // Delete the image from the server
 		if (!product) {
 			return { error: "Product not found", status: 404 };
 		}
@@ -160,87 +160,5 @@ export async function decreaseOrderStock(orderItems) {
 			error: "Failed to update product stock",
 			details: error.message,
 		};
-	}
-}
-
-async function deleteProductImage(imageUrl) {
-	// Basic validation
-	if (!imageUrl) {
-		throw new Error("Invalid image URL");
-	}
-
-	try {
-		console.log("Image URL:", imageUrl); // Debugging line
-		// Make the POST request to the API
-		const response = await fetch(
-			"https://downloadmedia.aakashdhakal.com.np/api/delete-image",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ file_url: imageUrl }),
-			},
-		);
-
-		// Parse the JSON response
-		const responseData = await response.json();
-
-		// Check if the response indicates success
-		if (response.ok && responseData.message === "Image deleted successfully") {
-			console.log("Image deleted successfully");
-			return true; // Indicate success
-		} else {
-			throw new Error(
-				`Failed to delete image: ${responseData.error || "Unknown error"}`,
-			);
-		}
-	} catch (error) {
-		console.error("Error deleting product image:", error);
-		throw new Error("Failed to delete product image");
-	}
-}
-
-async function uploadProductImage(file, productName) {
-	// Basic validation
-	if (!file || !file.name || !file.size) {
-		throw new Error("Invalid file object");
-	}
-
-	try {
-		console.log("File data:", file); // Debugging line
-		console.log("ProductName:", productName); // Debugging line
-
-		// Prepare the payload for the API
-		const formData = new FormData();
-		const fileName = generateFileName(productName);
-		formData.append("name", fileName);
-		formData.append("image", file); // Append the file object directly
-
-		console.log("FormData prepared:", formData); // Debugging line
-
-		// Make the POST request to the API
-		const response = await fetch(
-			"https://downloadmedia.aakashdhakal.com.np/api/upload-image",
-			{
-				method: "POST",
-				body: formData,
-			},
-		);
-
-		// Parse the JSON response
-		const responseData = await response.json();
-
-		// Check if the response contains the image URL
-		if (response.ok && responseData.image_url) {
-			return responseData.image_url; // Return the image URL
-		} else {
-			throw new Error(
-				`Failed to upload image: ${responseData.error || "Unknown error"}`,
-			);
-		}
-	} catch (error) {
-		console.error("Error uploading product image:", error);
-		throw new Error("Failed to upload product image");
 	}
 }

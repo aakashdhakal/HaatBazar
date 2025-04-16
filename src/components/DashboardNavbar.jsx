@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
@@ -20,15 +20,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { getCurrentUser } from "@/app/(server)/actions/users";
 
 export default function DashboardNavbar({ toggleSidebar, collapsed }) {
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const [showMobileMenu, setShowMobileMenu] = useState(false);
 	const [notifications] = useState([
 		{ id: 1, message: "New order received", time: "5 min ago", read: false },
 		{ id: 2, message: "Product out of stock", time: "1 hour ago", read: false },
 		{ id: 3, message: "New user registered", time: "3 hours ago", read: true },
 	]);
+	const [user, setUser] = useState(null);
+
+	// Add this effect to fetch the database user
+	useEffect(() => {
+		const fetchUser = async () => {
+			if (status === "authenticated") {
+				const userData = await getCurrentUser();
+				console.log("User data:", userData);
+				if (userData) {
+					setUser(userData);
+				}
+			}
+		};
+		fetchUser();
+	}, [status]);
 
 	return (
 		<header
@@ -167,14 +183,14 @@ export default function DashboardNavbar({ toggleSidebar, collapsed }) {
 							variant="ghost"
 							size="sm"
 							className="relative h-8 overflow-hidden rounded-full ">
-							<UserAvatar src={session.user.profilePic} />
+							<UserAvatar src={user?.image} />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end" className="w-56">
 						<DropdownMenuLabel className="font-normal">
 							<div className="flex flex-col space-y-1">
-								<p className="text-sm font-medium">{session?.user?.name}</p>
-								<p className="text-xs text-gray-500">{session?.user?.email}</p>
+								<p className="text-sm font-medium">{user?.name}</p>
+								<p className="text-xs text-gray-500">{user?.email}</p>
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />

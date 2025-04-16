@@ -5,6 +5,7 @@ import dbConnect from "@/lib/db";
 import fs from "node:fs/promises";
 import { revalidatePath } from "next/cache";
 import path from "path";
+import { uploadImage, deleteImage } from "@/lib/utils";
 
 export async function fetchShippingAddress() {
 	await dbConnect();
@@ -46,10 +47,10 @@ export async function updateUserProfile(formData) {
 		}
 
 		// Parse formData
-		const profilePicture = formData.get("profilePicture");
+		let profilePicture = formData.get("profilePicture");
 
 		if (profilePicture) {
-			await uploadProfileImage({ image: profilePicture });
+			profilePicture = await uploadImage(profilePicture, session.user.name);
 		}
 
 		const fullName = formData.get("name");
@@ -58,7 +59,7 @@ export async function updateUserProfile(formData) {
 		const dateOfBirth = new Date(formData.get("dateOfBirth"));
 		const shippingAddress = JSON.parse(formData.get("shippingAddress"));
 		const billingAddress = JSON.parse(formData.get("billingAddress"));
-
+		const image = profilePicture || session.user.image;
 
 		// Check if user exists and update accordingly
 		const user = await User.findOneAndUpdate(
@@ -70,6 +71,7 @@ export async function updateUserProfile(formData) {
 				dateOfBirth: dateOfBirth,
 				shippingAddress: shippingAddress,
 				billingAddress: billingAddress,
+				image: image,
 			},
 			{ new: true },
 		);
@@ -84,22 +86,72 @@ export async function updateUserProfile(formData) {
 		return { success: false, error: error.message };
 	}
 }
-export async function uploadProfileImage({ image }) {
-	const session = await auth();
-	const arrayBuffer = await image.arrayBuffer();
-	const buffer = new Uint8Array(arrayBuffer);
-	const imageName = `${session.user.name
-		.replace(/\s+/g, "")
-		.toLowerCase()}-${Date.now()}${path.extname(image.name)}`;
-	const uploadDir = path.join(process.cwd(), "public", "uploads");
-	const uploadPath = path.join(uploadDir, imageName);
+export async function deleteUserProfile() {
+	try {
+		await dbConnect();
 
-	// Create the uploads directory if it doesn't exist
-	await fs.mkdir(uploadDir, { recursive: true });
+		const session = await auth();
+		if (!session || !session.user?.email) {
+			return { success: false, error: "Not authenticated" };
+		}
 
-	await fs.writeFile(uploadPath, buffer);
+		const user = await User.findOneAndDelete({ email: session.user.email });
+		if (!user) {
+			return { success: false, error: "User not found" };
+		}
 
-	revalidatePath("/");
+		await deleteImage(user.image);
 
-	return { success: true, filePath: `/uploads/${image.name}` };
+		return { success: true };
+	} catch (error) {
+		console.error("Error deleting user profile:", error);
+		return { success: false, error: error.message };
+	}
+}
+
+export async function getCurrentUser() {
+	try {
+		await dbConnect();
+
+		const session = await auth();
+		if (!session || !session.user?.email) {
+			return null;
+		}
+
+		const user = await User.findOne({ email: session.user.email })
+			.select("name email image role")
+			.lean();
+
+		if (!user) {
+			return null;
+		}
+
+		return {
+			...user,
+			_id: user._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error fetching current user:", error);
+		return null;
+	}
+}
+
+export async function getUserById(id) {
+	try {
+		await dbConnect();
+
+		const user = await User.findById(id).select("name email image role").lean();
+
+		if (!user) {
+			return null;
+		}
+
+		return {
+			...user,
+			_id: user._id.toString(),
+		};
+	} catch (error) {
+		console.error("Error fetching user by ID:", error);
+		return null;
+	}
 }

@@ -64,7 +64,7 @@ export default function LinkAccount() {
 	// Initialize provinces, districts, and cities
 	useEffect(() => {
 		if (session) {
-			setPreviewImage(session.user.profilePic);
+			setPreviewImage(session.user.image);
 			setFormData((prev) => ({
 				...prev,
 				name: session.user.name,
