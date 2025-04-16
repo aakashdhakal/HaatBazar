@@ -3,19 +3,14 @@ import Credentials from "next-auth/providers/credentials";
 import User from "@/modals/userModal";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/db";
+import { CredentialsSignin } from "next-auth";
 
-class InvalidCredentials extends Error {
-	constructor() {
-		super("Invalid credentials");
-		this.code = "Invalid Credentials";
-	}
+class InvalidCredentials extends CredentialsSignin {
+	code = "Invalid Credentials";
 }
 
-class OAuthAccountNotLinked extends Error {
-	constructor() {
-		super("Account not linked");
-		this.code = "Use correct method to log in";
-	}
+class OAuthAccountNotLinked extends CredentialsSignin {
+	code = "Use correct method to log in";
 }
 
 async function checkEmailExists(email) {
@@ -50,27 +45,31 @@ export const authConfig = {
 			async authorize(credentials) {
 				await dbConnect();
 				try {
-					const user = await checkEmailExists(credentials.email);
-
-					if (!user) throw new InvalidCredentials();
-					if (!user.password) throw new OAuthAccountNotLinked();
-
-					const isValid = await bcrypt.compare(
-						credentials.password,
-						user.password,
-					);
-					if (!isValid) throw new InvalidCredentials();
-
-					return {
-						id: user._id.toString(),
-						name: user.name,
-						email: user.email,
-						image: user.profilePic,
-						role:
-							user.email === "anamoldhakal22@gmail.com"
-								? "admin"
-								: user.role || "user",
-					};
+					const userFound = await checkEmailExists(credentials.email);
+					if (!userFound) {
+						throw new InvalidCredentials();
+					} else if (userFound.password === null) {
+						throw new OAuthAccountNotLinked();
+					} else {
+						const matchPassword = await bcrypt.compare(
+							credentials.password,
+							userFound.password,
+						);
+						if (matchPassword) {
+							if (userFound.email === "anamoldhakal22@gmail.com") {
+								userFound.role = "admin";
+							}
+							return {
+								id: userFound._id,
+								name: userFound.name,
+								email: userFound.email,
+								profilePic: userFound.profilePic,
+								role: userFound.role,
+							};
+						} else {
+							throw new InvalidCredentials();
+						}
+					}
 				} catch (error) {
 					throw error;
 				}
@@ -92,13 +91,6 @@ export const authConfig = {
 			}
 			return session;
 		},
-	},
-	pages: {
-		signIn: "/auth/login",
-		error: "/auth/error",
-	},
-	session: {
-		strategy: "jwt",
 	},
 };
 export default authConfig;
