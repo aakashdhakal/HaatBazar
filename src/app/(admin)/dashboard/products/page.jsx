@@ -119,9 +119,9 @@ export default function ProductsManagement() {
 		}
 		setShowProductDialog(true);
 	};
-
 	const handleProductSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true); // Set loading to true when submission starts
 		try {
 			const formData = { ...productFormData };
 
@@ -133,6 +133,7 @@ export default function ProductsManagement() {
 					description: "Product has been updated successfully",
 				});
 			} else {
+				// If creating, create a new product
 				await createProduct(formData);
 				toast({
 					title: "Product created",
@@ -147,6 +148,8 @@ export default function ProductsManagement() {
 				title: "Error",
 				description: error.message || "Failed to save product",
 			});
+		} finally {
+			setLoading(false); // Set loading to false after response
 		}
 	};
 
@@ -661,6 +664,7 @@ export default function ProductsManagement() {
 							imagePreview={imagePreview}
 							onSubmit={handleProductSubmit}
 							handleImageUpload={handleImageUpload} // Pass the function directly
+							loading={loading} // Pass loading state
 						/>
 					}
 				/>

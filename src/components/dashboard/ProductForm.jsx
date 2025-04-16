@@ -14,6 +14,7 @@ export default function ProductForm({
 	imagePreview,
 	onSubmit,
 	handleImageUpload,
+	loading,
 }) {
 	const [image, setImage] = useState(imagePreview || null);
 
@@ -185,7 +186,9 @@ export default function ProductForm({
 
 			{/* Submit Button */}
 			<div className="md:col-span-3 flex justify-end">
-				<Button type="submit">Submit</Button>
+				<Button type="submit" isLoading={loading} loadingtext="Adding Product">
+					Submit
+				</Button>
 			</div>
 		</Form>
 	);

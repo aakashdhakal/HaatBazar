@@ -187,7 +187,8 @@ async function deleteProductImage(imageUrl) {
 		const responseData = await response.json();
 
 		// Check if the response indicates success
-		if (response.ok && responseData.success) {
+		if (response.ok && responseData.message === "Image deleted successfully") {
+			console.log("Image deleted successfully");
 			return true; // Indicate success
 		} else {
 			throw new Error(
