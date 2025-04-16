@@ -170,6 +170,7 @@ async function deleteProductImage(imageUrl) {
 	}
 
 	try {
+		console.log("Image URL:", imageUrl); // Debugging line
 		// Make the POST request to the API
 		const response = await fetch(
 			"https://downloadmedia.aakashdhakal.com.np/api/delete-image",
