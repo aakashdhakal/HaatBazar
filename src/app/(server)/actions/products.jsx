@@ -101,6 +101,7 @@ export async function deleteProduct(id) {
 	await dbConnect();
 	try {
 		const product = await Product.findByIdAndDelete(id);
+		await deleteProductImage(product.image); // Delete the image from the server
 		if (!product) {
 			return { error: "Product not found", status: 404 };
 		}
