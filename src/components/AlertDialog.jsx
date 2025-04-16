@@ -13,14 +13,16 @@ import { Button } from "./ui/button";
 
 export default function AlertDialogComponent(props) {
 	return (
-		<AlertDialog>
+		<AlertDialog open={props.open} onOpenChange={props.onOpenChange}>
 			<AlertDialogTrigger asChild>
-				<Button
-					variant={props.varient}
-					className={props.triggerClassname}
-					size={props.size}>
-					{props.triggerText}
-				</Button>
+				{props.triggerText && (
+					<Button
+						variant={props.varient}
+						className={props.triggerClassname}
+						size={props.size}>
+						{props.triggerText}
+					</Button>
+				)}
 			</AlertDialogTrigger>
 			<AlertDialogContent className="w-full">
 				<AlertDialogHeader>

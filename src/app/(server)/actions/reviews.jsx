@@ -123,3 +123,79 @@ export async function getProductReviews(productId) {
 		};
 	}
 }
+// Add this new function to your existing file
+
+export async function deleteReview(reviewId) {
+	await dbConnect();
+
+	try {
+		// Get the current session
+		const session = await auth();
+
+		if (!session || !session.user) {
+			return {
+				success: false,
+				message: "You must be logged in to delete a review",
+			};
+		}
+
+		// Find the review
+		const review = await Review.findById(reviewId);
+
+		if (!review) {
+			return {
+				success: false,
+				message: "Review not found",
+			};
+		}
+
+		// Check if the user is the owner of the review
+		if (review.user.toString() !== session.user.id) {
+			return {
+				success: false,
+				message: "You can only delete your own reviews",
+			};
+		}
+
+		// Store productId before deletion for rating recalculation
+		const productId = review.productId;
+
+		// Delete the review
+		await Review.findByIdAndDelete(reviewId);
+
+		// Update the product's rating and numReviews
+		const product = await Product.findById(productId);
+
+		if (product) {
+			const allProductReviews = await Review.find({ productId });
+
+			product.numReviews = allProductReviews.length;
+
+			product.rating =
+				allProductReviews.length > 0
+					? allProductReviews.reduce((acc, item) => item.rating + acc, 0) /
+					  allProductReviews.length
+					: 0;
+
+			await product.save();
+		}
+
+		return {
+			success: true,
+			message: "Review deleted successfully",
+			updatedProduct: product
+				? {
+						...product.toObject(),
+						_id: product._id.toString(),
+				  }
+				: null,
+		};
+	} catch (error) {
+		console.error("Error deleting review:", error);
+		return {
+			success: false,
+			message: "Failed to delete review",
+			error: error.message,
+		};
+	}
+}

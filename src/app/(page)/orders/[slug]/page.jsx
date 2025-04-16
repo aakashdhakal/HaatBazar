@@ -21,7 +21,6 @@ export default function OrderDetailPage() {
 		}
 	}, [status, router]);
 
-	if (status === "loading") return null;
 	if (status === "authenticated") {
 		const params = useParams();
 		const orderId = params.slug;

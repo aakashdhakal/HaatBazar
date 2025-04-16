@@ -32,8 +32,6 @@ export default function OrdersPage() {
 		}
 	}, [status, router]);
 
-	if (status === "loading") return null;
-	if (status === "authenticated") {
 		// State to store the list of orders
 		const [orders, setOrders] = useState([]);
 		// State to track loading status during API calls
@@ -306,4 +304,3 @@ export default function OrdersPage() {
 			</div>
 		);
 	}
-}

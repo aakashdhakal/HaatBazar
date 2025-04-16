@@ -18,6 +18,8 @@ import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ReviewModal from "@/components/ReviewModal";
 import { getUserById } from "@/app/(server)/actions/users";
+import AlertDialogComponent from "@/components/AlertDialog";
+import { deleteReview } from "@/app/(server)/actions/reviews";
 
 const ProductPage = ({ params }) => {
 	const [product, setProduct] = useState(null);
@@ -33,6 +35,9 @@ const ProductPage = ({ params }) => {
 	const { data: session, status } = useSession();
 	const { setCartItems } = useCart({});
 	const { setWishListItemsCount } = useWishList();
+	const [reviewToDelete, setReviewToDelete] = useState(null);
+	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const { toast } = useToast();
 
 	const fetchReviews = async (productId) => {
@@ -43,6 +48,45 @@ const ProductPage = ({ params }) => {
 			}
 		} catch (err) {
 			console.error("Failed to fetch reviews:", err);
+		}
+	};
+
+	const handleDeleteReview = async () => {
+		if (!reviewToDelete) return;
+
+		setIsDeleting(true);
+		try {
+			const result = await deleteReview(reviewToDelete._id);
+
+			if (result.success) {
+				toast({
+					title: "Review deleted",
+					description: "Your review has been removed successfully",
+					variant: "success",
+				});
+
+				// Update product data if provided
+				if (result.updatedProduct) {
+					setProduct(result.updatedProduct);
+				}
+
+				// Refresh reviews
+				if (product?._id) {
+					fetchReviews(product._id);
+				}
+			} else {
+				throw new Error(result.message || "Failed to delete review");
+			}
+		} catch (error) {
+			toast({
+				title: "Failed to delete review",
+				description: error.message || "Please try again",
+				variant: "destructive",
+			});
+		} finally {
+			setIsDeleting(false);
+			setDeleteDialogOpen(false);
+			setReviewToDelete(null);
 		}
 	};
 
@@ -414,7 +458,6 @@ const ProductPage = ({ params }) => {
 								<div className="flex justify-between mb-2">
 									<div className="flex items-center gap-2">
 										{review.image ? (
-											// Display user profile image if available
 											<div className="h-10 w-10 relative rounded-full overflow-hidden">
 												<Image
 													src={review.image}
@@ -425,7 +468,6 @@ const ProductPage = ({ params }) => {
 												/>
 											</div>
 										) : (
-											// Fallback to initials if no profile image
 											<div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
 												{review.name
 													? review.name.charAt(0).toUpperCase()
@@ -441,16 +483,33 @@ const ProductPage = ({ params }) => {
 											</p>
 										</div>
 									</div>
-									<div className="flex text-amber-400">
-										{[...Array(5)].map((_, i) => (
-											<Icon
-												key={i}
-												icon={
-													i < review.rating ? "mdi:star" : "mdi:star-outline"
-												}
-												className="w-4 h-4"
-											/>
-										))}
+									<div className="flex items-center">
+										<div className="flex text-amber-400">
+											{[...Array(5)].map((_, i) => (
+												<Icon
+													key={i}
+													icon={
+														i < review.rating ? "mdi:star" : "mdi:star-outline"
+													}
+													className="w-4 h-4"
+												/>
+											))}
+										</div>
+
+										{/* Only show delete button for the review owner */}
+										{session?.user?.id === review.userId && (
+											<Button
+												variant="ghost"
+												size="icon"
+												className="ml-2 text-gray-400 hover:text-destructive"
+												onClick={() => {
+													setReviewToDelete(review);
+													setDeleteDialogOpen(true);
+												}}
+												title="Delete review">
+												<Icon icon="mdi:trash" className="h-4 w-4" />
+											</Button>
+										)}
 									</div>
 								</div>
 								<p className="text-gray-600">{review.comment}</p>
@@ -483,6 +542,17 @@ const ProductPage = ({ params }) => {
 				isOpen={reviewModalOpen}
 				onClose={() => setReviewModalOpen(false)}
 				onSuccess={handleReviewSuccess}
+			/>
+			{/* Delete Review Confirmation Dialog */}
+			<AlertDialogComponent
+				open={deleteDialogOpen}
+				onOpenChange={setDeleteDialogOpen}
+				alertTitle="Delete Review"
+				alertDescription="Are you sure you want to delete this review? This action cannot be undone."
+				cancelText="Cancel"
+				actionText="Delete"
+				action={handleDeleteReview}
+				isLoading={isDeleting}
 			/>
 		</div>
 	);
