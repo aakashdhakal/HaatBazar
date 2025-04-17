@@ -46,7 +46,10 @@ const nextConfig = {
 				hostname: "placehold.co",
 			},
 			{
+				protocol: "https",
 				hostname: "downloadmedia.aakashdhakal.com.np",
+				port: "",
+				pathname: "/**",
 			},
 		],
 	},
