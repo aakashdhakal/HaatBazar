@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
+import { useToast } from "@/hooks/use-toast";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,191 +35,26 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import InfoCard from "@/components/dashboard/InfoCard";
+import AlertDialogComponent from "@/components/AlertDialog";
+import StatusBadge from "@/components/StatusBadge";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { Description } from "@radix-ui/react-alert-dialog";
-
-// Mock data for orders
-const ordersData = [
-	{
-		id: "ORD-8945",
-		customer: "Rahul Sharma",
-		email: "rahul.sharma@example.com",
-		date: "2025-03-12T09:30:00.000Z",
-		items: 5,
-		total: 4250,
-		status: "completed",
-		payment: "paid",
-		paymentMethod: "Card",
-	},
-	{
-		id: "ORD-8944",
-		customer: "Priya Patel",
-		email: "priya.patel@example.com",
-		date: "2025-03-12T08:15:00.000Z",
-		items: 3,
-		total: 1850,
-		status: "processing",
-		payment: "paid",
-		paymentMethod: "UPI",
-	},
-	{
-		id: "ORD-8943",
-		customer: "Amit Kumar",
-		email: "amit.kumar@example.com",
-		date: "2025-03-11T16:45:00.000Z",
-		items: 2,
-		total: 980,
-		status: "delivered",
-		payment: "paid",
-		paymentMethod: "Wallet",
-	},
-	{
-		id: "ORD-8942",
-		customer: "Neha Gupta",
-		email: "neha.gupta@example.com",
-		date: "2025-03-11T14:20:00.000Z",
-		items: 7,
-		total: 6500,
-		status: "cancelled",
-		payment: "refunded",
-		paymentMethod: "Card",
-	},
-	{
-		id: "ORD-8941",
-		customer: "Vikram Joshi",
-		email: "vikram.joshi@example.com",
-		date: "2025-03-11T10:10:00.000Z",
-		items: 1,
-		total: 450,
-		status: "shipped",
-		payment: "paid",
-		paymentMethod: "COD",
-	},
-	{
-		id: "ORD-8940",
-		customer: "Ananya Singh",
-		email: "ananya.singh@example.com",
-		date: "2025-03-10T18:30:00.000Z",
-		items: 4,
-		total: 3200,
-		status: "delivered",
-		payment: "paid",
-		paymentMethod: "UPI",
-	},
-	{
-		id: "ORD-8939",
-		customer: "Rajesh Verma",
-		email: "rajesh.verma@example.com",
-		date: "2025-03-10T15:45:00.000Z",
-		items: 6,
-		total: 5700,
-		status: "processing",
-		payment: "paid",
-		paymentMethod: "Card",
-	},
-	{
-		id: "ORD-8938",
-		customer: "Sanya Malhotra",
-		email: "sanya.malhotra@example.com",
-		date: "2025-03-10T12:15:00.000Z",
-		items: 2,
-		total: 1250,
-		status: "completed",
-		payment: "paid",
-		paymentMethod: "Wallet",
-	},
-	{
-		id: "ORD-8937",
-		customer: "Dhruv Patel",
-		email: "dhruv.patel@example.com",
-		date: "2025-03-09T17:20:00.000Z",
-		items: 3,
-		total: 2100,
-		status: "returned",
-		payment: "refunded",
-		paymentMethod: "Card",
-	},
-	{
-		id: "ORD-8936",
-		customer: "Meera Shah",
-		email: "meera.shah@example.com",
-		date: "2025-03-09T11:05:00.000Z",
-		items: 5,
-		total: 4800,
-		status: "delivered",
-		payment: "paid",
-		paymentMethod: "UPI",
-	},
-	{
-		id: "ORD-8935",
-		customer: "Arjun Reddy",
-		email: "arjun.reddy@example.com",
-		date: "2025-03-08T14:25:00.000Z",
-		items: 2,
-		total: 1800,
-		status: "processing",
-		payment: "pending",
-		paymentMethod: "COD",
-	},
-	{
-		id: "ORD-8934",
-		customer: "Kavya Sharma",
-		email: "kavya.sharma@example.com",
-		date: "2025-03-08T10:15:00.000Z",
-		items: 3,
-		total: 2700,
-		status: "delivered",
-		payment: "paid",
-		paymentMethod: "UPI",
-	},
-];
-
-// Helper function for Status Badge
-function OrderStatusBadge({ status }) {
-	const statusStyles = {
-		processing: {
-			variant: "outline",
-			className: "bg-blue-50 text-blue-600 border-blue-200",
-		},
-		completed: {
-			variant: "outline",
-			className: "bg-green-50 text-green-600 border-green-200",
-		},
-		delivered: {
-			variant: "outline",
-			className: "bg-green-50 text-green-600 border-green-200",
-		},
-		shipped: {
-			variant: "outline",
-			className: "bg-purple-50 text-purple-600 border-purple-200",
-		},
-		cancelled: {
-			variant: "outline",
-			className: "bg-red-50 text-red-600 border-red-200",
-		},
-		returned: {
-			variant: "outline",
-			className: "bg-orange-50 text-orange-600 border-orange-200",
-		},
-	};
-
-	const style = statusStyles[status] || { variant: "outline" };
-
-	return (
-		<Badge variant={style.variant} className={style.className}>
-			{status.charAt(0).toUpperCase() + status.slice(1)}
-		</Badge>
-	);
-}
+import { getAllOrders, updateOrderStatus } from "@/app/(server)/actions/order";
 
 export default function Orders() {
-	// State for search and filtering
+	const router = useRouter();
+	const { toast } = useToast();
+
+	// State
+	const [orders, setOrders] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [selectedOrders, setSelectedOrders] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [statusFilter, setStatusFilter] = useState("all");
 	const [paymentFilter, setPaymentFilter] = useState("all");
-	const [selectedRows, setSelectedRows] = useState({});
-	const [selectAll, setSelectAll] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
+	const [itemsPerPage] = useState(10);
 	const [visibleColumns, setVisibleColumns] = useState({
 		id: true,
 		customer: true,
@@ -229,143 +66,191 @@ export default function Orders() {
 		actions: true,
 	});
 
-	// Sorting state
-	const [sortConfig, setSortConfig] = useState({
-		key: null,
-		direction: "asc",
-	});
+	// Fetch orders from database
+	useEffect(() => {
+		const fetchOrders = async () => {
+			setLoading(true);
+			try {
+				const data = await getAllOrders();
+				if (data && Array.isArray(data)) {
+					setOrders(data);
+				} else {
+					toast({
+						variant: "destructive",
+						title: "Error",
+						description: "Failed to fetch orders",
+					});
+				}
+			} catch (error) {
+				console.error("Error fetching orders:", error);
+				toast({
+					variant: "destructive",
+					title: "Error",
+					description: "Failed to fetch orders",
+				});
+			} finally {
+				setLoading(false);
+			}
+		};
 
-	// Pagination state
-	const [currentPage, setCurrentPage] = useState(0);
-	const [itemsPerPage] = useState(5);
-
-	// Handle sort request
-	const requestSort = (key) => {
-		let direction = "asc";
-		if (sortConfig.key === key && sortConfig.direction === "asc") {
-			direction = "desc";
-		}
-		setSortConfig({ key, direction });
-	};
+		fetchOrders();
+	}, [toast]);
 
 	// Reset selection when filters change
 	useEffect(() => {
-		setSelectedRows({});
-		setSelectAll(false);
+		setSelectedOrders([]);
 	}, [searchTerm, statusFilter, paymentFilter, currentPage]);
 
-	// Filter and sort data
-	const filteredData = ordersData.filter((order) => {
-		// Text search
+	// Filter and sort orders
+	const filteredOrders = orders.filter((order) => {
+		// Text search - check ID, customer name, email
 		const searchMatch =
 			searchTerm === "" ||
-			order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			order.email.toLowerCase().includes(searchTerm.toLowerCase());
+			(order.id && order.id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+			(order._id &&
+				order._id.toLowerCase().includes(searchTerm.toLowerCase())) ||
+			(order.billingAddress?.name &&
+				order.billingAddress.name
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())) ||
+			(order.billingAddress?.email &&
+				order.billingAddress.email
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase()));
 
 		// Status filter
 		const statusMatch = statusFilter === "all" || order.status === statusFilter;
 
 		// Payment filter
 		const paymentMatch =
-			paymentFilter === "all" || order.payment === paymentFilter;
+			paymentFilter === "all" ||
+			(order.paymentInfo && order.paymentInfo.status === paymentFilter);
 
 		return searchMatch && statusMatch && paymentMatch;
 	});
 
-	// Apply sorting
-	const sortedData = [...filteredData].sort((a, b) => {
-		if (sortConfig.key !== null) {
-			if (a[sortConfig.key] < b[sortConfig.key]) {
-				return sortConfig.direction === "asc" ? -1 : 1;
-			}
-			if (a[sortConfig.key] > b[sortConfig.key]) {
-				return sortConfig.direction === "asc" ? 1 : -1;
-			}
-		}
-		return 0;
-	});
-
 	// Pagination
-	const paginatedData = sortedData.slice(
-		currentPage * itemsPerPage,
-		(currentPage + 1) * itemsPerPage,
+	const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+	const startIndex = (currentPage - 1) * itemsPerPage;
+	const paginatedOrders = filteredOrders.slice(
+		startIndex,
+		startIndex + itemsPerPage,
 	);
-	const pageCount = Math.ceil(sortedData.length / itemsPerPage);
 
-	// Handle row selection
-	const toggleRowSelection = (id) => {
-		setSelectedRows((prevState) => ({
-			...prevState,
-			[id]: !prevState[id],
-		}));
+	// Toggle order selection
+	const toggleOrderSelection = (orderId) => {
+		setSelectedOrders((prev) =>
+			prev.includes(orderId)
+				? prev.filter((id) => id !== orderId)
+				: [...prev, orderId],
+		);
 	};
 
-	// Handle select all
-	const toggleSelectAll = () => {
-		const newSelectAll = !selectAll;
-		setSelectAll(newSelectAll);
-
-		const newSelectedRows = {};
-		paginatedData.forEach((row) => {
-			newSelectedRows[row.id] = newSelectAll;
-		});
-
-		setSelectedRows(newSelectedRows);
+	// Toggle all orders selection
+	const toggleAllOrders = (checked) => {
+		if (checked) {
+			setSelectedOrders([
+				...new Set([
+					...selectedOrders,
+					...paginatedOrders.map((order) => order._id),
+				]),
+			]);
+		} else {
+			setSelectedOrders(
+				selectedOrders.filter(
+					(id) => !paginatedOrders.find((order) => order._id === id),
+				),
+			);
+		}
 	};
 
-	// Handle column visibility
-	const toggleColumnVisibility = (column) => {
-		setVisibleColumns((prev) => ({
-			...prev,
-			[column]: !prev[column],
-		}));
+	// Handle order status update
+	const handleUpdateStatus = async (orderId, newStatus) => {
+		try {
+			setLoading(true);
+			await updateOrderStatus(orderId, newStatus);
+
+			// Update local state
+			setOrders((prevOrders) =>
+				prevOrders.map((order) =>
+					order._id === orderId ? { ...order, status: newStatus } : order,
+				),
+			);
+
+			toast({
+				title: "Status updated",
+				description: "Order status has been updated successfully",
+				variant: "success",
+			});
+		} catch (error) {
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Failed to update order status",
+			});
+		} finally {
+			setLoading(false);
+		}
 	};
 
-	// Format currency
-	const formatCurrency = (amount) => {
-		return new Intl.NumberFormat("en-NP", {
-			style: "currency",
-			currency: "NPR",
-			maximumFractionDigits: 0,
-		}).format(amount);
+	// Handle bulk status update
+	const bulkUpdateStatus = async (status) => {
+		try {
+			setLoading(true);
+
+			// Update each selected order
+			await Promise.all(
+				selectedOrders.map((orderId) => updateOrderStatus(orderId, status)),
+			);
+
+			// Update local state
+			setOrders((prevOrders) =>
+				prevOrders.map((order) =>
+					selectedOrders.includes(order._id) ? { ...order, status } : order,
+				),
+			);
+
+			setSelectedOrders([]);
+
+			toast({
+				title: "Orders updated",
+				description: `Status updated for ${selectedOrders.length} orders`,
+				variant: "success",
+			});
+		} catch (error) {
+			toast({
+				variant: "destructive",
+				title: "Error",
+				description: "Failed to update orders",
+			});
+		} finally {
+			setLoading(false);
+		}
 	};
 
-	// Count selected rows
-	const selectedRowCount = Object.values(selectedRows).filter(Boolean).length;
+	// Clear all filters
+	const clearFilters = () => {
+		setSearchQuery("");
+		setStatusFilter("all");
+		setPaymentFilter("all");
+	};
 
-	// Summary cards data
-	const summaryCards = [
-		{
-			title: "Total Orders",
-			value: "124",
-			trend: "+8%",
-			icon: "mdi:package-variant",
-			description: "Total orders placed by customers",
-		},
-		{
-			title: "Processing",
-			value: "18",
-			trend: "+12%",
-			icon: "mdi:clock-outline",
-			description: "Orders currently being processed",
-		},
-		{
-			title: "Delivered",
-			value: "92",
-			trend: "+5%",
-			icon: "mdi:check-circle-outline",
-			description: "Orders successfully delivered",
-		},
-		{
-			title: "Returns",
-			value: "6",
-			trend: "-2%",
-			icon: "mdi:package-variant-remove",
-			description: "Orders returned by customers",
-			isTrendNegative: true,
-		},
-	];
+	// Calculate summary data
+	const summaryData = {
+		total: orders.length,
+		processing: orders.filter((order) => order.status === "processing").length,
+		delivered: orders.filter(
+			(order) => order.status === "delivered" || order.status === "completed",
+		).length,
+		returned: orders.filter(
+			(order) => order.status === "returned" || order.status === "cancelled",
+		).length,
+	};
+
+	// Get total revenue
+	const totalRevenue = orders.reduce((sum, order) => {
+		return sum + (order.totalAmount || 0);
+	}, 0);
 
 	return (
 		<div className="space-y-6">
@@ -378,24 +263,43 @@ export default function Orders() {
 					</p>
 				</div>
 				<div className="flex items-center gap-2">
-					<Button className="gap-1">
-						<Icon icon="mdi:plus" className="h-4 w-4" />
-						Add Order
-					</Button>
 					<Button
 						variant="outline"
 						size="icon"
-						onClick={() => window.location.reload()}>
+						onClick={() => window.location.reload()}
+						className="h-9 w-9">
 						<Icon icon="mdi:refresh" className="h-4 w-4" />
 					</Button>
 				</div>
 			</div>
 
 			{/* Summary cards */}
-			<div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
-				{summaryCards.map((card, index) => (
-					<InfoCard key={index} {...card} />
-				))}
+			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+				<InfoCard
+					title="Total Orders"
+					value={summaryData.total.toString()}
+					icon="mdi:package-variant"
+					description="All orders"
+				/>
+				<InfoCard
+					title="Processing"
+					value={summaryData.processing.toString()}
+					icon="mdi:clock-outline"
+					description="Orders being processed"
+				/>
+				<InfoCard
+					title="Delivered"
+					value={summaryData.delivered.toString()}
+					icon="mdi:check-circle-outline"
+					description="Successfully delivered"
+				/>
+				<InfoCard
+					title="Returns/Cancelled"
+					value={summaryData.returned.toString()}
+					icon="mdi:package-variant-remove"
+					description="Problem orders"
+					isTrendNegative={true}
+				/>
 			</div>
 
 			{/* Filters */}
@@ -406,18 +310,15 @@ export default function Orders() {
 						className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground"
 					/>
 					<Input
-						placeholder="Search orders..."
+						placeholder="Search by order ID, customer name, or email..."
 						value={searchTerm}
 						onChange={(e) => setSearchTerm(e.target.value)}
-						className="w-full pl-8"
+						className="pl-8"
 					/>
 				</div>
-				<div className="flex gap-2 flex-wrap sm:flex-nowrap">
-					<Select
-						defaultValue="all"
-						value={statusFilter}
-						onValueChange={setStatusFilter}>
-						<SelectTrigger className="w-[120px]">
+				<div className="flex gap-2 flex-wrap">
+					<Select value={statusFilter} onValueChange={setStatusFilter}>
+						<SelectTrigger className="w-[140px]">
 							<SelectValue placeholder="Status" />
 						</SelectTrigger>
 						<SelectContent>
@@ -431,12 +332,9 @@ export default function Orders() {
 						</SelectContent>
 					</Select>
 
-					<Select
-						defaultValue="all"
-						value={paymentFilter}
-						onValueChange={setPaymentFilter}>
-						<SelectTrigger className="w-[120px]">
-							<SelectValue placeholder="Payment" />
+					<Select value={paymentFilter} onValueChange={setPaymentFilter}>
+						<SelectTrigger className="w-[150px]">
+							<SelectValue placeholder="Payment Status" />
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="all">All Payments</SelectItem>
@@ -452,18 +350,13 @@ export default function Orders() {
 					</Button>
 
 					<Button variant="outline" className="gap-1">
-						<Icon icon="mdi:filter-outline" className="h-4 w-4" />
-						More Filters
-					</Button>
-
-					<Button variant="outline" className="gap-1">
 						<Icon icon="mdi:download" className="h-4 w-4" />
 						Export
 					</Button>
 				</div>
 			</div>
 
-			{/* Table visibility toggle */}
+			{/* Column visibility */}
 			<div className="flex items-center">
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -475,176 +368,207 @@ export default function Orders() {
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuCheckboxItem
+							checked={visibleColumns.id}
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({ ...prev, id: !prev.id }))
+							}>
+							Order ID
+						</DropdownMenuCheckboxItem>
+						<DropdownMenuCheckboxItem
 							checked={visibleColumns.customer}
-							onCheckedChange={() => toggleColumnVisibility("customer")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({
+									...prev,
+									customer: !prev.customer,
+								}))
+							}>
 							Customer
 						</DropdownMenuCheckboxItem>
 						<DropdownMenuCheckboxItem
 							checked={visibleColumns.date}
-							onCheckedChange={() => toggleColumnVisibility("date")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({ ...prev, date: !prev.date }))
+							}>
 							Date
 						</DropdownMenuCheckboxItem>
 						<DropdownMenuCheckboxItem
 							checked={visibleColumns.items}
-							onCheckedChange={() => toggleColumnVisibility("items")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({ ...prev, items: !prev.items }))
+							}>
 							Items
 						</DropdownMenuCheckboxItem>
 						<DropdownMenuCheckboxItem
 							checked={visibleColumns.total}
-							onCheckedChange={() => toggleColumnVisibility("total")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({ ...prev, total: !prev.total }))
+							}>
 							Total
 						</DropdownMenuCheckboxItem>
 						<DropdownMenuCheckboxItem
 							checked={visibleColumns.status}
-							onCheckedChange={() => toggleColumnVisibility("status")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({ ...prev, status: !prev.status }))
+							}>
 							Status
 						</DropdownMenuCheckboxItem>
 						<DropdownMenuCheckboxItem
 							checked={visibleColumns.payment}
-							onCheckedChange={() => toggleColumnVisibility("payment")}>
+							onCheckedChange={() =>
+								setVisibleColumns((prev) => ({
+									...prev,
+									payment: !prev.payment,
+								}))
+							}>
 							Payment
 						</DropdownMenuCheckboxItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</div>
 
-			{/* Table */}
+			{/* Bulk actions bar */}
+			{selectedOrders.length > 0 && (
+				<div className="bg-primary/10 p-3 rounded-lg flex flex-wrap items-center justify-between">
+					<span className="text-sm font-medium">
+						{selectedOrders.length} orders selected
+					</span>
+					<div className="flex gap-2 mt-2 sm:mt-0">
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="outline" size="sm">
+									Update Status
+									<Icon icon="mdi:chevron-down" className="ml-2 h-4 w-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent>
+								<DropdownMenuItem
+									onClick={() => bulkUpdateStatus("processing")}>
+									Mark as Processing
+								</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => bulkUpdateStatus("shipped")}>
+									Mark as Shipped
+								</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => bulkUpdateStatus("delivered")}>
+									Mark as Delivered
+								</DropdownMenuItem>
+								<DropdownMenuItem onClick={() => bulkUpdateStatus("completed")}>
+									Mark as Completed
+								</DropdownMenuItem>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem
+									onClick={() => bulkUpdateStatus("cancelled")}
+									className="text-red-600">
+									Mark as Cancelled
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+						<Button variant="outline" size="sm">
+							<Icon icon="mdi:printer" className="mr-2 h-4 w-4" />
+							Print Invoices
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setSelectedOrders([])}>
+							Deselect All
+						</Button>
+					</div>
+				</div>
+			)}
+
+			{/* Orders table */}
 			<div className="rounded-md border">
 				<Table>
 					<TableHeader>
 						<TableRow>
 							<TableHead className="w-[50px]">
 								<Checkbox
-									checked={selectAll}
-									onCheckedChange={toggleSelectAll}
-									aria-label="Select all rows"
+									checked={
+										paginatedOrders.length > 0 &&
+										paginatedOrders.every((order) =>
+											selectedOrders.includes(order._id),
+										)
+									}
+									onCheckedChange={toggleAllOrders}
+									aria-label="Select all orders"
 								/>
 							</TableHead>
 							{visibleColumns.id && <TableHead>Order ID</TableHead>}
-							{visibleColumns.customer && (
-								<TableHead>
-									<Button
-										variant="ghost"
-										onClick={() => requestSort("customer")}
-										className="flex items-center gap-1">
-										Customer
-										<Icon icon="mdi:sort" className="h-4 w-4" />
-									</Button>
-								</TableHead>
-							)}
+							{visibleColumns.customer && <TableHead>Customer</TableHead>}
 							{visibleColumns.date && <TableHead>Date</TableHead>}
-							{visibleColumns.items && <TableHead>Items</TableHead>}
+							{visibleColumns.items && (
+								<TableHead className="text-center">Items</TableHead>
+							)}
 							{visibleColumns.total && (
-								<TableHead>
-									<Button
-										variant="ghost"
-										onClick={() => requestSort("total")}
-										className="flex items-center gap-1 ml-auto">
-										Total
-										<Icon icon="mdi:sort" className="h-4 w-4" />
-									</Button>
-								</TableHead>
+								<TableHead className="text-right">Total</TableHead>
 							)}
 							{visibleColumns.status && <TableHead>Status</TableHead>}
 							{visibleColumns.payment && <TableHead>Payment</TableHead>}
 							{visibleColumns.actions && (
-								<TableHead className="w-[80px]">Actions</TableHead>
+								<TableHead className="w-[100px] text-right">Actions</TableHead>
 							)}
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{paginatedData.length > 0 ? (
-							paginatedData.map((order) => (
-								<TableRow
-									key={order.id}
-									data-state={selectedRows[order.id] ? "selected" : undefined}>
+						{loading ? (
+							// Loading skeletons
+							Array.from({ length: itemsPerPage }).map((_, index) => (
+								<TableRow key={`skeleton-${index}`}>
 									<TableCell>
-										<Checkbox
-											checked={!!selectedRows[order.id]}
-											onCheckedChange={() => toggleRowSelection(order.id)}
-											aria-label={`Select row ${order.id}`}
-										/>
+										<Skeleton className="h-4 w-4" />
 									</TableCell>
 									{visibleColumns.id && (
 										<TableCell>
-											<Link
-												href={`/dashboard/orders/${order.id}`}
-												className="font-medium text-primary hover:underline">
-												{order.id}
-											</Link>
+											<Skeleton className="h-5 w-20" />
 										</TableCell>
 									)}
 									{visibleColumns.customer && (
 										<TableCell>
-											<div className="font-medium">{order.customer}</div>
-											<div className="text-xs text-muted-foreground">
-												{order.email}
+											<div className="space-y-1">
+												<Skeleton className="h-4 w-24" />
+												<Skeleton className="h-3 w-32" />
 											</div>
 										</TableCell>
 									)}
 									{visibleColumns.date && (
-										<TableCell>{formatDate(order.date)}</TableCell>
+										<TableCell>
+											<Skeleton className="h-4 w-24" />
+										</TableCell>
 									)}
-									{visibleColumns.items && <TableCell>{order.items}</TableCell>}
+									{visibleColumns.items && (
+										<TableCell className="text-center">
+											<Skeleton className="h-4 w-8 mx-auto" />
+										</TableCell>
+									)}
 									{visibleColumns.total && (
-										<TableCell className="text-right font-medium">
-											{formatCurrency(order.total)}
+										<TableCell className="text-right">
+											<Skeleton className="h-4 w-16 ml-auto" />
 										</TableCell>
 									)}
 									{visibleColumns.status && (
 										<TableCell>
-											<OrderStatusBadge status={order.status} />
+											<Skeleton className="h-6 w-20" />
 										</TableCell>
 									)}
 									{visibleColumns.payment && (
 										<TableCell>
-											<div className="font-medium capitalize">
-												{order.payment}
-											</div>
-											<div className="text-xs text-muted-foreground">
-												{order.paymentMethod}
+											<div className="space-y-1">
+												<Skeleton className="h-4 w-16" />
+												<Skeleton className="h-3 w-12" />
 											</div>
 										</TableCell>
 									)}
 									{visibleColumns.actions && (
-										<TableCell>
-											<DropdownMenu>
-												<DropdownMenuTrigger asChild>
-													<Button variant="ghost" className="h-8 w-8 p-0">
-														<span className="sr-only">Open menu</span>
-														<Icon
-															icon="mdi:dots-horizontal"
-															className="h-4 w-4"
-														/>
-													</Button>
-												</DropdownMenuTrigger>
-												<DropdownMenuContent align="end">
-													<DropdownMenuLabel>Actions</DropdownMenuLabel>
-													<DropdownMenuItem
-														onClick={() =>
-															navigator.clipboard.writeText(order.id)
-														}>
-														Copy Order ID
-													</DropdownMenuItem>
-													<DropdownMenuSeparator />
-													<DropdownMenuItem>
-														<Link href={`/dashboard/orders/${order.id}`}>
-															View Details
-														</Link>
-													</DropdownMenuItem>
-													<DropdownMenuItem>Update Status</DropdownMenuItem>
-													<DropdownMenuItem>Send Invoice</DropdownMenuItem>
-													<DropdownMenuSeparator />
-													<DropdownMenuItem className="text-red-600">
-														Cancel Order
-													</DropdownMenuItem>
-												</DropdownMenuContent>
-											</DropdownMenu>
+										<TableCell className="text-right">
+											<div className="flex justify-end space-x-1">
+												<Skeleton className="h-8 w-8" />
+												<Skeleton className="h-8 w-8" />
+											</div>
 										</TableCell>
 									)}
 								</TableRow>
 							))
-						) : (
+						) : paginatedOrders.length === 0 ? (
 							<TableRow>
 								<TableCell
 									colSpan={
@@ -656,68 +580,231 @@ export default function Orders() {
 											icon="mdi:package-variant-remove"
 											className="h-8 w-8 opacity-40"
 										/>
-										<span>No orders found.</span>
+										<span>No orders found</span>
 										<span className="text-sm">
-											Try adjusting your search or filters
+											{searchTerm ||
+											statusFilter !== "all" ||
+											paymentFilter !== "all"
+												? "Try adjusting your search or filters"
+												: "There are no orders to display"}
 										</span>
+										{(searchTerm ||
+											statusFilter !== "all" ||
+											paymentFilter !== "all") && (
+											<Button
+												variant="outline"
+												size="sm"
+												onClick={clearFilters}
+												className="mt-2">
+												Clear Filters
+											</Button>
+										)}
 									</div>
 								</TableCell>
 							</TableRow>
+						) : (
+							paginatedOrders.map((order) => (
+								<TableRow
+									key={order._id}
+									className={
+										selectedOrders.includes(order._id)
+											? "bg-accent/5 hover:bg-accent/10"
+											: ""
+									}>
+									<TableCell>
+										<Checkbox
+											checked={selectedOrders.includes(order._id)}
+											onCheckedChange={() => toggleOrderSelection(order._id)}
+											aria-label={`Select order ${order._id}`}
+										/>
+									</TableCell>
+									{visibleColumns.id && (
+										<TableCell>
+											<Link
+												href={`/dashboard/orders/${order._id}`}
+												className="font-medium text-primary hover:underline">
+												#
+												{order._id
+													.substring(order._id.length - 6)
+													.toUpperCase()}
+											</Link>
+										</TableCell>
+									)}
+									{visibleColumns.customer && (
+										<TableCell>
+											<div className="font-medium">
+												{order.billingAddress?.name || "N/A"}
+											</div>
+											<div className="text-xs text-muted-foreground">
+												{order.billingAddress?.email || "No email"}
+											</div>
+										</TableCell>
+									)}
+									{visibleColumns.date && (
+										<TableCell>
+											{order.createdAt ? formatDate(order.createdAt) : "N/A"}
+										</TableCell>
+									)}
+									{visibleColumns.items && (
+										<TableCell className="text-center">
+											{order.products?.length || 0}
+										</TableCell>
+									)}
+									{visibleColumns.total && (
+										<TableCell className="text-right font-medium">
+											{formatCurrency(order.totalAmount || 0)}
+										</TableCell>
+									)}
+									{visibleColumns.status && (
+										<TableCell>
+											<StatusBadge status={order.status || "processing"} />
+										</TableCell>
+									)}
+									{visibleColumns.payment && (
+										<TableCell>
+											<div className="font-medium capitalize">
+												{order.paymentInfo?.status || "unknown"}
+											</div>
+											<div className="text-xs text-muted-foreground">
+												{order.paymentInfo?.paymentMethod || "N/A"}
+											</div>
+										</TableCell>
+									)}
+									{visibleColumns.actions && (
+										<TableCell className="text-right">
+											<div className="flex justify-end gap-1">
+												<DropdownMenu>
+													<DropdownMenuTrigger asChild>
+														<Button
+															variant="ghost"
+															className="h-8 w-8 p-0"
+															aria-label="Open menu">
+															<Icon
+																icon="mdi:dots-vertical"
+																className="h-4 w-4"
+															/>
+														</Button>
+													</DropdownMenuTrigger>
+													<DropdownMenuContent align="end">
+														<DropdownMenuLabel>Actions</DropdownMenuLabel>
+														<DropdownMenuItem
+															onClick={() =>
+																router.push(`/dashboard/orders/${order._id}`)
+															}>
+															View Details
+														</DropdownMenuItem>
+														<DropdownMenuSeparator />
+														<DropdownMenuItem
+															onClick={() =>
+																handleUpdateStatus(order._id, "processing")
+															}>
+															Mark as Processing
+														</DropdownMenuItem>
+														<DropdownMenuItem
+															onClick={() =>
+																handleUpdateStatus(order._id, "shipped")
+															}>
+															Mark as Shipped
+														</DropdownMenuItem>
+														<DropdownMenuItem
+															onClick={() =>
+																handleUpdateStatus(order._id, "delivered")
+															}>
+															Mark as Delivered
+														</DropdownMenuItem>
+														<DropdownMenuItem
+															onClick={() =>
+																handleUpdateStatus(order._id, "completed")
+															}>
+															Mark as Completed
+														</DropdownMenuItem>
+														<DropdownMenuSeparator />
+														<DropdownMenuItem
+															onClick={() =>
+																handleUpdateStatus(order._id, "cancelled")
+															}
+															className="text-red-600">
+															Cancel Order
+														</DropdownMenuItem>
+													</DropdownMenuContent>
+												</DropdownMenu>
+												<Button
+													variant="ghost"
+													size="icon"
+													className="h-8 w-8"
+													onClick={() =>
+														router.push(`/dashboard/orders/${order._id}`)
+													}>
+													<Icon icon="mdi:eye-outline" className="h-4 w-4" />
+													<span className="sr-only">View details</span>
+												</Button>
+											</div>
+										</TableCell>
+									)}
+								</TableRow>
+							))
 						)}
 					</TableBody>
 				</Table>
 			</div>
 
 			{/* Pagination */}
-			<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-				<div className="text-sm text-muted-foreground">
-					{selectedRowCount} of {filteredData.length} row(s) selected.
+			{!loading && filteredOrders.length > 0 && (
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+					<div className="text-sm text-muted-foreground">
+						{selectedOrders.length > 0
+							? `${selectedOrders.length} of ${filteredOrders.length} orders selected`
+							: `Showing ${startIndex + 1} to ${Math.min(
+									startIndex + itemsPerPage,
+									filteredOrders.length,
+							  )} of ${filteredOrders.length} orders`}
+					</div>
+					<div className="flex items-center space-x-2 ml-auto">
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setCurrentPage(1)}
+							disabled={currentPage === 1}
+							className="hidden sm:flex gap-1">
+							<Icon icon="mdi:page-first" className="h-4 w-4" />
+							First
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+							disabled={currentPage === 1}
+							className="gap-1">
+							<Icon icon="mdi:chevron-left" className="h-4 w-4" />
+							Previous
+						</Button>
+						<span className="flex items-center gap-1 text-sm">
+							<strong>{currentPage}</strong> of{" "}
+							<strong>{totalPages || 1}</strong>
+						</span>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() =>
+								setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+							}
+							disabled={currentPage >= totalPages}
+							className="gap-1">
+							Next
+							<Icon icon="mdi:chevron-right" className="h-4 w-4" />
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							onClick={() => setCurrentPage(totalPages)}
+							disabled={currentPage >= totalPages}
+							className="hidden sm:flex gap-1">
+							Last
+							<Icon icon="mdi:page-last" className="h-4 w-4" />
+						</Button>
+					</div>
 				</div>
-				<div className="flex items-center space-x-2 ml-auto">
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => setCurrentPage(0)}
-						disabled={currentPage === 0}
-						className="hidden sm:flex gap-1">
-						<Icon icon="mdi:page-first" className="h-4 w-4" />
-						First
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-						disabled={currentPage === 0}
-						className="gap-1">
-						<Icon icon="mdi:chevron-left" className="h-4 w-4" />
-						Previous
-					</Button>
-					<span className="flex items-center gap-1 text-sm">
-						<strong>{currentPage + 1}</strong> of
-						<strong>{pageCount || 1}</strong>
-					</span>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() =>
-							setCurrentPage((prev) => Math.min(pageCount - 1, prev + 1))
-						}
-						disabled={currentPage >= pageCount - 1}
-						className="gap-1">
-						Next
-						<Icon icon="mdi:chevron-right" className="h-4 w-4" />
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						onClick={() => setCurrentPage(pageCount - 1)}
-						disabled={currentPage >= pageCount - 1}
-						className="hidden sm:flex gap-1">
-						Last
-						<Icon icon="mdi:page-last" className="h-4 w-4" />
-					</Button>
-				</div>
-			</div>
+			)}
 		</div>
 	);
 }

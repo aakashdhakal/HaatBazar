@@ -155,3 +155,23 @@ export async function getUserById(id) {
 		return null;
 	}
 }
+
+export async function getAllUsers() {
+	try {
+		await dbConnect();
+
+		const users = await User.find({}).select("name email image role").lean();
+
+		if (!users) {
+			return [];
+		}
+
+		return users.map((user) => ({
+			...user,
+			_id: user._id.toString(),
+		}));
+	} catch (error) {
+		console.error("Error fetching all users:", error);
+		return [];
+	}
+}

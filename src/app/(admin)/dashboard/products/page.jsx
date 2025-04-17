@@ -131,7 +131,7 @@ export default function ProductsManagement() {
 				toast({
 					title: "Product updated",
 					description: "Product has been updated successfully",
-					variant:"success",
+					variant: "success",
 				});
 			} else {
 				// If creating, create a new product
@@ -139,7 +139,7 @@ export default function ProductsManagement() {
 				toast({
 					title: "Product created",
 					description: "New product has been created successfully",
-					variant:"success",
+					variant: "success",
 				});
 			}
 			setShowProductDialog(false);

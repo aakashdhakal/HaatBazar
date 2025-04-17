@@ -7,27 +7,56 @@ import { decreaseOrderStock } from "./products";
 
 // Helper function to convert an order to a plain object
 function convertOrderToPlainObject(order) {
-	return {
-		...order,
-		user: order.user.toString(), // Convert ObjectId to string
-		products: order.products.map((product) => ({
-			...product,
-			product: {
-				...product.product,
-				_id: product.product._id.toString(), // Convert ObjectId to string
-			},
-			_id: product._id.toString(), // Convert ObjectId to string
-		})),
-		paymentInfo: {
-			...order.paymentInfo,
-			_id: order.paymentInfo._id.toString(), // Convert ObjectId to string
-		},
-		_id: order._id.toString(), // Convert ObjectId to string
-		createdAt: order.createdAt.toISOString(), // Convert Date to string
-		updatedAt: order.updatedAt.toISOString(), // Convert Date to string
-	};
-}
+	try {
+		return {
+			...order,
+			user: order.user ? order.user.toString() : null, // Convert ObjectId to string
+			products: order.products
+				? order.products
+						.map((product) => {
+							// Handle case where product or product reference might be null
+							if (!product) return null;
 
+							return {
+								...product,
+								product: product.product
+									? {
+											...product.product,
+											_id: product.product._id
+												? product.product._id.toString()
+												: null, // Handle missing _id
+									  }
+									: null,
+								_id: product._id ? product._id.toString() : null, // Handle missing _id
+							};
+						})
+						.filter(Boolean)
+				: [], // Filter out any null values
+			paymentInfo: order.paymentInfo
+				? {
+						...order.paymentInfo,
+						_id: order.paymentInfo._id
+							? order.paymentInfo._id.toString()
+							: null,
+				  }
+				: null,
+			_id: order._id ? order._id.toString() : null,
+			createdAt: order.createdAt ? order.createdAt.toISOString() : null,
+			updatedAt: order.updatedAt ? order.updatedAt.toISOString() : null,
+		};
+	} catch (error) {
+		console.error("Error converting order to plain object:", error);
+		// Return a simplified version that won't cause serialization errors
+		return {
+			_id: order._id ? order._id.toString() : null,
+			status: order.status || "processing",
+			totalAmount: order.totalAmount || 0,
+			createdAt: order.createdAt ? order.createdAt.toISOString() : null,
+			products: [],
+			error: "Failed to convert complete order data",
+		};
+	}
+}
 // Function to create a new order
 export async function createOrder(orderData) {
 	try {
