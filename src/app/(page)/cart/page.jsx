@@ -147,7 +147,7 @@ export default function Cart() {
 			...loading,
 			checkout: true,
 		});
-		const transactionUuid = Math.floor(Math.random() * 1000000);
+		const transactionUuid = Math.floor(Math.random() * 1000000000);
 		const totalAmount = totalPrice + shippingFee;
 		try {
 			const paymentResponse = await createPayment({
@@ -173,6 +173,8 @@ export default function Cart() {
 			});
 			if (!orderResponse) {
 				throw new Error("Error placing order");
+			} else {
+				await clearCart();
 			}
 
 			// Process payment based on selected method
@@ -218,11 +220,15 @@ export default function Cart() {
 					});
 					break;
 				case "cash":
-					router.push("/order-confirmation");
+					router.push("/orders");
 					break;
 			}
 		} catch (error) {
-			console.error("Error during checkout:", error);
+			toast({
+				variant: "error",
+				title: "Error",
+				description: "Failed to place your order. Please try again.",
+			});
 		} finally {
 			setLoading(false);
 		}

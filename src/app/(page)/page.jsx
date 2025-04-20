@@ -314,49 +314,9 @@ export default async function Home() {
 						</Link>
 					</div>
 
-					<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-5 gap-4">
 						{freshArrivals.map((product) => (
 							<ProductCard key={product._id} product={product} />
-						))}
-					</div>
-				</div>
-			</section>
-
-			{/* Shop by Price - New ecommerce-focused section */}
-			<section className="py-6 bg-white mt-4 rounded-lg">
-				<div className="">
-					<div className="flex justify-between items-center mb-4">
-						<h2 className="text-xl font-bold text-gray-900">Shop by Price</h2>
-					</div>
-
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-						{[
-							{ label: "Under ₹100", range: "0-100", icon: "mdi:currency-inr" },
-							{
-								label: "₹100 - ₹250",
-								range: "100-250",
-								icon: "mdi:currency-inr",
-							},
-							{
-								label: "₹250 - ₹500",
-								range: "250-500",
-								icon: "mdi:currency-inr",
-							},
-							{
-								label: "₹500 & Above",
-								range: "500-max",
-								icon: "mdi:currency-inr",
-							},
-						].map((item) => (
-							<Link
-								key={item.range}
-								href={`/price/${item.range}`}
-								className="flex items-center gap-3 p-4 border border-gray-100 rounded-lg hover:border-primary/20 hover:shadow-sm transition-colors bg-gray-50">
-								<div className="bg-primary/10 p-2 rounded-full">
-									<Icon icon={item.icon} className="w-5 h-5 text-primary" />
-								</div>
-								<span className="font-medium">{item.label}</span>
-							</Link>
 						))}
 					</div>
 				</div>

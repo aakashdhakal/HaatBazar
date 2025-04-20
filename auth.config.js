@@ -31,7 +31,11 @@ export const authConfig = {
 					name: profile.name,
 					email: profile.email,
 					image: profile.picture,
-					role: profile.email === "anamoldhakal22@gmail.com" ? "admin" : "user",
+					role:
+						profile.email ===
+						("anamoldhakal22@gmail.com" || "amardeeplimbu10@gmail.com")
+							? "admin"
+							: "user",
 				};
 			},
 		}),

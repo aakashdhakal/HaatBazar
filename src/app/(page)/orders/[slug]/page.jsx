@@ -34,6 +34,7 @@ export default function OrderDetailPage() {
 				const orderData = await getOrderById(orderId);
 				if (orderData) {
 					setOrder(orderData);
+					console.log("Order data:", orderData);
 				} else {
 					setError("Order not found or you don't have permission to view it");
 				}
@@ -204,14 +205,12 @@ export default function OrderDetailPage() {
 										className="h-5 w-5 text-gray-600"
 									/>
 								</div>
-								<div>
+								<div className="flex items-center gap-4">
 									<p className="text-sm font-medium text-gray-900">
 										Payment Method
 									</p>
 									<p className="text-sm text-gray-600">
-										{order.paymentInfo?.method
-											? getPaymentMethodName(order.paymentInfo.method)
-											: "Not specified"}
+										{getPaymentMethodName(order.paymentInfo?.paymentMethod)}
 									</p>
 								</div>
 							</div>
@@ -242,21 +241,11 @@ export default function OrderDetailPage() {
 										className="h-5 w-5 text-gray-600"
 									/>
 								</div>
-								<div>
+								<div className="flex items-center gap-4">
 									<p className="text-sm font-medium text-gray-900">
 										Payment Status
 									</p>
-									<div className="mt-1">
-										<span
-											className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${getPaymentStatusBadge(
-												order.paymentInfo?.status || "pending",
-											)}`}>
-											{order.paymentInfo?.status
-												? order.paymentInfo.status.charAt(0).toUpperCase() +
-												  order.paymentInfo.status.slice(1)
-												: "Pending"}
-										</span>
-									</div>
+									<StatusBadge status={order.paymentInfo?.status} />
 								</div>
 							</div>
 						</div>

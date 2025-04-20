@@ -4,6 +4,7 @@ import dbConnect from "@/lib/db";
 import { auth } from "@/app/auth";
 import mongoose from "mongoose";
 import { decreaseOrderStock } from "./products";
+import { getPaymentByTransactionId } from "./payment";
 
 // Helper function to convert an order to a plain object
 function convertOrderToPlainObject(order) {
@@ -60,6 +61,7 @@ function convertOrderToPlainObject(order) {
 // Function to create a new order
 export async function createOrder(orderData) {
 	try {
+		console.log("Creating order with data:", orderData); // Debugging line
 		// Connect to the database
 		await dbConnect();
 
@@ -196,9 +198,15 @@ export async function getOrderByTransactionId(transactionId) {
 	try {
 		await dbConnect();
 
-		const order = await Order.findOne({
-			"paymentInfo.transactionId": transactionId,
-		})
+		// Step 1: Find the transaction by transactionId
+		const transaction = await Transaction.findOne({ transactionId }).lean();
+		if (!transaction) {
+			console.error("Transaction not found for transactionId:", transactionId);
+			return null;
+		}
+
+		// Step 2: Find the order using the paymentInfo reference
+		const order = await Order.findOne({ paymentInfo: transaction._id })
 			.populate({
 				path: "products.product",
 				select: "name price image brand category description",
@@ -207,13 +215,14 @@ export async function getOrderByTransactionId(transactionId) {
 				path: "paymentInfo",
 				select: "transactionId amount paymentMethod status",
 			})
-			.lean(); // Use lean() to return plain JavaScript objects
+			.lean();
 
 		if (!order) {
 			console.error("Order not found for transactionId:", transactionId);
 			return null;
 		}
 
+		console.log("Order found:", order);
 		return convertOrderToPlainObject(order);
 	} catch (error) {
 		console.error("Error fetching order by transactionId:", error);

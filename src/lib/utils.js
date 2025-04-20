@@ -154,3 +154,27 @@ export async function uploadImage(file, name) {
 		throw new Error("Failed to upload product image");
 	}
 }
+
+export function normalizePaymentResponse(parameters, isEsewa = false) {
+	if (isEsewa) {
+		// Decode eSewa's encoded data
+		const decodedData = decodeData(parameters.get("data")); // Assuming decodeData is already implemented
+		return {
+			transactionId: decodedData.transaction_code,
+			status: decodedData.status,
+			totalAmount: parseFloat(decodedData.total_amount.replace(/,/g, "")), // Remove commas and convert to number
+			transactionUuid: decodedData.transaction_uuid,
+			productCode: decodedData.product_code,
+		};
+	} else {
+		// Normalize Khalti's query parameters
+		return {
+			transactionId:
+				parameters.get("transaction_id") || parameters.get("txnId"),
+			status: parameters.get("status") === "Completed" ? "SUCCESS" : "FAILED",
+			totalAmount: parseFloat(parameters.get("total_amount")) || 0,
+			transactionUuid: parameters.get("purchase_order_id"),
+			productCode: parameters.get("purchase_order_name"),
+		};
+	}
+}

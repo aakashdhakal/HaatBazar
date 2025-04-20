@@ -97,3 +97,26 @@ export async function updatePaymentStatus(transactionId, status) {
 		throw new Error("Payment status update failed");
 	}
 }
+
+export async function getPaymentByTransactionId(transactionId) {
+	try {
+		const payment = await Transaction.findOne({ transactionId });
+		if (!payment) {
+			console.error("Payment not found for transactionId:", transactionId);
+			return null;
+		}
+
+		const plainPayment = {
+			...payment._doc,
+			_id: payment._id.toString(),
+		};
+
+		if (plainPayment.status === "failed") {
+			return null;
+		}
+		return plainPayment;
+	} catch (error) {
+		console.error("Error fetching payment:", error);
+		return null; // Or throw an error, depending on your needs
+	}
+}
