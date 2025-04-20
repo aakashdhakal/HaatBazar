@@ -1,11 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSession } from "next-auth/react";
-import Form from "next/form";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,25 +12,26 @@ import Image from "next/image";
 export default function Login() {
 	const [formData, setFormData] = useState({ email: "", password: "" });
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 	const router = useRouter();
 	const { status } = useSession();
-	const [loading, setLoading] = useState(false);
 	const searchParams = useSearchParams();
-	const [showPassword, setShowPassword] = useState(false);
 
-	useEffect(() => {
-		if (searchParams.get("error")) {
-			setError(searchParams.get("error"));
-		}
-	}, [searchParams]);
+	// Redirect if already authenticated
+	if (status === "authenticated") {
+		router.push("/");
+		return null;
+	}
 
+	// Handle form submission
 	const handleSubmit = async (e) => {
-		setLoading(true);
 		e.preventDefault();
+		setLoading(true);
 		setError("");
 
 		if (!formData.email || !formData.password) {
-			setError("All fields are required");
+			setError("Email and password are required");
 			setLoading(false);
 			return;
 		}
@@ -40,313 +40,185 @@ export default function Login() {
 			email: formData.email,
 			password: formData.password,
 			redirect: false,
-			redirectTo: "/",
+			callbackUrl: "/",
 		});
 
-		if (result.code === null) {
+		if (!result.error) {
 			router.push("/");
-			setLoading(false);
-		} else if (result.code.includes("/signup")) {
-			redirect(result.code);
 		} else {
-			setError(result.code);
+			setError(result.error);
 			setLoading(false);
 		}
 	};
 
-	const handleChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
-	};
-
 	return (
-		<div className="min-h-screen w-full flex bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
-			{/* Background decoration */}
+		<div className="min-h-screen flex items-center justify-center bg-green-300/25 py-12 px-4 sm:px-6 lg:px-8">
+			<div className="max-w-md w-full space-y-8 bg-white p-6 rounded-lg shadow-md">
+				{/* Logo and header */}
+				<div className="text-center">
+					<Link href="/" className="inline-block">
+						<Image
+							src="/logoSideText.png"
+							alt="HaatBazar"
+							width={120}
+							height={40}
+							className="mx-auto h-10 w-auto"
+						/>
+					</Link>
+					<h2 className="mt-6 text-2xl font-bold text-gray-900">
+						Sign in to your account
+					</h2>
+					<p className="mt-2 text-sm text-gray-600">
+						Or{" "}
+						<Link
+							href="/signup"
+							className="font-medium text-primary hover:text-primary-dark">
+							create a new account
+						</Link>
+					</p>
+				</div>
 
-			<div className="flex w-full max-w-screen-xl m-auto p-4 md:p-8 z-10">
-				<div className="w-full flex flex-col lg:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white h-max">
-					{/* Left side - Banner (promotional content) */}
-					<div className="hidden lg:block lg:w-[45%] bg-gradient-to-br from-primary to-secondary relative overflow-hidden">
-						<div className="relative z-10 flex flex-col h-full p-10 lg:p-12 justify-between">
-							{/* Banner content */}
-							<div>
-								<div className="flex items-center mb-12">
-									<Image
-										src="/HaatBazar-White.png"
-										alt="FreshMart"
-										width={130}
-										height={130}
-										className="w-auto h-10"
-									/>
-								</div>
-								<div className="mb-10">
-									<h1 className="font-heading text-4xl font-bold text-white mb-4 leading-tight">
-										Your Everyday Fresh Groceries
-									</h1>
-									<p className="text-white/90 text-lg leading-relaxed">
-										Shop with confidence from our carefully curated selection of
-										premium products
-									</p>
-								</div>
+				{/* Error message */}
+				{error && (
+					<div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative text-sm">
+						<span className="block sm:inline">{error}</span>
+					</div>
+				)}
 
-								<div className="space-y-6 mt-10">
-									<div className="flex items-start gap-4">
-										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
-											<Icon
-												icon="mdi:truck-fast-outline"
-												width="22"
-												height="22"
-												className="text-white"
-											/>
-										</div>
-										<div>
-											<h3 className="text-white font-medium text-lg mb-1">
-												Fast Delivery
-											</h3>
-											<p className="text-white/80">
-												Same-day delivery available in select areas
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-start gap-4">
-										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
-											<Icon
-												icon="mdi:sprout"
-												width="22"
-												height="22"
-												className="text-white"
-											/>
-										</div>
-										<div>
-											<h3 className="text-white font-medium text-lg mb-1">
-												Fresh & Organic
-											</h3>
-											<p className="text-white/80">
-												Locally sourced organic products
-											</p>
-										</div>
-									</div>
-
-									<div className="flex items-start gap-4">
-										<div className="p-3 bg-white/15 rounded-xl shadow-lg">
-											<Icon
-												icon="mdi:ticket-percent"
-												width="22"
-												height="22"
-												className="text-white"
-											/>
-										</div>
-										<div>
-											<h3 className="text-white font-medium text-lg mb-1">
-												Member Benefits
-											</h3>
-											<p className="text-white/80">
-												Exclusive discounts for registered members
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
+				{/* Login form */}
+				<form className="space-y-6" onSubmit={handleSubmit}>
+					<div>
+						<label
+							htmlFor="email"
+							className="block text-sm font-medium text-gray-700">
+							Email address
+						</label>
+						<div className="mt-1 relative">
+							<Input
+								id="email"
+								name="email"
+								type="email"
+								autoComplete="email"
+								required
+								value={formData.email}
+								onChange={(e) =>
+									setFormData({ ...formData, email: e.target.value })
+								}
+								className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+								placeholder="Enter your email"
+							/>
 						</div>
 					</div>
 
-					{/* Right side - Form */}
-					<div className="w-full lg:w-[55%] p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-						<div className="max-w-md mx-auto w-full">
-							{/* Mobile logo and back button */}
-							<div className="flex items-center justify-between mb-8 lg:hidden">
-								<div className="flex items-center gap-2">
-									<Image
-										src="/logoSideText.png"
-										alt="HaatBazar"
-										width={130}
-										height={130}
-										className="w-auto h-10"
-									/>
-								</div>
-								<Link href="/" className="p-2 rounded-full hover:bg-gray-100">
-									<Icon icon="mdi:arrow-left" className="h-5 w-5" />
-								</Link>
-							</div>
-
-							{/* Form header */}
-							<div className="mb-8">
-								<h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-									Welcome back
-								</h2>
-								<p className="text-gray-600">
-									Sign in to your account to continue shopping
-								</p>
-							</div>
-
-							{/* Error message */}
-							{error && (
-								<div className="mb-6 bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-start gap-3 animate-fadeIn shadow-sm">
-									<Icon
-										icon="mdi:alert-circle"
-										width="20"
-										height="20"
-										className="flex-shrink-0 mt-0.5"
-									/>
-									<p className="text-sm">{error}</p>
-								</div>
-							)}
-
-							{/* Login form */}
-							<Form onSubmit={handleSubmit} className="space-y-6">
-								<div className="space-y-5">
-									<div className="space-y-2.5">
-										<label
-											htmlFor="email"
-											className="block text-sm font-medium text-gray-700">
-											Email address
-										</label>
-										<div className="relative">
-											<div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-												<Icon
-													icon="mdi:email-outline"
-													width="18"
-													height="18"
-													className="text-gray-400"
-												/>
-											</div>
-											<Input
-												type="email"
-												name="email"
-												id="email"
-												value={formData.email}
-												placeholder="you@example.com"
-												onChange={handleChange}
-												className="pl-11 h-12 w-full rounded-md border-gray-200 bg-gray-50/70 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-												required
-											/>
-										</div>
-									</div>
-
-									<div className="space-y-2.5">
-										<div className="flex items-center justify-between">
-											<label
-												htmlFor="password"
-												className="block text-sm font-medium text-gray-700">
-												Password
-											</label>
-											<Link
-												href="/forgot-password"
-												className="text-xs font-medium text-primary hover:text-primary-dark transition-colors underline-offset-2 hover:underline">
-												Forgot password?
-											</Link>
-										</div>
-										<div className="relative">
-											<div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-												<Icon
-													icon="mdi:lock-outline"
-													width="18"
-													height="18"
-													className="text-gray-400"
-												/>
-											</div>
-											<Input
-												type={showPassword ? "text" : "password"}
-												name="password"
-												id="password"
-												value={formData.password}
-												placeholder="••••••••"
-												onChange={handleChange}
-												className="pl-11 pr-11 h-12 w-full rounded-md border-gray-200 bg-gray-50/70 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-												required
-											/>
-											<button
-												type="button"
-												className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
-												onClick={() => setShowPassword(!showPassword)}>
-												<Icon
-													icon={
-														showPassword
-															? "mdi:eye-off-outline"
-															: "mdi:eye-outline"
-													}
-													width="18"
-													height="18"
-												/>
-											</button>
-										</div>
-									</div>
-								</div>
-
-								<div className="flex items-center">
-									<input
-										id="remember_me"
-										name="remember_me"
-										type="checkbox"
-										className="h-4 w-4 accent-primary text-primary rounded focus:ring-primary border-gray-300 cursor-pointer"
-									/>
-									<label
-										htmlFor="remember_me"
-										className="ml-2 block text-sm text-gray-700 cursor-pointer">
-										Remember me for 30 days
-									</label>
-								</div>
-
-								<Button
-									type="submit"
-									disabled={loading}
-									className="w-full h-12 text-base font-medium rounded-xl bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 shadow-md hover:shadow-lg">
-									{loading ? (
-										<div className="flex items-center justify-center gap-2">
-											<div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-											<span>Signing in...</span>
-										</div>
-									) : (
-										"Sign in"
-									)}
-								</Button>
-
-								<div className="relative flex items-center">
-									<div className="flex-grow border-t border-gray-200"></div>
-									<span className="flex-shrink-0 px-4 text-sm text-gray-500">
-										Or continue with
-									</span>
-									<div className="flex-grow border-t border-gray-200"></div>
-								</div>
-
-								<Button
-									type="button"
-									onClick={() =>
-										signIn("google", { redirect: false, redirectTo: "/" })
-									}
-									className="flex items-center justify-center gap-2 py-2.5 px-4 border border-gray-200 rounded-md hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md w-full"
-									variant="outline">
-									<Icon icon="flat-color-icons:google" width="18" height="18" />
-									<span className="font-medium">Google</span>
-								</Button>
-
-								<div className="text-center pt-4">
-									<p className="text-sm text-gray-600 flex gap-2 items-center justify-center">
-										Don&apos;t have an account?
-										<Link
-											href="/signup"
-											className="font-medium text-secondary hover:text-secondary-dark transition-colors hover:underline underline-offset-2">
-											Create an account
-										</Link>
-									</p>
-								</div>
-							</Form>
-
-							<p className="text-xs text-gray-500 text-center mt-8">
-								By signing in, you agree to our
-								<Link
-									href="/terms"
-									className="underline underline-offset-2 hover:text-gray-700">
-									Terms of Service
-								</Link>
-								and
-								<Link
-									href="/privacy"
-									className="underline underline-offset-2 hover:text-gray-700">
-									Privacy Policy
-								</Link>
-							</p>
+					<div>
+						<div className="flex items-center justify-between">
+							<label
+								htmlFor="password"
+								className="block text-sm font-medium text-gray-700">
+								Password
+							</label>
+							<Link
+								href="/forgot-password"
+								className="text-xs text-primary hover:underline">
+								Forgot password?
+							</Link>
 						</div>
+						<div className="mt-1 relative">
+							<Input
+								id="password"
+								name="password"
+								type={showPassword ? "text" : "password"}
+								autoComplete="current-password"
+								required
+								value={formData.password}
+								onChange={(e) =>
+									setFormData({ ...formData, password: e.target.value })
+								}
+								className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
+								placeholder="Enter your password"
+							/>
+							<button
+								type="button"
+								className="absolute inset-y-0 right-0 pr-3 flex items-center"
+								onClick={() => setShowPassword(!showPassword)}>
+								<Icon
+									icon={
+										showPassword ? "mdi:eye-off-outline" : "mdi:eye-outline"
+									}
+									className="h-5 w-5 text-gray-400"
+								/>
+							</button>
+						</div>
+					</div>
+
+					<div className="flex items-center justify-between">
+						<div className="flex items-center">
+							<input
+								id="remember-me"
+								name="remember-me"
+								type="checkbox"
+								className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+							/>
+							<label
+								htmlFor="remember-me"
+								className="ml-2 block text-sm text-gray-700">
+								Remember me
+							</label>
+						</div>
+					</div>
+
+					<div>
+						<Button
+							type="submit"
+							className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+							disabled={loading}>
+							{loading ? (
+								<>
+									<svg
+										className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24">
+										<circle
+											className="opacity-25"
+											cx="12"
+											cy="12"
+											r="10"
+											stroke="currentColor"
+											strokeWidth="4"></circle>
+										<path
+											className="opacity-75"
+											fill="currentColor"
+											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+									</svg>
+									Signing in...
+								</>
+							) : (
+								"Sign in"
+							)}
+						</Button>
+					</div>
+				</form>
+
+				<div className="mt-6">
+					<div className="relative">
+						<div className="absolute inset-0 flex items-center">
+							<div className="w-full border-t border-gray-300"></div>
+						</div>
+						<div className="relative flex justify-center text-sm">
+							<span className="px-2 bg-white text-gray-500">
+								Or continue with
+							</span>
+						</div>
+					</div>
+
+					<div className="mt-6">
+						<button
+							onClick={() => signIn("google", { callbackUrl: "/" })}
+							className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+							<Icon icon="flat-color-icons:google" className="h-5 w-5 mr-2" />
+							Sign in with Google
+						</button>
 					</div>
 				</div>
 			</div>
