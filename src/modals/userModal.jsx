@@ -33,6 +33,7 @@ const UserSchema = new mongoose.Schema(
 		dateOfBirth: {
 			type: Date,
 			default: null,
+			required: false,
 		},
 		shippingAddress: [
 			{
