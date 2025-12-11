@@ -88,7 +88,7 @@ export default function CartProduct({ product, onRemove }) {
 	const isDiscounted = discountPercentage > 0;
 
 	return (
-		<div className="flex flex-col sm:flex-row items-center p-4 hover:bg-gray-50/50 justify-between gap-8">
+		<div className="flex flex-col sm:flex-row items-center p-4 hover:bg-muted/50 justify-between gap-8">
 			{/* Product (col-span-4) - Image and details */}
 			<div className="flex items-center w-4/12">
 				{/* Product Image */}
@@ -96,7 +96,7 @@ export default function CartProduct({ product, onRemove }) {
 					<Link href={`/product/${product._id}`}>
 						<AspectRatio
 							ratio={1}
-							className="bg-gray-50 rounded-md overflow-hidden">
+							className="bg-muted rounded-md overflow-hidden">
 							<SafeImage
 								src={product.image}
 								alt={product.name}
@@ -119,7 +119,7 @@ export default function CartProduct({ product, onRemove }) {
 				{/* Product Details */}
 				<div className="flex-1 min-w-0">
 					<Link href={`/product/${product._id}`} className="group">
-						<h3 className="font-medium text-gray-900 truncate group-hover:text-primary transition-colors">
+						<h3 className="font-medium text-foreground truncate group-hover:text-primary transition-colors">
 							{product.name}
 						</h3>
 					</Link>
@@ -128,9 +128,9 @@ export default function CartProduct({ product, onRemove }) {
 
 			{/* Price (col-span-2) */}
 			<div className="text-center">
-				<span className="text-gray-900">Rs {product.price}</span>
+				<span className="text-foreground">Rs {product.price}</span>
 				{isDiscounted && (
-					<div className="text-gray-400 text-xs line-through">
+					<div className="text-muted-foreground text-xs line-through">
 						Rs {product.originalPrice}
 					</div>
 				)}
@@ -138,11 +138,11 @@ export default function CartProduct({ product, onRemove }) {
 
 			{/* Quantity (col-span-2) */}
 			<div className="flex justify-center w-full sm:w-2/12 ">
-				<div className="flex items-center border border-gray-200 rounded">
+				<div className="flex items-center border border-border rounded">
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-full rounded-r-none border-r border-gray-200"
+						className="h-8 w-full rounded-r-none border-r border-border"
 						onClick={() => handleQuantityChange(quantity - 1)}
 						disabled={quantity <= 1 || loading}>
 						<Icon icon="mdi:minus" className="h-3 w-3" />
@@ -161,7 +161,7 @@ export default function CartProduct({ product, onRemove }) {
 					<Button
 						variant="ghost"
 						size="icon"
-						className="h-8 w-full rounded-l-none border-l border-gray-200"
+						className="h-8 w-full rounded-l-none border-l border-border"
 						onClick={() => handleQuantityChange(quantity + 1)}
 						disabled={loading}>
 						<Icon icon="mdi:plus" className="h-3 w-3" />
@@ -172,7 +172,7 @@ export default function CartProduct({ product, onRemove }) {
 
 			{/* Total (col-span-2) */}
 			<div className="text-center w-max sm:w-2/12 mt-2 sm:mt-0">
-				<span className="font-medium text-gray-900">
+				<span className="font-medium text-foreground">
 					Rs {product.price * quantity}
 				</span>
 			</div>
@@ -187,7 +187,7 @@ export default function CartProduct({ product, onRemove }) {
 								size="sm"
 								onClick={handleRemove}
 								disabled={loading}
-								className="h-8 w-8 p-0 text-gray-400 hover:text-red-600 hover:bg-red-50">
+								className="h-8 w-8 p-0 text-muted-foreground hover:text-red-600 hover:bg-red-50">
 								{loading ? (
 									<div className="h-4 w-4 border-2 border-t-transparent border-current rounded-full animate-spin" />
 								) : (

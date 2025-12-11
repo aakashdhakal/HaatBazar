@@ -104,7 +104,7 @@ export function ReviewModal({
 					<DialogTitle className="text-xl font-bold">
 						Write a Review
 					</DialogTitle>
-					<p className="text-sm text-gray-500">
+					<p className="text-sm text-muted-foreground">
 						Share your experience with {productName}
 					</p>
 				</DialogHeader>
@@ -114,7 +114,7 @@ export function ReviewModal({
 						<div>
 							<label
 								htmlFor="rating"
-								className="block text-sm font-medium text-gray-700 mb-2">
+								className="block text-sm font-medium text-foreground mb-2">
 								Your Rating
 							</label>
 							<Rating
@@ -127,7 +127,7 @@ export function ReviewModal({
 						<div>
 							<label
 								htmlFor="comment"
-								className="block text-sm font-medium text-gray-700 mb-2">
+								className="block text-sm font-medium text-foreground mb-2">
 								Your Review
 							</label>
 							<Textarea
@@ -165,12 +165,14 @@ export function ReviewModal({
 					<div className="text-center py-8">
 						<Icon
 							icon="mdi:lock-outline"
-							className="w-16 h-16 mx-auto text-gray-300 mb-4"
+							className="w-16 h-16 mx-auto text-muted mb-4"
 						/>
-						<h3 className="text-lg font-medium text-gray-700 mb-2">
+						<h3 className="text-lg font-medium text-foreground mb-2">
 							Login Required
 						</h3>
-						<p className="text-gray-500 mb-4">Please login to write a review</p>
+						<p className="text-muted-foreground mb-4">
+							Please login to write a review
+						</p>
 						<DialogFooter>
 							<Button type="button" variant="outline" onClick={onClose}>
 								Cancel

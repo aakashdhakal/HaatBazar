@@ -29,7 +29,7 @@ export function Rating({ value = 0, onChange, max = 5, readOnly = false }) {
 							className={`w-6 h-6 ${
 								ratingValue <= (hoverValue || value)
 									? "text-amber-400"
-									: "text-gray-300"
+									: "text-muted"
 							}`}
 						/>
 					</button>

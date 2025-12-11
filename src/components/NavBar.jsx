@@ -92,17 +92,17 @@ export function NavBar() {
 				<div className="hidden md:flex items-center space-x-6">
 					<Link
 						href="/category/vegetables"
-						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+						className="text-sm font-medium text-foreground hover:text-primary transition-colors">
 						Vegetables
 					</Link>
 					<Link
 						href="/category/fruits"
-						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+						className="text-sm font-medium text-foreground hover:text-primary transition-colors">
 						Fruits
 					</Link>
 					<Link
 						href="/category/dairy"
-						className="text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+						className="text-sm font-medium text-foreground hover:text-primary transition-colors">
 						Dairy
 					</Link>
 					<Link
@@ -114,7 +114,7 @@ export function NavBar() {
 
 				{/* Search Bar - Redesigned */}
 				<form
-					className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-gray-300 overflow-hidden"
+					className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-border overflow-hidden"
 					onSubmit={(e) => {
 						e.preventDefault();
 						const formData = new FormData(e.target);
@@ -129,7 +129,7 @@ export function NavBar() {
 						type="text"
 						name="query"
 						placeholder="Search products..."
-						className="w-full py-2 bg-gray-50 border-none outline-none ring-0 rounded-md text-sm 
+						className="w-full py-2 bg-muted border-none outline-none ring-0 rounded-md text-sm 
 												focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none transition-colors"
 					/>
 					<Button
@@ -147,7 +147,7 @@ export function NavBar() {
 						variant="ghost"
 						size="icon"
 						className="md:hidden hover:bg-primary/5">
-						<Icon icon="mdi:magnify" className="h-5 w-5 text-gray-700" />
+						<Icon icon="mdi:magnify" className="h-5 w-5 text-foreground" />
 					</Button>
 
 					{/* Wishlist */}
@@ -155,7 +155,7 @@ export function NavBar() {
 						<Link href="/wishlist" className="p-2 block">
 							<Icon
 								icon="mdi:heart-outline"
-								className="h-6 w-6 text-gray-700 hover:text-primary transition-colors"
+								className="h-6 w-6 text-foreground hover:text-primary transition-colors"
 							/>
 							{wishListItemsCount > 0 && (
 								<span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-white">
@@ -170,7 +170,7 @@ export function NavBar() {
 						<Link href="/cart" className="p-2 block">
 							<Icon
 								icon="mdi:cart-outline"
-								className="h-6 w-6 text-gray-700 hover:text-primary transition-colors"
+								className="h-6 w-6 text-foreground hover:text-primary transition-colors"
 							/>
 							{cartItems.length > 0 && (
 								<span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-white">
@@ -201,7 +201,7 @@ export function NavBar() {
 											<Link
 												key="admin"
 												href="/dashboard"
-												className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
+												className="text-sm font-medium flex items-center gap-2 text-foreground ">
 												<Icon icon="mdi:shield-account" className="h-4 w-4" />
 												<span>Dashboard</span>
 											</Link>,
@@ -210,21 +210,21 @@ export function NavBar() {
 								<Link
 									key="profile"
 									href="/newUser"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
+									className="text-sm font-medium flex items-center gap-2 text-foreground ">
 									<Icon icon="mdi:account" className="h-4 w-4" />
 									<span>Profile</span>
 								</Link>,
 								<Link
 									key="orders"
 									href="/orders"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
+									className="text-sm font-medium flex items-center gap-2 text-foreground ">
 									<Icon icon="mdi:package" className="h-4 w-4" />
 									<span>Orders</span>
 								</Link>,
 								<Link
 									key="wishlist"
 									href="/wishlist"
-									className="text-sm font-medium flex items-center gap-2 text-gray-700 text-center ">
+									className="text-sm font-medium flex items-center gap-2 text-foreground text-center ">
 									<Icon icon="mdi:heart" className="h-4 w-4" />
 									<span>Wishlist</span>
 								</Link>,
@@ -233,7 +233,7 @@ export function NavBar() {
 									varient="dropdown"
 									size="dropdown"
 									key="logout"
-									triggerClassname="text-sm font-medium flex items-center justify-start gap-2 text-gray-700 hover:text- transition-colors hover:bg-destructive/20"
+									triggerClassname="text-sm font-medium flex items-center justify-start gap-2 text-foreground hover:text- transition-colors hover:bg-destructive/20"
 									triggerText={
 										<span className="text-sm font-medium flex items-center gap-2">
 											<Icon icon="mdi:logout" />
@@ -265,7 +265,7 @@ export function NavBar() {
 						aria-label="Menu">
 						<Icon
 							icon={isMobileMenuOpen ? "mdi:close" : "mdi:menu"}
-							className="h-5 w-5 text-gray-700"
+							className="h-5 w-5 text-foreground"
 						/>
 					</Button>
 				</div>
@@ -280,12 +280,12 @@ export function NavBar() {
 					<Input
 						type="text"
 						placeholder="Search products..."
-						className="w-full py-1.5 pl-3 pr-10 border border-gray-200 focus:border-primary focus:ring-primary rounded-md text-sm"
+						className="w-full py-1.5 pl-3 pr-10 border border-border focus:border-primary focus:ring-primary rounded-md text-sm"
 					/>
 					<Button
 						variant="ghost"
 						size="icon"
-						className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 hover:text-primary">
+						className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground hover:text-primary">
 						<Icon icon="mdi:magnify" className="h-4 w-4" />
 					</Button>
 				</div>

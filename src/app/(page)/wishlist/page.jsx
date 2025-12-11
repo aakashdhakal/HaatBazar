@@ -128,12 +128,12 @@ export default function WishlistPage() {
 	if (isLoading) {
 		return (
 			<div className="max-w-7xl mx-auto px-4 py-8">
-				<h1 className="text-2xl font-bold mb-6 text-gray-900">My Wishlist</h1>
+				<h1 className="text-2xl font-bold mb-6 text-foreground">My Wishlist</h1>
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 					{[...Array(4)].map((_, i) => (
 						<div
 							key={i}
-							className="border border-gray-200 rounded-lg overflow-hidden">
+							className="border border-border rounded-lg overflow-hidden">
 							<Skeleton className="h-48 w-full" />
 							<div className="p-4">
 								<Skeleton className="h-5 w-3/4 mb-2" />
@@ -160,10 +160,10 @@ export default function WishlistPage() {
 				<div className="text-primary/80 mb-6">
 					<Icon icon="mdi:heart-outline" className="h-16 w-16" />
 				</div>
-				<h1 className="text-2xl font-bold text-gray-900 mb-2">
+				<h1 className="text-2xl font-bold text-foreground mb-2">
 					Your wishlist is empty
 				</h1>
-				<p className="text-gray-500 mb-8 text-center max-w-md">
+				<p className="text-muted-foreground mb-8 text-center max-w-md">
 					Looks like you haven&apos;t added any items to your cart yet. Browse
 					our products and start shopping!
 				</p>
@@ -179,17 +179,17 @@ export default function WishlistPage() {
 	return (
 		<div className="max-w-7xl mx-auto px-4 py-8">
 			<div className="flex items-center justify-between mb-6">
-				<h1 className="text-2xl font-bold text-gray-900">My Wishlist</h1>
-				<p className="text-gray-500">{wishlistItems.length} items</p>
+				<h1 className="text-2xl font-bold text-foreground">My Wishlist</h1>
+				<p className="text-muted-foreground">{wishlistItems.length} items</p>
 			</div>
 
 			<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 				{wishlistItems.map((product) => (
 					<div
 						key={product._id}
-						className="border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white group">
+						className="border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-card group">
 						<Link href={`/product/${product._id}`} className="block">
-							<div className="relative h-48 bg-gray-50">
+							<div className="relative h-48 bg-muted">
 								<SafeImage
 									src={product.image}
 									alt={product.name}
@@ -215,20 +215,22 @@ export default function WishlistPage() {
 
 						<div className="p-4">
 							<Link href={`/product/${product._id}`} className="block">
-								<h3 className="font-medium text-gray-900 text-sm line-clamp-2 mb-1 group-hover:text-primary transition-colors">
+								<h3 className="font-medium text-foreground text-sm line-clamp-2 mb-1 group-hover:text-primary transition-colors">
 									{product.name}
 								</h3>
-								<p className="text-gray-500 text-xs mb-2">{product.weight}</p>
+								<p className="text-muted-foreground text-xs mb-2">
+									{product.weight}
+								</p>
 							</Link>
 
 							<div className="flex justify-between items-center">
 								<div className="flex items-baseline">
-									<span className="text-gray-900 font-medium">
+									<span className="text-foreground font-medium">
 										Rs {product.price}
 									</span>
 									{product.originalPrice &&
 										product.originalPrice > product.price && (
-											<span className="text-gray-500 text-xs line-through ml-2">
+											<span className="text-muted-foreground text-xs line-through ml-2">
 												Rs {product.originalPrice}
 											</span>
 										)}
@@ -242,7 +244,7 @@ export default function WishlistPage() {
 											handleRemoveFromWishlist(product._id, product.name)
 										}
 										disabled={loadingStates[product._id]?.removing}
-										className="h-8 w-8 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50">
+										className="h-8 w-8 rounded-full text-muted-foreground hover:text-red-600 hover:bg-red-50">
 										{loadingStates[product._id]?.removing ? (
 											<div className="h-4 w-4 border-2 border-t-transparent border-current rounded-full animate-spin" />
 										) : (
@@ -255,7 +257,7 @@ export default function WishlistPage() {
 										size="icon"
 										onClick={() => handleMoveToCart(product)}
 										disabled={loadingStates[product._id]?.moving}
-										className="h-8 w-8 rounded-full text-gray-400 hover:text-primary hover:bg-primary/10">
+										className="h-8 w-8 rounded-full text-muted-foreground hover:text-primary hover:bg-primary/10">
 										{loadingStates[product._id]?.moving ? (
 											<div className="h-4 w-4 border-2 border-t-transparent border-current rounded-full animate-spin" />
 										) : (

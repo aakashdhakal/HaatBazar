@@ -32,7 +32,7 @@ export function SecondaryButton({ text, onClick }) {
 export function AddToFavouritesButton(props) {
 	return (
 		<button
-			className="bg-white text-black p-1 rounded-lg border-black border-2 hover:bg-gray-200 flex align-center"
+			className="bg-background text-foreground p-1 rounded-lg border-primary border-2 hover:bg-accent flex items-center"
 			onClick={props.onclick}>
 			<Icon icon="iconamoon:heart-light" width="1.6rem" height="100%" />
 		</button>

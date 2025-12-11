@@ -65,7 +65,7 @@ export default function ProductForm({
 			onSubmit={onSubmit}>
 			{/* Image Upload Section */}
 			<div className="flex flex-col gap-4">
-				<div className="bg-gray-100 rounded-lg p-2 flex flex-col items-center justify-center w-70 h-full">
+				<div className="bg-muted rounded-lg p-2 flex flex-col items-center justify-center w-70 h-full">
 					{image ? (
 						<div className="relative group h-full w-full rounded-lg overflow-hidden shadow-md">
 							<Image src={image} alt="Product" fill className="object-cover" />
@@ -73,14 +73,14 @@ export default function ProductForm({
 								<button
 									type="button"
 									onClick={removeImage}
-									className="p-2 bg-white text-red-600 rounded-full shadow-md">
+									className="p-2 bg-background text-red-600 rounded-full shadow-md">
 									<Icon icon="mdi:trash" className="h-5 w-5" />
 								</button>
 							</div>
 						</div>
 					) : (
 						<div className="flex flex-col items-center gap-3 w-full">
-							<p className="text-sm text-gray-500">No image uploaded</p>
+							<p className="text-sm text-muted-foreground">No image uploaded</p>
 							<Label
 								htmlFor="image-upload"
 								className="cursor-pointer flex items-center gap-2 text-sm text-primary bg-primary/10 px-4 py-2 rounded-md">

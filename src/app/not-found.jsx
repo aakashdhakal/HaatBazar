@@ -5,16 +5,16 @@ import { Icon } from "@iconify/react";
 
 export default function NotFound() {
 	return (
-		<div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16 bg-white gap-4">
+		<div className="min-h-[70vh] flex flex-col items-center justify-center px-4 py-16 bg-background gap-4">
 			{/* Custom illustration - Using Icon instead of missing file */}
 			<div className="mb-8 text-primary/80">
 				<Icon icon="mdi:file-search-outline" width="128" height="128" />
 			</div>
 
-			<h1 className="text-4xl font-bold text-gray-800 mb-2">
+			<h1 className="text-4xl font-bold text-foreground mb-2">
 				Oops! Page not found
 			</h1>
-			<p className="text-gray-600 text-center max-w-md mb-8 leading-loose">
+			<p className="text-muted-foreground text-center max-w-md mb-8 leading-loose">
 				We couldn&apos;t find the page you&apos;re looking for. It might have
 				been removed, renamed, or doesn&apos;t exist.
 			</p>
@@ -29,7 +29,7 @@ export default function NotFound() {
 
 			{/* Support contact */}
 			<div className="text-center">
-				<p className="text-sm text-gray-500">
+				<p className="text-sm text-muted-foreground">
 					Need help?{" "}
 					<a
 						href="mailto:support@haatbazar.com"

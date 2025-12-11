@@ -50,5 +50,5 @@ export default StatusBadge;
 export const StatusIcon = ({ status }) => {
 	const config = statusConfig[status] || statusConfig.pending;
 
-	return <Icon icon={config.icon} className="text-2xl text-gray-500" />;
+	return <Icon icon={config.icon} className="text-2xl text-muted-foreground" />;
 };

@@ -64,7 +64,7 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/products"
-									className="text-gray-600 hover:text-secondary">
+									className="text-muted-foreground hover:text-secondary">
 									All Products
 								</Link>
 							</li>

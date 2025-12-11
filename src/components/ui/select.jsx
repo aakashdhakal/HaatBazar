@@ -28,7 +28,7 @@ const SelectTrigger = React.forwardRef(
 					icon="icon-park-outline:down"
 					width="1.5rem"
 					height="1.5rem"
-					className="opacity-50 text-gray-500"
+					className="opacity-50 text-muted-foreground"
 				/>
 			</SelectPrimitive.Icon>
 		</SelectPrimitive.Trigger>

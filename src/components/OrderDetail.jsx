@@ -9,15 +9,15 @@ export default function OrderDetail({ order }) {
 
 	return (
 		<Link href={orderLink}>
-			<div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow cursor-pointer">
+			<div className="bg-card rounded-lg shadow-sm border border-border p-4 hover:shadow-md transition-shadow cursor-pointer">
 				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
 					{/* Order ID and Date */}
 					<div>
 						<div className="flex items-center gap-2">
-							<p className="text-sm text-gray-600">Order ID:</p>
-							<p className="font-medium text-gray-900">{order._id}</p>
+							<p className="text-sm text-muted-foreground">Order ID:</p>
+							<p className="font-medium text-foreground">{order._id}</p>
 						</div>
-						<p className="text-xs text-gray-500">
+						<p className="text-xs text-muted-foreground">
 							Placed on {formatDate(order.createdAt)}
 						</p>
 					</div>
@@ -30,12 +30,12 @@ export default function OrderDetail({ order }) {
 				</div>
 
 				{/* Order Summary */}
-				<div className="mt-3 border-t border-gray-100 pt-3">
+				<div className="mt-3 border-t border-border pt-3">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center gap-2">
 							<Icon
 								icon="mdi:shopping-outline"
-								className="h-4 w-4 text-gray-500"
+								className="h-4 w-4 text-muted-foreground"
 							/>
 							<span className="text-sm">
 								{order.products.length}{" "}
