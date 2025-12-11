@@ -6,7 +6,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -243,24 +242,13 @@ export default async function Dashboard() {
 				/>
 			</div>
 
-			{/* Tabs for different sections */}
-			<Tabs defaultValue="overview" className="space-y-4">
-				<TabsList>
-					<TabsTrigger value="overview">Overview</TabsTrigger>
-					<TabsTrigger value="orders">
-						<Link href="/dashboard/orders">Orders</Link>
-					</TabsTrigger>
-					<TabsTrigger value="products">
-						<Link href="/dashboard/products">Products</Link>
-					</TabsTrigger>
-					<TabsTrigger value="customers">
-						<Link href="/dashboard/customers">Customers</Link>
-					</TabsTrigger>
-				</TabsList>
+			{/* Overview Section */}
+			<div className="space-y-4">
+				<div className="flex items-center justify-between">
+					<h2 className="text-xl font-semibold">Overview</h2>
+				</div>
 
-				{/* Overview Tab Content */}
-				<TabsContent value="overview" className="space-y-4">
-					<div className="grid gap-4 md:grid-cols-2">
+				<div className="grid gap-4 md:grid-cols-2">
 						{/* Recent Orders */}
 						<Card className="col-span-1">
 							<CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -468,13 +456,7 @@ export default async function Dashboard() {
 							</div>
 						</CardContent>
 					</Card>
-				</TabsContent>
-
-				{/* These are placeholder tabs that link to their respective pages */}
-				<TabsContent value="orders" className="h-[400px]"></TabsContent>
-				<TabsContent value="products" className="h-[400px]"></TabsContent>
-				<TabsContent value="customers" className="h-[400px]"></TabsContent>
-			</Tabs>
+			</div>
 
 			{/* Recent Activity & Quick Actions */}
 			<div className="grid gap-4 md:grid-cols-7">

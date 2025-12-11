@@ -9,13 +9,7 @@ const PLACEHOLDERS = {
 	default: "/placeholder.svg",
 };
 
-// SafeImage component with fallback placeholder support
-// Props:
-// - src: Image source URL
-// - alt: Alt text for the image
-// - type: Type of image for placeholder selection: 'product', 'user', 'default'
-// - fallback: Custom fallback image URL (overrides type-based placeholder)
-// - rest: Other props passed to Next.js Image component
+
 export default function SafeImage({
 	src,
 	alt,

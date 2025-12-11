@@ -541,15 +541,9 @@ export default function Cart() {
 
 						<p className="text-xs text-gray-500 text-center">
 							By proceeding, you agree to our
-							<Link href="/terms" className="text-primary hover:underline mx-1">
-								Terms
-							</Link>
+							<span className="text-primary mx-1">Terms</span>
 							and
-							<Link
-								href="/privacy"
-								className="text-primary hover:underline ml-1">
-								Privacy Policy
-							</Link>
+							<span className="text-primary ml-1">Privacy Policy</span>
 						</p>
 					</div>
 				</div>

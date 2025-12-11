@@ -42,30 +42,30 @@ export default function Footer() {
 						<ul className="space-y-2 text-sm">
 							<li>
 								<Link
-									href="/vegetables"
+									href="/category/vegetables"
 									className="text-gray-600 hover:text-primary">
 									Vegetables
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/fruits"
+									href="/category/fruits"
 									className="text-gray-600 hover:text-primary">
 									Fruits
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/dairy"
+									href="/category/dairy"
 									className="text-gray-600 hover:text-primary">
 									Dairy
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/offers"
+									href="/products"
 									className="text-gray-600 hover:text-secondary">
-									Offers
+									All Products
 								</Link>
 							</li>
 						</ul>
@@ -76,29 +76,29 @@ export default function Footer() {
 						<h3 className="font-medium mb-4">Customer Service</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
-								<Link href="/help" className="text-gray-600 hover:text-primary">
-									Help Center
+								<Link
+									href="/orders"
+									className="text-gray-600 hover:text-primary">
+									My Orders
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/orders/track"
+									href="/orders"
 									className="text-gray-600 hover:text-primary">
 									Track Order
 								</Link>
 							</li>
 							<li>
-								<Link
-									href="/returns"
-									className="text-gray-600 hover:text-primary">
-									Returns & Refunds
+								<Link href="/cart" className="text-gray-600 hover:text-primary">
+									My Cart
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/contact"
+									href="/wishlist"
 									className="text-gray-600 hover:text-primary">
-									Contact Us
+									Wishlist
 								</Link>
 							</li>
 						</ul>
@@ -109,29 +109,29 @@ export default function Footer() {
 						<h3 className="font-medium mb-4">Information</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
-								<Link
-									href="/about"
-									className="text-gray-600 hover:text-primary">
-									About Us
+								<Link href="/" className="text-gray-600 hover:text-primary">
+									Home
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/privacy"
+									href="/products"
 									className="text-gray-600 hover:text-primary">
-									Privacy Policy
+									Shop All
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/terms"
+									href="/login"
 									className="text-gray-600 hover:text-primary">
-									Terms & Conditions
+									Login
 								</Link>
 							</li>
 							<li>
-								<Link href="/faq" className="text-gray-600 hover:text-primary">
-									FAQs
+								<Link
+									href="/signup"
+									className="text-gray-600 hover:text-primary">
+									Sign Up
 								</Link>
 							</li>
 						</ul>
@@ -194,19 +194,19 @@ export default function Footer() {
 					</p>
 					<div className="flex space-x-4 mt-2 md:mt-0">
 						<Link
-							href="/sitemap"
+							href="/products"
 							className="text-xs text-gray-500 hover:text-primary">
-							Sitemap
+							Products
 						</Link>
 						<Link
-							href="/accessibility"
+							href="/cart"
 							className="text-xs text-gray-500 hover:text-primary">
-							Accessibility
+							Cart
 						</Link>
 						<Link
-							href="/cookies"
+							href="/orders"
 							className="text-xs text-gray-500 hover:text-primary">
-							Cookie Policy
+							Orders
 						</Link>
 					</div>
 				</div>

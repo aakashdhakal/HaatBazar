@@ -8,6 +8,6 @@
 		"moduleResolution": "node",
 		"jsx": "react-jsx",
 		"allowJs": true,
-		"checkJs": true
+		"checkJs": false
 	}
 }

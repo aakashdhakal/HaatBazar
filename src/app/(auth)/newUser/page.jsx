@@ -772,9 +772,11 @@ export default function LinkAccount() {
 						<Icon icon="mdi:shield-check" className="text-primary" width={16} />
 						Your information is securely encrypted
 					</p>
-					<Link href="/contact" className="text-primary hover:underline">
+					<a
+						href="mailto:support@haatbazar.com"
+						className="text-primary hover:underline">
 						Need help?
-					</Link>
+					</a>
 				</div>
 			</Card>
 		</div>

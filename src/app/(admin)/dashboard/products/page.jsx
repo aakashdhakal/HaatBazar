@@ -452,16 +452,14 @@ export default function ProductsManagement() {
 					))
 				) : filteredProducts.length === 0 ? (
 					// Empty state
-					<div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+					<div className="bg-card rounded-lg shadow-sm border p-12 text-center">
 						<div className="flex flex-col items-center gap-3">
 							<Icon
 								icon="mdi:package-variant"
-								className="h-12 w-12 text-gray-300"
+								className="h-12 w-12 text-muted-foreground/50"
 							/>
-							<h3 className="text-lg font-medium text-gray-900">
-								No products found
-							</h3>
-							<p className="text-gray-500 max-w-md mx-auto">
+							<h3 className="text-lg font-medium">No products found</h3>
+							<p className="text-muted-foreground max-w-md mx-auto">
 								{searchQuery ||
 								categoryFilter !== "all" ||
 								stockFilter !== "all"
@@ -503,7 +501,7 @@ export default function ProductsManagement() {
 
 							{/* Image */}
 							<div className="w-full md:w-16 p-3 flex justify-center">
-								<div className="relative h-12 w-12 rounded-md overflow-hidden bg-gray-100 border">
+								<div className="relative h-12 w-12 rounded-md overflow-hidden bg-muted border">
 									<SafeImage
 										src={product.image}
 										alt={product.name}
@@ -570,7 +568,7 @@ export default function ProductsManagement() {
 								<Button
 									size="sm"
 									variant="outline"
-									className="text-gray-500 hover:text-gray-700"
+									className="text-muted-foreground hover:text-foreground"
 									onClick={() => openProductDialog(product)}>
 									<Icon icon="mdi:pencil" className="h-4 w-4" />
 									<span className="sr-only">Edit</span>
@@ -579,7 +577,7 @@ export default function ProductsManagement() {
 								<AlertDialogComponent
 									varient="destructive"
 									size="sm"
-									triggerClassName="text-gray-500 hover:text-red-600"
+									triggerClassName="text-muted-foreground hover:text-destructive"
 									triggerText={<Icon icon="mdi:delete" className="h-4 w-4" />}
 									alertTitle="Delete product"
 									alertDescription={

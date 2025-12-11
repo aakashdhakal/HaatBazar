@@ -99,9 +99,9 @@ export default async function Home() {
 									<Icon icon="mdi:arrow-right" className="w-4 h-4" />
 								</Link>
 								<Link
-									href="/offers"
+									href="/products"
 									className="px-5 py-2.5 border border-secondary/50 text-secondary rounded-md hover:bg-secondary/5 transition-colors">
-									View Offers
+									View All Products
 								</Link>
 							</div>
 						</div>
@@ -166,24 +166,99 @@ export default async function Home() {
 				</div>
 			</section>
 
-			{/* Quick Offers Banner */}
-			<section className="py-3 bg-white mt-4 rounded-lg">
+			{/* Promotional Offers Section */}
+			<section className="py-6 bg-white mt-4 rounded-lg">
 				<div className="">
-					<div className="bg-secondary/10 border border-secondary/20 rounded-lg p-3 flex items-center gap-3">
-						<Icon icon="mdi:timer-sand" className="w-6 h-6 text-secondary" />
-						<div>
-							<span className="font-medium text-secondary-dark">
-								Limited Time Offers
-							</span>
-							<p className="text-sm text-gray-600">
-								Use code FRESH15 for 15% off on your first order
-							</p>
-						</div>
+					<div className="flex justify-between items-center mb-4">
+						<h2 className="text-xl font-bold text-gray-900">Special Offers</h2>
 						<Link
-							href="/offers"
-							className="ml-auto bg-secondary text-white px-3 py-1.5 rounded-md text-sm hover:bg-secondary/90 transition-colors whitespace-nowrap">
-							Shop Offers
+							href="/products"
+							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
+							View All Offers{" "}
+							<Icon icon="mdi:chevron-right" className="w-4 h-4" />
 						</Link>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+						{/* Offer Card 1 - First Order Discount */}
+						<div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-primary to-primary/80 p-6 text-white">
+							<div className="absolute -right-4 -top-4 opacity-20">
+								<Icon icon="mdi:tag-multiple" className="w-24 h-24" />
+							</div>
+							<div className="relative z-10">
+								<span className="inline-block px-2 py-1 bg-white/20 rounded-full text-xs font-medium mb-3">
+									NEW USER
+								</span>
+								<h3 className="text-2xl font-bold mb-2">15% OFF</h3>
+								<p className="text-white/80 text-sm mb-3">
+									On your first order
+								</p>
+								<div className="flex items-center gap-2 mb-4">
+									<span className="px-3 py-1 bg-white/20 rounded font-mono text-sm">
+										FRESH15
+									</span>
+									<button className="text-white/70 hover:text-white">
+										<Icon icon="mdi:content-copy" className="w-4 h-4" />
+									</button>
+								</div>
+								<Link
+									href="/products"
+									className="inline-flex items-center gap-1 text-sm font-medium hover:gap-2 transition-all">
+									Shop Now <Icon icon="mdi:arrow-right" className="w-4 h-4" />
+								</Link>
+							</div>
+						</div>
+
+						{/* Offer Card 2 - Free Delivery */}
+						<div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-secondary to-secondary/80 p-6 text-white">
+							<div className="absolute -right-4 -top-4 opacity-20">
+								<Icon icon="mdi:truck-fast" className="w-24 h-24" />
+							</div>
+							<div className="relative z-10">
+								<span className="inline-block px-2 py-1 bg-white/20 rounded-full text-xs font-medium mb-3">
+									LIMITED TIME
+								</span>
+								<h3 className="text-2xl font-bold mb-2">Free Delivery</h3>
+								<p className="text-white/80 text-sm mb-3">
+									On orders above Rs. 500
+								</p>
+								<div className="flex items-center gap-2 text-sm mb-4">
+									<Icon icon="mdi:clock-outline" className="w-4 h-4" />
+									<span>Delivery in 30 mins</span>
+								</div>
+								<Link
+									href="/products"
+									className="inline-flex items-center gap-1 text-sm font-medium hover:gap-2 transition-all">
+									Order Now <Icon icon="mdi:arrow-right" className="w-4 h-4" />
+								</Link>
+							</div>
+						</div>
+
+						{/* Offer Card 3 - Bundle Deal */}
+						<div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 p-6 text-white">
+							<div className="absolute -right-4 -top-4 opacity-20">
+								<Icon icon="mdi:basket" className="w-24 h-24" />
+							</div>
+							<div className="relative z-10">
+								<span className="inline-block px-2 py-1 bg-white/20 rounded-full text-xs font-medium mb-3">
+									BUNDLE DEAL
+								</span>
+								<h3 className="text-2xl font-bold mb-2">Save 20%</h3>
+								<p className="text-white/80 text-sm mb-3">
+									On weekly grocery bundles
+								</p>
+								<div className="flex items-center gap-2 text-sm mb-4">
+									<Icon icon="mdi:fruit-cherries" className="w-4 h-4" />
+									<span>Fresh vegetables & fruits</span>
+								</div>
+								<Link
+									href="/products"
+									className="inline-flex items-center gap-1 text-sm font-medium hover:gap-2 transition-all">
+									View Bundles{" "}
+									<Icon icon="mdi:arrow-right" className="w-4 h-4" />
+								</Link>
+							</div>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -196,7 +271,7 @@ export default async function Home() {
 							Today&apos;s Deals
 						</h2>
 						<Link
-							href="/deals"
+							href="/products"
 							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
 							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
 						</Link>
@@ -288,7 +363,7 @@ export default async function Home() {
 							<h2 className="text-xl font-bold text-gray-900">Best Sellers</h2>
 						</div>
 						<Link
-							href="/best-sellers"
+							href="/products"
 							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
 							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
 						</Link>
@@ -308,7 +383,7 @@ export default async function Home() {
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-gray-900">New Arrivals</h2>
 						<Link
-							href="/fresh"
+							href="/products?sort=newest"
 							className="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
 							View All <Icon icon="mdi:chevron-right" className="w-4 h-4" />
 						</Link>
@@ -375,7 +450,7 @@ export default async function Home() {
 								</div>
 							</div>
 							<Link
-								href="/deals"
+								href="/products"
 								className="text-primary text-xs font-medium hover:underline mt-auto">
 								View Deals
 							</Link>
@@ -394,9 +469,9 @@ export default async function Home() {
 								</div>
 							</div>
 							<Link
-								href="/customer-service"
+								href="/products"
 								className="text-secondary text-xs font-medium hover:underline mt-auto">
-								Learn More
+								Shop Now
 							</Link>
 						</div>
 					</div>

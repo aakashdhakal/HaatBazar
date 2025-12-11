@@ -10,7 +10,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function Login() {
-	const [formData, setFormData] = useState({ email: "", password: "" });
+	// Pre-filled demo credentials for visitors
+	const [formData, setFormData] = useState({
+		email: "user@example.com",
+		password: "User@123",
+	});
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
@@ -77,6 +81,7 @@ export default function Login() {
 						</Link>
 					</p>
 				</div>
+
 
 				{/* Error message */}
 				{error && (

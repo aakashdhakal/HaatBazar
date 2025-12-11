@@ -1,25 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { useParams, useSearchParams } from "next/navigation";
-import SafeImage from "@/components/SafeImage";
+import { useState, useEffect } from "react";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/hooks/use-toast";
+import getAllProducts from "@/app/(server)/actions/products";
+import ProductCard from "@/components/ProductCard";
 // UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
 	Select,
@@ -38,6 +32,7 @@ import {
 export default function SearchPage() {
 	// Navigation and session hooks
 	const { slug } = useParams();
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { data: session } = useSession();
 	const { toast } = useToast();
@@ -45,7 +40,9 @@ export default function SearchPage() {
 	const { addToWishList } = useWishList();
 
 	// States
+	const [allProducts, setAllProducts] = useState([]);
 	const [searchResults, setSearchResults] = useState([]);
+	const [paginatedResults, setPaginatedResults] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [totalResults, setTotalResults] = useState(0);
 	const [page, setPage] = useState(1);
@@ -57,104 +54,113 @@ export default function SearchPage() {
 	const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
 	// Search parameters
-	const searchQuery = decodeURIComponent(slug);
+	const searchQuery = decodeURIComponent(slug || "");
 	const categoryFilter = searchParams.get("category") || "";
-	const itemsPerPage = 9; // Number of items per page
+	const itemsPerPage = 12;
 
-	// Fetch search results
-	const fetchSearchResults = useCallback(async () => {
-		setIsLoading(true);
-
-		try {
-			// COMMENT: Server action to fetch search results based on filters
-			// Example: const results = await searchProducts({
-			//   query: searchQuery,
-			//   page,
-			//   itemsPerPage,
-			//   sortBy,
-			//   categories: selectedCategories,
-			//   priceRange,
-			//   categoryFilter
-			// });
-
-			// Simulate API call with timeout
-			setTimeout(() => {
-				// Mock data for demonstration
-				const mockResults = Array(9)
-					.fill()
-					.map((_, i) => ({
-						_id: `product-${i}`,
-						name: `Organic ${searchQuery} ${i + 1}`,
-						price: Math.floor(Math.random() * 500) + 50,
-						image: "https://placehold.co/600x400",
-						category:
-							i % 3 === 0 ? "Vegetables" : i % 3 === 1 ? "Fruits" : "Dairy",
-						countInStock: Math.floor(Math.random() * 50),
-						rating: (Math.random() * 5).toFixed(1),
-						numReviews: Math.floor(Math.random() * 100),
-					}));
-
-				setSearchResults(mockResults);
-				setTotalResults(45); // Mock total results
-				setIsLoading(false);
-			}, 800);
-		} catch (err) {
-			toast({
-				variant: "error",
-				title: "Error",
-				description: "Failed to fetch search results. Please try again.",
-			});
-			setIsLoading(false);
-		}
-	}, [
-		searchQuery,
-		page,
-		itemsPerPage,
-		sortBy,
-		selectedCategories,
-		priceRange,
-		categoryFilter,
-		toast,
-	]);
-
-	// Fetch categories
-	const fetchCategories = useCallback(async () => {
-		try {
-			// COMMENT: Server action to fetch available categories
-			// Example: const categoryList = await getCategories();
-
-			// Mock categories for demo
-			setCategories(["Vegetables", "Fruits", "Dairy", "Bakery", "Beverages"]);
-		} catch (err) {
-			console.error("Failed to fetch categories:", err);
-		}
-	}, []);
-
-	// Load data on initial render and when filters change
+	// Fetch all products once
 	useEffect(() => {
-		// Apply category filter from URL if exists
-		if (categoryFilter && !selectedCategories.includes(categoryFilter)) {
-			setSelectedCategories((prev) => [...prev, categoryFilter]);
+		async function fetchProducts() {
+			setIsLoading(true);
+			try {
+				const products = await getAllProducts();
+				setAllProducts(products);
+
+				// Extract unique categories from products
+				const uniqueCategories = [
+					...new Set(products.map((p) => p.category).filter(Boolean)),
+				];
+				setCategories(uniqueCategories);
+			} catch (error) {
+				console.error("Error fetching products:", error);
+				toast({
+					variant: "error",
+					title: "Error",
+					description: "Failed to fetch products. Please try again.",
+				});
+			} finally {
+				setIsLoading(false);
+			}
+		}
+		fetchProducts();
+	}, [toast]);
+
+	// Filter and sort products based on search query and filters
+	useEffect(() => {
+		if (allProducts.length === 0) return;
+
+		let filtered = allProducts.filter((product) => {
+			// Search by name, description, category, or brand
+			const searchLower = searchQuery.toLowerCase();
+			const matchesSearch =
+				product.name?.toLowerCase().includes(searchLower) ||
+				product.description?.toLowerCase().includes(searchLower) ||
+				product.category?.toLowerCase().includes(searchLower) ||
+				product.brand?.toLowerCase().includes(searchLower);
+
+			if (!matchesSearch) return false;
+
+			// Category filter
+			if (selectedCategories.length > 0) {
+				if (!selectedCategories.includes(product.category)) return false;
+			}
+
+			// Price range filter
+			if (
+				priceRange.min &&
+				parseFloat(product.price) < parseFloat(priceRange.min)
+			)
+				return false;
+			if (
+				priceRange.max &&
+				parseFloat(product.price) > parseFloat(priceRange.max)
+			)
+				return false;
+
+			return true;
+		});
+
+		// Apply sorting
+		switch (sortBy) {
+			case "price-asc":
+				filtered.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+				break;
+			case "price-desc":
+				filtered.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+				break;
+			case "name-asc":
+				filtered.sort((a, b) => a.name.localeCompare(b.name));
+				break;
+			case "newest":
+				if (filtered[0]?.createdAt) {
+					filtered.sort(
+						(a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+					);
+				}
+				break;
+			case "relevance":
+			default:
+				// Keep original order (relevance by default)
+				break;
 		}
 
-		fetchSearchResults();
-		fetchCategories();
-	}, [
-		slug,
-		fetchSearchResults,
-		fetchCategories,
-		categoryFilter,
-		selectedCategories,
-	]);
+		setSearchResults(filtered);
+		setTotalResults(filtered.length);
+	}, [allProducts, searchQuery, selectedCategories, priceRange, sortBy]);
+
+	// Paginate results
+	useEffect(() => {
+		const startIndex = (page - 1) * itemsPerPage;
+		const endIndex = startIndex + itemsPerPage;
+		setPaginatedResults(searchResults.slice(startIndex, endIndex));
+	}, [searchResults, page, itemsPerPage]);
 
 	// Handle adding to cart
 	const handleAddToCart = async (productId) => {
 		setLoadingStates((prev) => ({ ...prev, [productId]: true }));
 
 		try {
-			// COMMENT: Server action to add item to cart
-			// await addToCart(productId, 1);
-
+			await addToCart(productId, 1);
 			toast({
 				title: "Added to cart",
 				description: "Item has been added to your cart",
@@ -185,9 +191,7 @@ export default function SearchPage() {
 		setLoadingStates((prev) => ({ ...prev, [`wish-${productId}`]: true }));
 
 		try {
-			// COMMENT: Server action to add item to wishlist
-			// await addToWishList(productId);
-
+			await addToWishList(productId);
 			toast({
 				title: "Added to wishlist",
 				description: "Item has been added to your wishlist",
@@ -208,7 +212,6 @@ export default function SearchPage() {
 	const handlePriceRangeSubmit = (e) => {
 		e.preventDefault();
 		setPage(1);
-		fetchSearchResults();
 	};
 
 	// Handle category selection
@@ -477,126 +480,16 @@ export default function SearchPage() {
 							</div>
 						</div>
 					) : (
-						// Search results
-						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-							{searchResults.map((product) => (
-								<Card
-									key={product._id}
-									className="overflow-hidden hover:shadow-md transition-shadow">
-									<div className="relative h-48 w-full">
-										<Link href={`/products/${product._id}`}>
-											<SafeImage
-												src={product.image}
-												alt={product.name}
-												type="product"
-												fill
-												sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-												className="object-cover"
-												priority={
-													page === 1 && searchResults.indexOf(product) < 3
-												}
-											/>
-										</Link>
-										<Button
-											variant="secondary"
-											size="icon"
-											className="absolute top-2 right-2 h-8 w-8 rounded-full bg-white/80 hover:bg-white"
-											onClick={() => handleAddToWishlist(product._id)}
-											disabled={loadingStates[`wish-${product._id}`]}>
-											{loadingStates[`wish-${product._id}`] ? (
-												<Icon
-													icon="mdi:loading"
-													className="h-4 w-4 animate-spin text-primary"
-												/>
-											) : (
-												<Icon
-													icon="mdi:heart-outline"
-													className="h-4 w-4 text-gray-700"
-												/>
-											)}
-										</Button>
-									</div>
-									<CardHeader className="p-4 pb-2">
-										<div className="text-xs text-gray-500 uppercase tracking-wide">
-											{product.category}
-										</div>
-										<Link href={`/products/${product._id}`}>
-											<CardTitle className="text-base font-medium hover:text-primary transition-colors mt-1 line-clamp-2">
-												{product.name}
-											</CardTitle>
-										</Link>
-										<div className="flex items-center mt-1">
-											<div className="flex items-center">
-												{Array(5)
-													.fill()
-													.map((_, i) => (
-														<Icon
-															key={i}
-															icon={
-																i < Math.floor(product.rating)
-																	? "mdi:star"
-																	: i < product.rating
-																	? "mdi:star-half"
-																	: "mdi:star-outline"
-															}
-															className="w-4 h-4 text-yellow-400"
-														/>
-													))}
-											</div>
-											<span className="text-xs text-gray-500 ml-1">
-												({product.numReviews})
-											</span>
-										</div>
-									</CardHeader>
-									<CardContent className="p-4 pt-1">
-										<div className="font-semibold text-lg text-primary">
-											Rs. {product.price}
-										</div>
-										{product.countInStock > 0 ? (
-											<div className="text-xs text-green-600 mt-1">
-												In Stock ({product.countInStock} available)
-											</div>
-										) : (
-											<div className="text-xs text-red-500 mt-1">
-												Out of Stock
-											</div>
-										)}
-									</CardContent>
-									<CardFooter className="p-4 pt-0">
-										<Button
-											className="w-full"
-											variant={
-												product.countInStock <= 0 ? "outline" : "default"
-											}
-											disabled={
-												loadingStates[product._id] || product.countInStock <= 0
-											}
-											onClick={() => handleAddToCart(product._id)}>
-											{loadingStates[product._id] ? (
-												<>
-													<Icon
-														icon="mdi:loading"
-														className="mr-2 h-4 w-4 animate-spin"
-													/>
-													Adding...
-												</>
-											) : product.countInStock > 0 ? (
-												<>
-													<Icon icon="mdi:cart" className="mr-2 h-4 w-4" />
-													Add to Cart
-												</>
-											) : (
-												"Out of Stock"
-											)}
-										</Button>
-									</CardFooter>
-								</Card>
+						// Search results - using ProductCard component
+						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+							{paginatedResults.map((product) => (
+								<ProductCard key={product._id} product={product} />
 							))}
 						</div>
 					)}
 
 					{/* Pagination */}
-					{!isLoading && searchResults.length > 0 && totalPages > 1 && (
+					{!isLoading && paginatedResults.length > 0 && totalPages > 1 && (
 						<div className="flex justify-center mt-8">
 							<div className="flex items-center gap-1">
 								<Button

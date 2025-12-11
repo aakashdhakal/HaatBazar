@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import getAllProducts from "@/app/(server)/actions/products";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
@@ -11,7 +11,7 @@ import ProductCard from "@/components/ProductCard";
 import SelectComponent from "@/components/Select";
 import { useToast } from "@/hooks/use-toast";
 
-export default function ProductsPage() {
+export default function CategoryPage() {
 	// State for products and loading
 	const [allProducts, setAllProducts] = useState([]);
 	const [filteredProducts, setFilteredProducts] = useState([]);
@@ -21,12 +21,16 @@ export default function ProductsPage() {
 	const [totalProducts, setTotalProducts] = useState(0);
 	const { toast } = useToast();
 
-	// Get router and search params
+	// Get router, params and search params
 	const router = useRouter();
+	const params = useParams();
 	const searchParams = useSearchParams();
 
+	// Get category from URL slug
+	const category = decodeURIComponent(params.slug || "");
+	const categoryTitle = category.charAt(0).toUpperCase() + category.slice(1);
+
 	// Get pagination and sorting parameters
-	// Removed priceRange since we're removing that filter
 	const currentPage = parseInt(searchParams.get("page") || "1");
 	const limit = 15; // 5 columns × 3 rows
 	const sort = searchParams.get("sort") || "newest";
@@ -53,12 +57,14 @@ export default function ProductsPage() {
 		fetchProducts();
 	}, [toast]);
 
-	// Apply sorting and filtering
+	// Apply category filtering and sorting
 	useEffect(() => {
 		if (allProducts.length === 0) return;
 
-		// Create a copy of allProducts to avoid mutating the original
-		let filtered = [...allProducts];
+		// Filter by category
+		let filtered = allProducts.filter(
+			(product) => product.category?.toLowerCase() === category.toLowerCase(),
+		);
 
 		// Apply sorting
 		switch (sort) {
@@ -84,7 +90,7 @@ export default function ProductsPage() {
 		setFilteredProducts(filtered);
 		setTotalProducts(filtered.length);
 		setTotalPages(Math.ceil(filtered.length / limit));
-	}, [allProducts, sort, limit]);
+	}, [allProducts, category, sort, limit]);
 
 	// Apply pagination
 	useEffect(() => {
@@ -100,14 +106,14 @@ export default function ProductsPage() {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set("sort", value);
 		params.set("page", "1"); // Reset to page 1 when sorting changes
-		router.push(`/products?${params.toString()}`);
+		router.push(`/category/${category}?${params.toString()}`);
 	};
 
 	// Handle page change
 	const handlePageChange = (pageNum) => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set("page", pageNum.toString());
-		router.push(`/products?${params.toString()}`);
+		router.push(`/category/${category}?${params.toString()}`);
 	};
 
 	return (
@@ -118,14 +124,20 @@ export default function ProductsPage() {
 					Home
 				</Link>
 				<Icon icon="mdi:chevron-right" className="mx-2 h-4 w-4" />
-				<span className="text-gray-700 font-medium">Products</span>
+				<Link href="/products" className="hover:text-primary">
+					Products
+				</Link>
+				<Icon icon="mdi:chevron-right" className="mx-2 h-4 w-4" />
+				<span className="text-gray-700 font-medium">{categoryTitle}</span>
 			</nav>
 
 			{/* Page Header */}
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold text-gray-900 mb-2">All Products</h1>
+				<h1 className="text-3xl font-bold text-gray-900 mb-2">
+					{categoryTitle}
+				</h1>
 				<p className="text-gray-600">
-					Browse our complete collection of quality products
+					Browse our selection of {category.toLowerCase()} products
 				</p>
 			</div>
 
@@ -184,11 +196,11 @@ export default function ProductsPage() {
 						className="w-16 h-16 text-gray-300 mb-4"
 					/>
 					<h2 className="text-xl font-bold text-gray-900 mb-2">
-						No products found
+						No {category.toLowerCase()} products found
 					</h2>
 					<p className="text-gray-600 mb-6 max-w-md">
-						We couldn't find any products matching your criteria. Please try
-						again later.
+						We couldn&apos;t find any products in the {category.toLowerCase()}{" "}
+						category. Please check back later or browse other categories.
 					</p>
 					<Button
 						className="bg-primary hover:bg-primary/90 text-white"

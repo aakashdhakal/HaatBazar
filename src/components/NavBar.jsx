@@ -18,7 +18,6 @@ import { getCart } from "@/app/(server)/actions/cart";
 import { getNoOfWishListItems } from "@/app/(server)/actions/wishList";
 import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
-import Form from "next/form";
 import { getCurrentUser } from "@/app/(server)/actions/users";
 
 export function NavBar() {
@@ -106,29 +105,39 @@ export function NavBar() {
 						Dairy
 					</Link>
 					<Link
-						href="/offers"
+						href="/products"
 						className="text-sm font-medium text-secondary hover:text-secondary-dark transition-colors">
-						Offers
+						All Products
 					</Link>
 				</div>
 
 				{/* Search Bar - Redesigned */}
-				<Form
+				<form
 					className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-gray-300 overflow-hidden"
-					action={`/search`}>
+					onSubmit={(e) => {
+						e.preventDefault();
+						const formData = new FormData(e.target);
+						const query = formData.get("query");
+						if (query && query.trim()) {
+							window.location.href = `/search/${encodeURIComponent(
+								query.trim(),
+							)}`;
+						}
+					}}>
 					<Input
 						type="text"
+						name="query"
 						placeholder="Search products..."
 						className="w-full py-2 bg-gray-50 border-none outline-none ring-0 rounded-md text-sm 
-											focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none transition-colors"
+												focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none transition-colors"
 					/>
 					<Button
 						variant="ghost"
-						className="h-7 w-7bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors rounded-none"
+						className="h-7 w-7 bg-primary/10 text-primary hover:bg-primary hover:text-white transition-colors rounded-none"
 						type="submit">
 						<Icon icon="mdi:magnify" className="h-4 w-4" />
 					</Button>
-				</Form>
+				</form>
 
 				{/* Action Buttons - Updated with brand colors */}
 				<div className="flex items-center gap-4">
@@ -196,7 +205,7 @@ export function NavBar() {
 									: []),
 								<Link
 									key="profile"
-									href="/profile"
+									href="/newUser"
 									className="text-sm font-medium flex items-center gap-2 text-gray-700 ">
 									<Icon icon="mdi:account" className="h-4 w-4" />
 									<span>Profile</span>
@@ -209,11 +218,11 @@ export function NavBar() {
 									<span>Orders</span>
 								</Link>,
 								<Link
-									key="settings"
-									href="/settings"
+									key="wishlist"
+									href="/wishlist"
 									className="text-sm font-medium flex items-center gap-2 text-gray-700 text-center ">
-									<Icon icon="mdi:cog" className="h-4 w-4" />
-									<span>Settings</span>
+									<Icon icon="mdi:heart" className="h-4 w-4" />
+									<span>Wishlist</span>
 								</Link>,
 
 								<AlertDialogComponent
@@ -285,13 +294,13 @@ export function NavBar() {
 				}`}>
 				<div className="px-4 py-2 divide-y divide-gray-100">
 					<Link
-						href="/vegetables"
+						href="/category/vegetables"
 						className="flex items-center py-2.5 text-sm text-gray-700 hover:text-primary">
 						<Icon icon="mdi:carrot" className="mr-2 h-5 w-5 text-primary/70" />
 						Vegetables
 					</Link>
 					<Link
-						href="/fruits"
+						href="/category/fruits"
 						className="flex items-center py-2.5 text-sm text-gray-700 hover:text-primary">
 						<Icon
 							icon="mdi:food-apple"
@@ -300,7 +309,7 @@ export function NavBar() {
 						Fruits
 					</Link>
 					<Link
-						href="/dairy"
+						href="/category/dairy"
 						className="flex items-center py-2.5 text-sm text-gray-700 hover:text-primary">
 						<Icon
 							icon="mdi:bottle-tonic"
@@ -309,13 +318,13 @@ export function NavBar() {
 						Dairy
 					</Link>
 					<Link
-						href="/offers"
+						href="/products"
 						className="flex items-center py-2.5 text-sm text-secondary hover:text-secondary-dark">
 						<Icon
 							icon="mdi:tag-outline"
 							className="mr-2 h-5 w-5 text-secondary/70"
 						/>
-						Offers
+						All Products
 					</Link>
 				</div>
 			</div>

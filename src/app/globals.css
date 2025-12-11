@@ -67,30 +67,30 @@
 	}
 
 	.dark {
-		/* Dark mode colors with same brand colors */
-		--background: 134 30% 8%;
-		/* Dark green background */
+		/* Dark mode colors - neutral black/gray */
+		--background: 220 15% 8%;
+		/* Dark neutral background */
 		--foreground: 0 0% 98%;
-		--card: 134 20% 12%;
+		--card: 220 15% 11%;
 		--card-foreground: 0 0% 98%;
-		--popover: 134 20% 12%;
+		--popover: 220 15% 11%;
 		--popover-foreground: 0 0% 98%;
-		--primary: 134 57% 32%;
-		/* Lighter green */
+		--primary: 134 57% 40%;
+		/* Keep brand green for primary */
 		--primary-foreground: 0 0% 100%;
 		--secondary: 24 88% 55%;
-		/* Brighter orange */
+		/* Keep brand orange */
 		--secondary-foreground: 0 0% 98%;
-		--muted: 134 15% 15%;
-		--muted-foreground: 134 5% 65%;
-		--accent: 24 50% 20%;
-		--accent-foreground: 24 90% 70%;
+		--muted: 220 10% 15%;
+		--muted-foreground: 220 5% 65%;
+		--accent: 220 15% 18%;
+		--accent-foreground: 0 0% 95%;
 		--destructive: 0 62.8% 30.6%;
 		--destructive-foreground: 0 0% 98%;
-		--border: 134 15% 25%;
-		--input: 134 15% 25%;
-		--ring: 24 88% 55%;
-		/* Orange ring in dark mode */
+		--border: 220 10% 20%;
+		--input: 220 10% 20%;
+		--ring: 134 57% 40%;
+		/* Green ring in dark mode */
 
 		/* Chart colors - dark mode variants */
 		--chart-1: 134 57% 40%;
@@ -99,15 +99,15 @@
 		--chart-4: 45 60% 50%;
 		--chart-5: 270 40% 50%;
 
-		/* Sidebar specific colors */
-		--sidebar-background: 134 30% 10%;
+		/* Sidebar specific colors - neutral dark */
+		--sidebar-background: 220 15% 9%;
 		--sidebar-foreground: 0 0% 95%;
-		--sidebar-primary: 24 88% 55%;
+		--sidebar-primary: 134 57% 40%;
 		--sidebar-primary-foreground: 0 0% 100%;
-		--sidebar-accent: 134 20% 20%;
+		--sidebar-accent: 220 15% 15%;
 		--sidebar-accent-foreground: 0 0% 95%;
-		--sidebar-border: 134 15% 25%;
-		--sidebar-ring: 24 88% 55%;
+		--sidebar-border: 220 10% 20%;
+		--sidebar-ring: 134 57% 40%;
 	}
 
 	body {

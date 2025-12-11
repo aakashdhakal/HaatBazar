@@ -43,7 +43,7 @@ export default function DashboardLayout({ children }) {
 	// Show loading state while checking authentication
 	if (!mounted || status === "loading") {
 		return (
-			<div className="flex h-screen items-center justify-center bg-gray-50">
+			<div className="flex h-screen items-center justify-center bg-background">
 				<div className="h-12 w-12 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
 			</div>
 		);
@@ -55,7 +55,7 @@ export default function DashboardLayout({ children }) {
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-50">
+		<div className="min-h-screen bg-muted/30">
 			<DashboardSidebar
 				collapsed={sidebarCollapsed}
 				setCollapsed={setSidebarCollapsed}
