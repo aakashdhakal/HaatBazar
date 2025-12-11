@@ -9,6 +9,9 @@
 		"lint": "next lint",
 		"create-collections": "node createCollections.js"
 	},
+	"overrides": {
+		"tar": "^6.2.1"
+	},
 	"dependencies": {
 		"@auth/mongodb-adapter": "^3.8.0",
 		"@hookform/resolvers": "^4.1.3",
@@ -54,7 +57,7 @@
 		"next-themes": "^0.4.6",
 		"node": "^20.19.0",
 		"node-pre-gyp": "^0.17.0",
-		"nodemailer": "^6.10.0",
+		"nodemailer": "^7.0.11",
 		"npm-check-updates": "^17.1.16",
 		"postcss": "^8.5.3",
 		"react": "^19.1.0",
