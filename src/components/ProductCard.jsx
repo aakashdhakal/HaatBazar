@@ -59,9 +59,9 @@ export default function ProductCard({ product }) {
 
 	return (
 		<Link href={`/product/${product._id}`} className="block">
-			<div className="bg-white rounded-md overflow-hidden group relative border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col h-full w-[15vw]">
+			<div className="bg-card rounded-md overflow-hidden group relative border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col h-full w-[15vw]">
 				{/* Image container with badge and wishlist */}
-				<div className="relative overflow-hidden bg-gray-50 w-full h-40 flex-shrink-0">
+				<div className="relative overflow-hidden bg-muted/50 w-full h-40 flex-shrink-0">
 					<SafeImage
 						src={product.image}
 						alt={product.name}
@@ -83,7 +83,7 @@ export default function ProductCard({ product }) {
 						onClick={handleWishListClick}
 						disabled={loading.wishlist}
 						aria-label="Add to wishlist"
-						className="absolute top-2 right-2 p-1.5 bg-white/90 rounded-full hover:bg-white text-gray-500 hover:text-red-500 transition-all shadow-sm">
+						className="absolute top-2 right-2 p-1.5 bg-card/90 rounded-full hover:bg-card text-muted-foreground hover:text-red-500 transition-all shadow-sm">
 						{loading.wishlist ? (
 							<div className="w-4 h-4 border-2 border-t-transparent border-current rounded-full animate-spin"></div>
 						) : (
@@ -102,7 +102,7 @@ export default function ProductCard({ product }) {
 					)}
 
 					{/* Product name - larger and more prominent */}
-					<h3 className="font-semibold text-base text-gray-800 line-clamp-2 mb-1">
+					<h3 className="font-semibold text-base text-foreground line-clamp-2 mb-1">
 						{product.name}
 					</h3>
 
@@ -110,11 +110,11 @@ export default function ProductCard({ product }) {
 					<div className="mt-auto">
 						<div className="flex items-center justify-between mb-2">
 							<div className="flex items-baseline gap-1.5">
-								<span className="text-sm text-gray-900">
+								<span className="text-sm text-foreground">
 									Rs {product.price}
 								</span>
 								{product.originalPrice && (
-									<span className="text-sm text-gray-400 line-through">
+									<span className="text-sm text-muted-foreground line-through">
 										Rs {product.originalPrice}
 									</span>
 								)}

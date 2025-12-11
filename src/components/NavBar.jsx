@@ -12,6 +12,7 @@ import { Input } from "./ui/input";
 import AlertDialogComponent from "./AlertDialog";
 import UserAvatar from "./UserAvatar";
 import DropDown from "./DropDown";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Actions and Context
 import { getCart } from "@/app/(server)/actions/cart";
@@ -66,7 +67,7 @@ export function NavBar() {
 	return (
 		<header
 			className={`sticky top-0 z-40 w-full transition-all duration-300 ${
-				isScrolled ? "shadow-md bg-white" : "bg-white"
+				isScrolled ? "shadow-md bg-background" : "bg-background"
 			}`}>
 			{/* Top bar - Updated with brand colors */}
 			<div className="bg-primary/10 py-1.5 text-center text-xs font-medium text-primary">
@@ -179,6 +180,9 @@ export function NavBar() {
 						</Link>
 					</div>
 
+					{/* Dark/Light mode toggle button */}
+					<ThemeToggle className="hover:bg-primary/10" />
+
 					{/* User Menu */}
 					{status === "loading" ? (
 						<Skeleton className="w-8 h-8 rounded-full" />
@@ -247,7 +251,7 @@ export function NavBar() {
 					) : (
 						<Link
 							href="/login"
-							className="inline-flex items-center gap-1.5 rounded-md border border-primary/50 bg-white px-4 py-1.5 text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors duration-200">
+							className="inline-flex items-center gap-1.5 rounded-md border border-primary/50 bg-background px-4 py-1.5 text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors duration-200">
 							<span>LOGIN</span>
 						</Link>
 					)}

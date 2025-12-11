@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 
 export default function Footer() {
 	return (
-		<footer className="bg-white border-t border-gray-100">
+		<footer className="bg-background border-t border-border">
 			{/* Main Footer Content */}
 			<div className="container mx-auto px-4 py-8">
 				<div className="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -20,17 +20,17 @@ export default function Footer() {
 								height={100}
 							/>
 						</Link>
-						<p className="text-sm text-gray-600">
+						<p className="text-sm text-muted-foreground">
 							Fresh vegetables, fruits and groceries delivered to your doorstep.
 						</p>
 						<div className="flex space-x-3 pt-2">
-							<a href="#" className="text-gray-600 hover:text-primary">
+							<a href="#" className="text-muted-foreground hover:text-primary">
 								<Icon icon="mdi:facebook" className="w-5 h-5" />
 							</a>
-							<a href="#" className="text-gray-600 hover:text-primary">
+							<a href="#" className="text-muted-foreground hover:text-primary">
 								<Icon icon="mdi:instagram" className="w-5 h-5" />
 							</a>
-							<a href="#" className="text-gray-600 hover:text-primary">
+							<a href="#" className="text-muted-foreground hover:text-primary">
 								<Icon icon="mdi:twitter" className="w-5 h-5" />
 							</a>
 						</div>
@@ -43,21 +43,21 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/category/vegetables"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Vegetables
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/category/fruits"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Fruits
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/category/dairy"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Dairy
 								</Link>
 							</li>
@@ -78,26 +78,28 @@ export default function Footer() {
 							<li>
 								<Link
 									href="/orders"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									My Orders
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/orders"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Track Order
 								</Link>
 							</li>
 							<li>
-								<Link href="/cart" className="text-gray-600 hover:text-primary">
+								<Link
+									href="/cart"
+									className="text-muted-foreground hover:text-primary">
 									My Cart
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/wishlist"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Wishlist
 								</Link>
 							</li>
@@ -109,28 +111,30 @@ export default function Footer() {
 						<h3 className="font-medium mb-4">Information</h3>
 						<ul className="space-y-2 text-sm">
 							<li>
-								<Link href="/" className="text-gray-600 hover:text-primary">
+								<Link
+									href="/"
+									className="text-muted-foreground hover:text-primary">
 									Home
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/products"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Shop All
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/login"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Login
 								</Link>
 							</li>
 							<li>
 								<Link
 									href="/signup"
-									className="text-gray-600 hover:text-primary">
+									className="text-muted-foreground hover:text-primary">
 									Sign Up
 								</Link>
 							</li>
@@ -140,7 +144,7 @@ export default function Footer() {
 					{/* Newsletter */}
 					<div className="md:col-span-3">
 						<h3 className="font-medium mb-4">Newsletter</h3>
-						<p className="text-sm text-gray-600 mb-3">
+						<p className="text-sm text-muted-foreground mb-3">
 							Subscribe to get updates on new products and offers.
 						</p>
 						<div className="flex space-x-2">
@@ -159,9 +163,11 @@ export default function Footer() {
 				</div>
 
 				{/* Payment & App */}
-				<div className="mt-8 pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+				<div className="mt-8 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
 					<div className="flex items-center">
-						<p className="text-sm text-gray-500 mr-4">Payment Methods:</p>
+						<p className="text-sm text-muted-foreground mr-4">
+							Payment Methods:
+						</p>
 						<div className="flex space-x-3">
 							<Image src="/esewa.png" alt="esewa" width={40} height={20} />
 							<Image src="/khalti.png" alt="khalti" width={40} height={20} />
@@ -169,7 +175,7 @@ export default function Footer() {
 					</div>
 
 					<div className="flex items-center space-x-2">
-						<span className="text-sm text-gray-500">Get Our App:</span>
+						<span className="text-sm text-muted-foreground">Get Our App:</span>
 						<Link
 							href="#"
 							className="flex items-center gap-1 text-xs bg-black text-white px-3 py-1.5 rounded">
@@ -187,25 +193,25 @@ export default function Footer() {
 			</div>
 
 			{/* Copyright Bar */}
-			<div className="bg-gray-50 py-4">
+			<div className="bg-muted py-4">
 				<div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
-					<p className="text-xs text-gray-500">
+					<p className="text-xs text-muted-foreground">
 						&copy; {new Date().getFullYear()} HAATBAZAR. All rights reserved.
 					</p>
 					<div className="flex space-x-4 mt-2 md:mt-0">
 						<Link
 							href="/products"
-							className="text-xs text-gray-500 hover:text-primary">
+							className="text-xs text-muted-foreground hover:text-primary">
 							Products
 						</Link>
 						<Link
 							href="/cart"
-							className="text-xs text-gray-500 hover:text-primary">
+							className="text-xs text-muted-foreground hover:text-primary">
 							Cart
 						</Link>
 						<Link
 							href="/orders"
-							className="text-xs text-gray-500 hover:text-primary">
+							className="text-xs text-muted-foreground hover:text-primary">
 							Orders
 						</Link>
 					</div>

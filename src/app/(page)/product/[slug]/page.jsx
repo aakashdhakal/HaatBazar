@@ -247,10 +247,10 @@ const ProductPage = ({ params }) => {
 				<span className="text-gray-700">{product.name}</span>
 			</nav>
 
-			<div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 mb-8">
+			<div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border mb-8">
 				<div className="flex flex-col md:flex-row">
 					{/* Product Image */}
-					<div className="md:w-2/5 p-6 bg-gray-50 flex items-center justify-center">
+					<div className="md:w-2/5 p-6 bg-muted/50 flex items-center justify-center">
 						<div className="relative aspect-square w-full max-w-md">
 							<SafeImage
 								src={product.image}
@@ -270,7 +270,7 @@ const ProductPage = ({ params }) => {
 							{/* Header info */}
 							<div className="mb-6">
 								<div className="flex justify-between items-start mb-2">
-									<h1 className="text-2xl font-bold text-gray-900">
+									<h1 className="text-2xl font-bold text-foreground">
 										{product.name}
 									</h1>
 									<Badge
@@ -284,7 +284,7 @@ const ProductPage = ({ params }) => {
 								</div>
 
 								{product.category && (
-									<div className="flex items-center text-sm text-gray-600 mb-4">
+									<div className="flex items-center text-sm text-muted-foreground mb-4">
 										<Icon icon="mdi:tag" className="mr-1 h-4 w-4" />
 										<span className="capitalize">{product.category}</span>
 									</div>
@@ -318,7 +318,7 @@ const ProductPage = ({ params }) => {
 							{/* Price section */}
 							<div className="my-6">
 								<div className="flex items-baseline">
-									<span className="text-3xl font-bold text-gray-900">
+									<span className="text-3xl font-bold text-foreground">
 										Rs {product.price}
 									</span>
 									{product.quantityPrice && (
@@ -334,7 +334,7 @@ const ProductPage = ({ params }) => {
 								<h3 className="text-sm font-medium text-gray-700 mb-2">
 									Description
 								</h3>
-								<p className="text-gray-600">{product.description}</p>
+								<p className="text-muted-foreground">{product.description}</p>
 							</div>
 
 							{/* Product Details */}
@@ -439,7 +439,7 @@ const ProductPage = ({ params }) => {
 			{/* Reviews Section */}
 			<div
 				id="reviews"
-				className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
+				className="bg-card rounded-xl shadow-sm overflow-hidden border border-border p-6">
 				<div className="flex items-center justify-between mb-6">
 					<h2 className="text-xl font-bold">Reviews & Ratings</h2>
 					<Button
@@ -455,7 +455,7 @@ const ProductPage = ({ params }) => {
 						{reviews.map((review, index) => (
 							<div
 								key={review._id}
-								className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0">
+								className="border-b border-border pb-6 last:border-b-0 last:pb-0">
 								<div className="flex justify-between mb-2">
 									<div className="flex items-center gap-2">
 										{review.image ? (
@@ -514,7 +514,7 @@ const ProductPage = ({ params }) => {
 										)}
 									</div>
 								</div>
-								<p className="text-gray-600">{review.comment}</p>
+								<p className="text-muted-foreground">{review.comment}</p>
 							</div>
 						))}
 					</div>
