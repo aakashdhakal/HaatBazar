@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useCart } from "@/context/CartContext";
@@ -485,9 +485,10 @@ export default function SearchPage() {
 									className="overflow-hidden hover:shadow-md transition-shadow">
 									<div className="relative h-48 w-full">
 										<Link href={`/products/${product._id}`}>
-											<Image
+											<SafeImage
 												src={product.image}
 												alt={product.name}
+												type="product"
 												fill
 												sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 												className="object-cover"

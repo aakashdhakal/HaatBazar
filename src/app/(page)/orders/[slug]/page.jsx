@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 import { getOrderById } from "@/app/(server)/actions/order";
@@ -317,14 +317,13 @@ export default function OrderDetailPage() {
 						<div key={item._id} className={`py-5 ${index === 0 ? "pt-0" : ""}`}>
 							<div className="flex flex-col sm:flex-row gap-4">
 								<div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden relative flex-shrink-0">
-									{item.product?.image && (
-										<Image
-											src={item.product.image}
-											alt={item.product.name}
-											fill
-											className="object-cover"
-										/>
-									)}
+									<SafeImage
+										src={item.product?.image}
+										alt={item.product?.name || "Product"}
+										type="product"
+										fill
+										className="object-cover"
+									/>
 								</div>
 
 								<div className="flex-grow">

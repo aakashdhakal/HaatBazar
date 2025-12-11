@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import { useState } from "react";
 import {
 	updateQuantity,
@@ -97,9 +97,10 @@ export default function CartProduct({ product, onRemove }) {
 						<AspectRatio
 							ratio={1}
 							className="bg-gray-50 rounded-md overflow-hidden">
-							<Image
-								src={product.image || "/product-placeholder.jpg"}
+							<SafeImage
+								src={product.image}
 								alt={product.name}
+								type="product"
 								fill
 								className="object-cover"
 								sizes="64px"

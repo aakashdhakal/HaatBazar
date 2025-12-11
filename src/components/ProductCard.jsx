@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -62,9 +62,10 @@ export default function ProductCard({ product }) {
 			<div className="bg-white rounded-md overflow-hidden group relative border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col h-full w-[15vw]">
 				{/* Image container with badge and wishlist */}
 				<div className="relative overflow-hidden bg-gray-50 w-full h-40 flex-shrink-0">
-					<Image
+					<SafeImage
 						src={product.image}
 						alt={product.name}
+						type="product"
 						fill
 						className="object-cover transition-transform duration-300 group-hover:scale-105"
 						sizes="(max-width: 768px) 100vw, 200px"

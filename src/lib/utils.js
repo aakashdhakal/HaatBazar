@@ -84,31 +84,40 @@ export async function deleteImage(imageUrl) {
 	}
 
 	try {
-		// Make the POST request to the API
-		const response = await fetch(
-			"https://downloadmedia.aakashdhakal.com.np/api/delete-image",
-			{
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ file_url: imageUrl }),
-			},
-		);
+		// Extract the public_id from the Cloudinary URL
+		// URL format: https://res.cloudinary.com/{cloud_name}/image/upload/{version}/{folder}/{public_id}.{format}
+		const urlParts = imageUrl.split("/");
+		const uploadIndex = urlParts.indexOf("upload");
+		if (uploadIndex === -1) {
+			throw new Error("Invalid Cloudinary URL");
+		}
 
-		// Parse the JSON response
+		// Get everything after 'upload' and version (e.g., v1234567890)
+		const pathAfterUpload = urlParts.slice(uploadIndex + 2).join("/");
+		// Remove the file extension to get the public_id
+		const publicId = pathAfterUpload.replace(/\.[^/.]+$/, "");
+
+		// Make the DELETE request to our API route
+		const response = await fetch("/api/cloudinary/delete", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ publicId }),
+		});
+
 		const responseData = await response.json();
 
-		// Check if the response indicates success
-		if (response.ok && responseData.message === "Image deleted successfully") {
-			console.log("Image deleted successfully");
-			return true; // Indicate success
+		if (response.ok && responseData.success) {
+			console.log("Image deleted successfully from Cloudinary");
+			return true;
 		} else {
 			throw new Error(
 				`Failed to delete image: ${responseData.error || "Unknown error"}`,
 			);
 		}
 	} catch (error) {
+		console.error("Error deleting image:", error);
 		throw new Error("Failed to delete product image");
 	}
 }
@@ -120,37 +129,41 @@ export async function uploadImage(file, name) {
 	}
 
 	try {
-		console.log("File data:", file); // Debugging line
+		const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+		const uploadPreset = "haatbazar"; // unsigned upload preset name
 
-		// Prepare the payload for the API
-		const formData = new FormData();
+		// Generate a unique filename
 		const fileName = generateFileName(name);
-		formData.append("name", fileName);
-		formData.append("image", file); // Append the file object directly
 
-		console.log("FormData prepared:", formData); // Debugging line
+		// Prepare the FormData for Cloudinary upload
+		const formData = new FormData();
+		formData.append("file", file);
+		formData.append("upload_preset", uploadPreset);
+		formData.append("folder", "haatbazar"); // Store in haatbazar folder
+		formData.append("public_id", fileName);
 
-		// Make the POST request to the API
+		// Upload to Cloudinary
 		const response = await fetch(
-			"https://downloadmedia.aakashdhakal.com.np/api/upload-image",
+			`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
 			{
 				method: "POST",
 				body: formData,
 			},
 		);
 
-		// Parse the JSON response
 		const responseData = await response.json();
 
-		// Check if the response contains the image URL
-		if (response.ok && responseData.image_url) {
-			return responseData.image_url; // Return the image URL
+		if (response.ok && responseData.secure_url) {
+			return responseData.secure_url; // Return the Cloudinary URL
 		} else {
 			throw new Error(
-				`Failed to upload image: ${responseData.error || "Unknown error"}`,
+				`Failed to upload image: ${
+					responseData.error?.message || "Unknown error"
+				}`,
 			);
 		}
 	} catch (error) {
+		console.error("Error uploading image:", error);
 		throw new Error("Failed to upload product image");
 	}
 }

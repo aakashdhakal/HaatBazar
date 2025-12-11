@@ -1,10 +1,8 @@
 "use server";
 import dbConnect from "@/lib/db";
 import Product from "@/modals/productModal";
-import fs from "fs";
-import path from "path";
-import { Buffer } from "buffer";
-import { uploadImage, deleteImage } from "@/lib/utils";
+import { generateFileName } from "@/lib/utils";
+import { uploadCloudinaryImage, deleteCloudinaryImage } from "@/lib/cloudinary";
 
 export default async function getAllProducts() {
 	await dbConnect();
@@ -51,7 +49,8 @@ export async function createProduct(data) {
 
 		// Upload the product image if provided
 		if (data.image && typeof data.image !== "string") {
-			const imagePath = await uploadImage(data.image, data.name);
+			const fileName = generateFileName(data.name);
+			const imagePath = await uploadCloudinaryImage(data.image, fileName);
 			data.image = imagePath; // Replace the File object with the file path
 		}
 
@@ -77,9 +76,10 @@ export async function updateProduct(id, data) {
 			// If there's an existing image, delete it first
 			const oldImagePath = await Product.findById(id).select("image");
 			if (oldImagePath && oldImagePath.image) {
-				await deleteImage(oldImagePath.image); // Delete the old image from the server
+				await deleteCloudinaryImage(oldImagePath.image); // Delete the old image from Cloudinary
 			}
-			const imagePath = await uploadImage(data.image, data.name);
+			const fileName = generateFileName(data.name);
+			const imagePath = await uploadCloudinaryImage(data.image, fileName);
 			data.image = imagePath; // Replace the File object with the file path
 		}
 		const product = await Product.findByIdAndUpdate(id, data, { new: true });
@@ -102,10 +102,10 @@ export async function deleteProduct(id) {
 	await dbConnect();
 	try {
 		const product = await Product.findByIdAndDelete(id);
-		await deleteImage(product.image); // Delete the image from the server
 		if (!product) {
 			return { error: "Product not found", status: 404 };
 		}
+		await deleteCloudinaryImage(product.image); // Delete the image from Cloudinary
 		return {
 			message: "Product deleted successfully",
 		};

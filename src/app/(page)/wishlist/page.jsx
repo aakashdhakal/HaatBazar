@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
@@ -192,9 +192,10 @@ export default function WishlistPage() {
 						className="border border-gray-100 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white group">
 						<Link href={`/product/${product._id}`} className="block">
 							<div className="relative h-48 bg-gray-50">
-								<Image
-									src={product.image || "/product-placeholder.jpg"}
+								<SafeImage
+									src={product.image}
 									alt={product.name}
+									type="product"
 									fill
 									sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 									className="object-contain p-4"

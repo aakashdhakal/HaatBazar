@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
 import { useToast } from "@/hooks/use-toast";
@@ -504,29 +504,14 @@ export default function ProductsManagement() {
 							{/* Image */}
 							<div className="w-full md:w-16 p-3 flex justify-center">
 								<div className="relative h-12 w-12 rounded-md overflow-hidden bg-gray-100 border">
-									{product.image ? (
-										<Image
-											src={
-												product.image.startsWith("http")
-													? product.image
-													: `/images/${product.image}`
-											}
-											alt={product.name}
-											fill
-											className="object-cover"
-											sizes="48px"
-											onError={(e) => {
-												e.target.src = "/product-placeholder.png";
-											}}
-										/>
-									) : (
-										<div className="flex items-center justify-center h-full w-full">
-											<Icon
-												icon="mdi:image-outline"
-												className="h-6 w-6 text-gray-400"
-											/>
-										</div>
-									)}
+									<SafeImage
+										src={product.image}
+										alt={product.name}
+										type="product"
+										fill
+										className="object-cover"
+										sizes="48px"
+									/>
 								</div>
 							</div>
 

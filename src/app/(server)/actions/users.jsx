@@ -2,10 +2,9 @@
 import { auth } from "@/app/auth";
 import User from "@/modals/userModal";
 import dbConnect from "@/lib/db";
-import fs from "node:fs/promises";
 import { revalidatePath } from "next/cache";
-import path from "path";
-import { uploadImage, deleteImage } from "@/lib/utils";
+import { generateFileName } from "@/lib/utils";
+import { uploadCloudinaryImage, deleteCloudinaryImage } from "@/lib/cloudinary";
 
 export async function fetchShippingAddress() {
 	await dbConnect();
@@ -50,7 +49,8 @@ export async function updateUserProfile(formData) {
 		let profilePicture = formData.get("profilePicture");
 
 		if (profilePicture) {
-			profilePicture = await uploadImage(profilePicture, session.user.name);
+			const fileName = generateFileName(session.user.name);
+			profilePicture = await uploadCloudinaryImage(profilePicture, fileName);
 		}
 
 		const fullName = formData.get("name");
@@ -100,7 +100,7 @@ export async function deleteUserProfile() {
 			return { success: false, error: "User not found" };
 		}
 
-		await deleteImage(user.image);
+		await deleteCloudinaryImage(user.image);
 
 		return { success: true };
 	} catch (error) {

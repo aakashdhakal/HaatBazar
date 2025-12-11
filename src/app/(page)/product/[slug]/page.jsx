@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
@@ -252,9 +252,10 @@ const ProductPage = ({ params }) => {
 					{/* Product Image */}
 					<div className="md:w-2/5 p-6 bg-gray-50 flex items-center justify-center">
 						<div className="relative aspect-square w-full max-w-md">
-							<Image
-								src={product.image || "/product-placeholder.jpg"}
+							<SafeImage
+								src={product.image}
 								alt={product.name}
+								type="product"
 								fill
 								sizes="(max-width: 768px) 100vw, 40vw"
 								className="object-contain"
@@ -459,9 +460,10 @@ const ProductPage = ({ params }) => {
 									<div className="flex items-center gap-2">
 										{review.image ? (
 											<div className="h-10 w-10 relative rounded-full overflow-hidden">
-												<Image
+												<SafeImage
 													src={review.image}
 													alt={review.name || "User"}
+													type="user"
 													fill
 													className="object-cover"
 													sizes="40px"
