@@ -249,213 +249,213 @@ export default async function Dashboard() {
 				</div>
 
 				<div className="grid gap-4 md:grid-cols-2">
-						{/* Recent Orders */}
-						<Card className="col-span-1">
-							<CardHeader className="flex flex-row items-center justify-between pb-2">
-								<div className="space-y-0.5">
-									<CardTitle className="text-xl">Recent Orders</CardTitle>
-									<CardDescription>
-										{recentOrders.length} orders recently
-									</CardDescription>
-								</div>
-								{/* FIX: Change Button+asChild+Link to Link+Button */}
-								<Link href="/dashboard/orders">
-									<Button variant="outline" size="sm">
-										View All
-									</Button>
-								</Link>
-							</CardHeader>
-							<CardContent>
-								<div className="space-y-4">
-									{recentOrders.length > 0 ? (
-										recentOrders.map((order) => (
-											<div
-												key={order.id}
-												className="flex items-center justify-between">
-												<div className="flex items-center gap-3">
-													<UserAvatar
-														fallback={order.customer?.substring(0, 2)}
-														size={8}
-													/>
-													<div>
-														<p className="text-sm font-medium">
-															{order.customer}
-														</p>
-														<p className="text-xs text-muted-foreground">
-															{formatDate(order.date)}
-														</p>
-													</div>
-												</div>
-												<div className="flex items-center gap-3">
-													<span className="text-sm font-medium">
-														{formatCurrency(order.total)}
-													</span>
-													<Badge
-														variant={
-															order.status === "delivered" ||
-															order.status === "completed"
-																? "outline"
-																: "secondary"
-														}
-														className={
-															order.status === "cancelled" ||
-															order.status === "returned"
-																? "bg-red-50 text-red-600 border-red-200"
-																: order.status === "delivered" ||
-																  order.status === "completed"
-																? "bg-green-50 text-green-600 border-green-200"
-																: "bg-blue-50 text-blue-600 border-blue-200"
-														}>
-														{order.status}
-													</Badge>
-												</div>
-											</div>
-										))
-									) : (
-										<div className="text-center py-4 text-muted-foreground">
-											No recent orders found
-										</div>
-									)}
-								</div>
-							</CardContent>
-						</Card>
-
-						{/* Low Stock Items */}
-						<Card className="col-span-1">
-							<CardHeader className="flex flex-row items-center justify-between pb-2">
-								<div className="space-y-0.5">
-									<CardTitle className="text-xl">Low Stock Alerts</CardTitle>
-									<CardDescription>Items that need restocking</CardDescription>
-								</div>
-								{/* FIX: Change Button+asChild+Link to Link+Button */}
-								<Link href="/dashboard/products">
-									<Button variant="outline" size="sm">
-										View All
-									</Button>
-								</Link>
-							</CardHeader>
-							<CardContent>
-								<div className="space-y-4">
-									{lowStockItems.length > 0 ? (
-										lowStockItems.map((item) => (
-											<div
-												key={item.id}
-												className="flex items-center justify-between">
-												<div className="flex items-center gap-3">
-													<div className="bg-amber-100 p-2 rounded-md">
-														<BoxIcon className="h-5 w-5 text-amber-600" />
-													</div>
-													<div>
-														<p className="text-sm font-medium">{item.name}</p>
-														<p className="text-xs text-muted-foreground">
-															{item.category}
-														</p>
-													</div>
-												</div>
-												<div className="flex items-center">
-													<Badge
-														variant="outline"
-														className="bg-red-50 text-red-600 border-red-200">
-														{item.stock}/{item.threshold}
-													</Badge>
-												</div>
-											</div>
-										))
-									) : (
-										<div className="text-center py-4 text-muted-foreground">
-											No low stock items found
-										</div>
-									)}
-								</div>
-							</CardContent>
-						</Card>
-					</div>
-
-					{/* Business Overview Cards */}
-					<div className="grid gap-4 md:grid-cols-3">
-						<Card>
-							<CardHeader className="pb-2">
-								<CardTitle className="text-sm font-medium">
-									Total Orders
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="text-2xl font-bold">{stats.totalOrders}</div>
-								<p className="text-xs text-muted-foreground mt-1">
-									All-time orders processed
-								</p>
-								<div className="mt-4">
-									<Link
-										href="/dashboard/orders"
-										className="text-xs text-primary flex items-center">
-										View all orders
-										<ChevronRightIcon className="ml-1 h-3 w-3" />
-									</Link>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader className="pb-2">
-								<CardTitle className="text-sm font-medium">
-									Total Products
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="text-2xl font-bold">{stats.totalProducts}</div>
-								<p className="text-xs text-muted-foreground mt-1">
-									{stats.outOfStockCount} out of stock
-								</p>
-								<div className="mt-4">
-									<Link
-										href="/dashboard/products"
-										className="text-xs text-primary flex items-center">
-										Manage inventory
-										<ChevronRightIcon className="ml-1 h-3 w-3" />
-									</Link>
-								</div>
-							</CardContent>
-						</Card>
-
-						<Card>
-							<CardHeader className="pb-2">
-								<CardTitle className="text-sm font-medium">
-									Total Customers
-								</CardTitle>
-							</CardHeader>
-							<CardContent>
-								<div className="text-2xl font-bold">{stats.totalUsers}</div>
-								<p className="text-xs text-muted-foreground mt-1">
-									{stats.newUsers} new today
-								</p>
-								<div className="mt-4">
-									<Link
-										href="/dashboard/customers"
-										className="text-xs text-primary flex items-center">
-										View all customers
-										<ChevronRightIcon className="ml-1 h-3 w-3" />
-									</Link>
-								</div>
-							</CardContent>
-						</Card>
-					</div>
-
-					{/* Sales Chart */}
-					<Card className="col-span-2">
-						<CardHeader>
-							<CardTitle>Sales Overview</CardTitle>
-							<CardDescription>Your monthly sales performance</CardDescription>
+					{/* Recent Orders */}
+					<Card className="col-span-1">
+						<CardHeader className="flex flex-row items-center justify-between pb-2">
+							<div className="space-y-0.5">
+								<CardTitle className="text-xl">Recent Orders</CardTitle>
+								<CardDescription>
+									{recentOrders.length} orders recently
+								</CardDescription>
+							</div>
+							{/* FIX: Change Button+asChild+Link to Link+Button */}
+							<Link href="/dashboard/orders">
+								<Button variant="outline" size="sm">
+									View All
+								</Button>
+							</Link>
 						</CardHeader>
-						<CardContent className="h-[300px] flex items-center justify-center">
-							<div className="text-center space-y-2 text-muted-foreground">
-								<LineChartIcon className="mx-auto h-16 w-16 opacity-50" />
-								<p>Sales chart will be displayed here</p>
-								<p className="text-xs">
-									Data is being collected - charts will appear soon
-								</p>
+						<CardContent>
+							<div className="space-y-4">
+								{recentOrders.length > 0 ? (
+									recentOrders.map((order) => (
+										<div
+											key={order.id}
+											className="flex items-center justify-between">
+											<div className="flex items-center gap-3">
+												<UserAvatar
+													fallback={order.customer?.substring(0, 2)}
+													size={8}
+												/>
+												<div>
+													<p className="text-sm font-medium">
+														{order.customer}
+													</p>
+													<p className="text-xs text-muted-foreground">
+														{formatDate(order.date)}
+													</p>
+												</div>
+											</div>
+											<div className="flex items-center gap-3">
+												<span className="text-sm font-medium">
+													{formatCurrency(order.total)}
+												</span>
+												<Badge
+													variant={
+														order.status === "delivered" ||
+														order.status === "completed"
+															? "outline"
+															: "secondary"
+													}
+													className={
+														order.status === "cancelled" ||
+														order.status === "returned"
+															? "bg-red-50 text-red-600 border-red-200"
+															: order.status === "delivered" ||
+															  order.status === "completed"
+															? "bg-green-50 text-green-600 border-green-200"
+															: "bg-blue-50 text-blue-600 border-blue-200"
+													}>
+													{order.status}
+												</Badge>
+											</div>
+										</div>
+									))
+								) : (
+									<div className="text-center py-4 text-muted-foreground">
+										No recent orders found
+									</div>
+								)}
 							</div>
 						</CardContent>
 					</Card>
+
+					{/* Low Stock Items */}
+					<Card className="col-span-1">
+						<CardHeader className="flex flex-row items-center justify-between pb-2">
+							<div className="space-y-0.5">
+								<CardTitle className="text-xl">Low Stock Alerts</CardTitle>
+								<CardDescription>Items that need restocking</CardDescription>
+							</div>
+							{/* FIX: Change Button+asChild+Link to Link+Button */}
+							<Link href="/dashboard/products">
+								<Button variant="outline" size="sm">
+									View All
+								</Button>
+							</Link>
+						</CardHeader>
+						<CardContent>
+							<div className="space-y-4">
+								{lowStockItems.length > 0 ? (
+									lowStockItems.map((item) => (
+										<div
+											key={item.id}
+											className="flex items-center justify-between">
+											<div className="flex items-center gap-3">
+												<div className="bg-amber-100 p-2 rounded-md">
+													<BoxIcon className="h-5 w-5 text-amber-600" />
+												</div>
+												<div>
+													<p className="text-sm font-medium">{item.name}</p>
+													<p className="text-xs text-muted-foreground">
+														{item.category}
+													</p>
+												</div>
+											</div>
+											<div className="flex items-center">
+												<Badge
+													variant="outline"
+													className="bg-red-50 text-red-600 border-red-200">
+													{item.stock}/{item.threshold}
+												</Badge>
+											</div>
+										</div>
+									))
+								) : (
+									<div className="text-center py-4 text-muted-foreground">
+										No low stock items found
+									</div>
+								)}
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+
+				{/* Business Overview Cards */}
+				<div className="grid gap-4 md:grid-cols-3">
+					<Card>
+						<CardHeader className="pb-2">
+							<CardTitle className="text-sm font-medium">
+								Total Orders
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">{stats.totalOrders}</div>
+							<p className="text-xs text-muted-foreground mt-1">
+								All-time orders processed
+							</p>
+							<div className="mt-4">
+								<Link
+									href="/dashboard/orders"
+									className="text-xs text-primary flex items-center">
+									View all orders
+									<ChevronRightIcon className="ml-1 h-3 w-3" />
+								</Link>
+							</div>
+						</CardContent>
+					</Card>
+
+					<Card>
+						<CardHeader className="pb-2">
+							<CardTitle className="text-sm font-medium">
+								Total Products
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">{stats.totalProducts}</div>
+							<p className="text-xs text-muted-foreground mt-1">
+								{stats.outOfStockCount} out of stock
+							</p>
+							<div className="mt-4">
+								<Link
+									href="/dashboard/products"
+									className="text-xs text-primary flex items-center">
+									Manage inventory
+									<ChevronRightIcon className="ml-1 h-3 w-3" />
+								</Link>
+							</div>
+						</CardContent>
+					</Card>
+
+					<Card>
+						<CardHeader className="pb-2">
+							<CardTitle className="text-sm font-medium">
+								Total Customers
+							</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold">{stats.totalUsers}</div>
+							<p className="text-xs text-muted-foreground mt-1">
+								{stats.newUsers} new today
+							</p>
+							<div className="mt-4">
+								<Link
+									href="/dashboard/customers"
+									className="text-xs text-primary flex items-center">
+									View all customers
+									<ChevronRightIcon className="ml-1 h-3 w-3" />
+								</Link>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
+
+				{/* Sales Chart */}
+				<Card className="col-span-2">
+					<CardHeader>
+						<CardTitle>Sales Overview</CardTitle>
+						<CardDescription>Your monthly sales performance</CardDescription>
+					</CardHeader>
+					<CardContent className="h-[300px] flex items-center justify-center">
+						<div className="text-center space-y-2 text-muted-foreground">
+							<LineChartIcon className="mx-auto h-16 w-16 opacity-50" />
+							<p>Sales chart will be displayed here</p>
+							<p className="text-xs">
+								Data is being collected - charts will appear soon
+							</p>
+						</div>
+					</CardContent>
+				</Card>
 			</div>
 
 			{/* Recent Activity & Quick Actions */}
