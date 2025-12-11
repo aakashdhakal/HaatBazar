@@ -26,8 +26,6 @@ export default function WishlistPage() {
 		}
 	}, [status, router]);
 
-
-
 	const [wishlistItems, setWishlistItems] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [loadingStates, setLoadingStates] = useState({});

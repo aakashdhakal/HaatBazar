@@ -40,7 +40,9 @@ export default function SafeImage({
 		<Image
 			src={imageSrc}
 			alt={alt || "Image"}
-			className={`${className || ""} ${isLoading ? "animate-pulse bg-gray-200" : ""}`}
+			className={`${className || ""} ${
+				isLoading ? "animate-pulse bg-gray-200" : ""
+			}`}
 			onError={() => {
 				setHasError(true);
 				setIsLoading(false);
