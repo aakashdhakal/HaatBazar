@@ -326,14 +326,16 @@ export default function Cart() {
 	}
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 py-8">
-			<h1 className="text-2xl font-bold text-gray-900 pb-6">Shopping Cart</h1>
+		<div className="max-w-7xl mx-auto px-0 md:px-4 py-4 md:py-8 pb-24 md:pb-8">
+			<h1 className="text-2xl font-bold text-gray-900 pb-4 md:pb-6 px-4 md:px-0">
+				Shopping Cart
+			</h1>
 
-			<div className="flex flex-col lg:flex-row gap-8">
+			<div className="flex flex-col lg:flex-row gap-4 md:gap-8">
 				{/* Cart Items Section */}
-				<div className="w-full lg:w-2/3 flex flex-col gap-6">
-					<div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-						<div className="bg-primary/10 p-4 border-b border-gray-100">
+				<div className="w-full lg:w-2/3 flex flex-col gap-4 md:gap-6">
+					<div className="bg-white md:rounded-xl md:shadow-sm md:border border-gray-100 overflow-hidden">
+						<div className="bg-primary/10 p-3 md:p-4 border-b border-gray-100">
 							<div className="grid grid-cols-12 gap-2 text-sm font-medium text-gray-500">
 								<div className="col-span-5 md:col-span-6">Product</div>
 								<div className="col-span-3 md:col-span-2 text-center">
@@ -357,7 +359,7 @@ export default function Cart() {
 						</div>
 					</div>
 
-					<div className="flex justify-between items-center flex-wrap gap-4">
+					<div className="flex flex-col md:flex-row justify-between items-start md:items-center flex-wrap gap-3 md:gap-4 px-4 md:px-0">
 						<Link href="/">
 							<Button
 								variant="outline"
@@ -381,8 +383,8 @@ export default function Cart() {
 					</div>
 				</div>
 
-				{/* Order Summary Section */}
-				<div className="w-full lg:w-1/3">
+				{/* Order Summary Section - Desktop Only, Mobile uses fixed bottom */}
+				<div className="hidden lg:block w-full lg:w-1/3">
 					<div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-24 flex flex-col gap-6">
 						<h2 className="text-lg font-bold text-gray-900">Order Summary</h2>
 
@@ -550,6 +552,40 @@ export default function Cart() {
 			</div>
 
 			{/* Address Selection Dialog - Moved outside the main content */}
+
+			{/* Mobile Fixed Checkout Button */}
+			<div className="lg:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 z-50">
+				<div className="flex flex-col gap-3">
+					{/* Price Summary */}
+					<div className="flex justify-between items-center">
+						<div className="text-sm text-gray-600">
+							<div>Subtotal: Rs {totalPrice}</div>
+							<div>
+								Shipping:{" "}
+								{shippingFee === 0 ? (
+									<span className="text-primary">FREE</span>
+								) : (
+									`Rs ${shippingFee}`
+								)}
+							</div>
+						</div>
+						<div className="text-right">
+							<div className="text-xs text-gray-500">Total</div>
+							<div className="text-xl font-bold text-gray-900">
+								Rs {totalPrice + shippingFee}
+							</div>
+						</div>
+					</div>
+					<Button
+						className="w-full bg-primary hover:bg-primary-dark text-white h-12 text-base"
+						onClick={handleCheckout}
+						disabled={loading.checkout || !selectedShippingAddress}
+						isLoading={loading.checkout}
+						loadingtext="Processing Order">
+						Checkout
+					</Button>
+				</div>
+			</div>
 		</div>
 	);
 }

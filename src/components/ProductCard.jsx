@@ -59,9 +59,9 @@ export default function ProductCard({ product }) {
 
 	return (
 		<Link href={`/product/${product._id}`} className="block">
-			<div className="bg-card rounded-md overflow-hidden group relative border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col h-full w-[15vw]">
+			<div className="bg-card rounded-lg overflow-hidden group relative border border-border hover:border-primary/30 hover:shadow-md transition-all duration-300 flex flex-col h-full md:w-auto">
 				{/* Image container with badge and wishlist */}
-				<div className="relative overflow-hidden bg-muted/50 w-full h-40 flex-shrink-0">
+				<div className="relative overflow-hidden bg-muted/50 w-full h-48 md:h-40 flex-shrink-0">
 					<SafeImage
 						src={product.image}
 						alt={product.name}

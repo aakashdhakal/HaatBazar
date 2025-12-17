@@ -5,13 +5,9 @@ import { useTheme } from "next-themes";
 import { Icon } from "@iconify/react";
 import { Button } from "@/components/ui/button";
 
-export function ThemeToggle({
-	variant = "ghost",
-	size = "icon",
-	className = "",
-}) {
+export function ThemeToggle() {
 	const [mounted, setMounted] = useState(false);
-	const { theme, setTheme, resolvedTheme } = useTheme();
+	const { setTheme, resolvedTheme } = useTheme();
 
 	useEffect(() => {
 		setMounted(true);
@@ -21,29 +17,29 @@ export function ThemeToggle({
 		setTheme(resolvedTheme === "dark" ? "light" : "dark");
 	};
 
+	const btnClass =
+		"text-foreground hover:text-primary transition-colors text-lg px-2 py-2 [&_svg]:size-5";
+
 	if (!mounted) {
 		return (
-			<Button variant={variant} size={size} className={className} disabled>
-				<Icon icon="mdi:theme-light-dark" className="h-5 w-5" />
-				<span className="sr-only">Toggle theme</span>
+			<Button
+				variant="ghost"
+				className={btnClass}
+				disabled
+				aria-label="Toggle theme">
+				<Icon icon="mdi:theme-light-dark" className="h-6 w-6" />
 			</Button>
 		);
 	}
 
 	return (
 		<Button
-			variant={variant}
-			size={size}
-			className={className}
+			variant="ghost"
+			size="icon"
+			className={btnClass}
 			onClick={toggleTheme}
 			aria-label="Toggle theme">
-			<Icon
-				icon={
-					resolvedTheme === "dark" ? "mdi:weather-sunny" : "mdi:weather-night"
-				}
-				className="h-5 w-5"
-			/>
-			<span className="sr-only">Toggle theme</span>
+			<Icon icon={resolvedTheme === "dark" ? "mdi:weather-sunny" : "bx:moon"} />
 		</Button>
 	);
 }

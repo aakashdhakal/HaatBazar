@@ -128,11 +128,13 @@ export default function ProductsPage() {
 	}
 
 	return (
-		<div className="container mx-auto px-4 py-8">
-			<h1 className="text-3xl font-bold text-center mb-8">All Products</h1>
+		<div className="md:container mx-auto px-0 md:px-4 py-4 md:py-8 pb-20 md:pb-8">
+			<h1 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8 px-4 md:px-0">
+				All Products
+			</h1>
 
 			{/* Filters and Sorting */}
-			<div className="flex flex-col md:flex-row justify-between mb-6">
+			<div className="flex flex-col md:flex-row justify-between mb-4 md:mb-6 bg-card md:bg-transparent px-4 md:px-0 py-3 md:py-0 sticky md:static top-0 z-10 border-b md:border-0 border-border">
 				<div className="md:w-64">
 					<h2 className="text-lg font-semibold mb-2">Sort By</h2>
 					<SelectComponent
@@ -149,14 +151,14 @@ export default function ProductsPage() {
 			</div>
 
 			{/* Product count and current filter info */}
-			<div className="mb-4 text-gray-600">
+			<div className="mb-4 text-gray-600 px-4 md:px-0">
 				Showing {paginatedProducts.length} of {totalProducts} products
 				{priceRange && <span> (Filtered by price)</span>}
 			</div>
 
 			{/* Products Grid */}
 			{paginatedProducts.length > 0 ? (
-				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+				<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 px-4 md:px-0">
 					{paginatedProducts.map((product) => (
 						<ProductCard key={product._id} product={product} />
 					))}

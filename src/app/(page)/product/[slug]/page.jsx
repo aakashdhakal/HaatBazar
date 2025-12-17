@@ -223,9 +223,9 @@ const ProductPage = ({ params }) => {
 	const inStock = product.countInStock > 0;
 
 	return (
-		<div className="container max-w-6xl mx-auto px-4 py-8">
+		<div className="md:container max-w-6xl md:mx-auto px-0 md:px-4 py-0 md:py-8 pb-24 md:pb-8">
 			{/* Breadcrumb */}
-			<nav className="flex items-center text-sm text-gray-500 mb-8">
+			<nav className="hidden md:flex items-center text-sm text-gray-500 mb-8">
 				<Link href="/" className="hover:text-primary">
 					Home
 				</Link>
@@ -247,10 +247,10 @@ const ProductPage = ({ params }) => {
 				<span className="text-gray-700">{product.name}</span>
 			</nav>
 
-			<div className="bg-card rounded-xl shadow-sm overflow-hidden border border-border mb-8">
+			<div className="bg-card md:rounded-xl md:shadow-sm overflow-hidden md:border border-border mb-4 md:mb-8">
 				<div className="flex flex-col md:flex-row">
 					{/* Product Image */}
-					<div className="md:w-2/5 p-6 bg-muted/50 flex items-center justify-center">
+					<div className="md:w-2/5 p-4 md:p-6 bg-muted/50 flex items-center justify-center">
 						<div className="relative aspect-square w-full max-w-md">
 							<SafeImage
 								src={product.image}
@@ -265,7 +265,7 @@ const ProductPage = ({ params }) => {
 					</div>
 
 					{/* Product Info */}
-					<div className="md:w-3/5 p-8">
+					<div className="md:w-3/5 p-4 md:p-8">
 						<div className="flex flex-col h-full">
 							{/* Header info */}
 							<div className="mb-6">
@@ -387,8 +387,8 @@ const ProductPage = ({ params }) => {
 									</div>
 								)}
 
-								{/* Action buttons */}
-								<div className="flex flex-wrap gap-4">
+								{/* Action buttons - Mobile: Fixed at bottom, Desktop: Inline */}
+								<div className="hidden md:flex flex-wrap gap-4">
 									<Button
 										onClick={handleAddToCart}
 										disabled={!inStock || loadingAction.cart}
@@ -439,7 +439,7 @@ const ProductPage = ({ params }) => {
 			{/* Reviews Section */}
 			<div
 				id="reviews"
-				className="bg-card rounded-xl shadow-sm overflow-hidden border border-border p-6">
+				className="bg-card md:rounded-xl md:shadow-sm overflow-hidden md:border border-border p-4 md:p-6">
 				<div className="flex items-center justify-between mb-6">
 					<h2 className="text-xl font-bold">Reviews & Ratings</h2>
 					<Button
@@ -556,6 +556,40 @@ const ProductPage = ({ params }) => {
 				action={handleDeleteReview}
 				isLoading={isDeleting}
 			/>
+
+			{/* Mobile Fixed Action Buttons */}
+			<div className="md:hidden fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4 z-50">
+				<div className="flex gap-3">
+					<Button
+						onClick={handleAddToWishlist}
+						disabled={loadingAction.wishlist}
+						variant="outline"
+						size="icon"
+						className="h-12 w-12 border-gray-200 hover:bg-gray-50 hover:text-primary flex-shrink-0">
+						{loadingAction.wishlist ? (
+							<span className="w-5 h-5 border-2 border-t-transparent border-current rounded-full animate-spin"></span>
+						) : (
+							<Icon icon="mdi:heart-outline" className="h-6 w-6" />
+						)}
+					</Button>
+					<Button
+						onClick={handleAddToCart}
+						disabled={!inStock || loadingAction.cart}
+						className="flex-1 bg-primary hover:bg-primary/90 text-white h-12 text-base">
+						{loadingAction.cart ? (
+							<>
+								<span className="w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin mr-2"></span>
+								Adding...
+							</>
+						) : (
+							<>
+								<Icon icon="mdi:cart-outline" className="mr-2 h-5 w-5" />
+								Add to Cart
+							</>
+						)}
+					</Button>
+				</div>
+			</div>
 		</div>
 	);
 };

@@ -2,8 +2,9 @@
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Icon } from "@iconify/react";
+import { useCallback } from "react";
 
 // UI Components
 import { Button } from "./ui/button";
@@ -21,6 +22,8 @@ import { useCart } from "@/context/CartContext";
 import { useWishList } from "@/context/WishListContext";
 import { getCurrentUser } from "@/app/(server)/actions/users";
 
+// --- Search Suggestions Dropdown ---
+
 export function NavBar() {
 	const { data: session, status } = useSession();
 	const { cartItems, setCartItems } = useCart({});
@@ -28,6 +31,53 @@ export function NavBar() {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [user, setUser] = useState(null);
+
+	// --- Search Dropdown State ---
+	const [searchValue, setSearchValue] = useState("");
+	const [showDropdown, setShowDropdown] = useState(false);
+	const [searchResults, setSearchResults] = useState([]);
+	const [loadingResults, setLoadingResults] = useState(false);
+	const inputRef = useRef(null);
+
+	// Debounce search
+	const debounce = (func, delay) => {
+		let timer;
+		return (...args) => {
+			clearTimeout(timer);
+			timer = setTimeout(() => func(...args), delay);
+		};
+	};
+
+	const fetchResults = useCallback(
+		debounce(async (query) => {
+			if (!query) {
+				setSearchResults([]);
+				return;
+			}
+			setLoadingResults(true);
+			try {
+				const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+				if (res.ok) {
+					const data = await res.json();
+					setSearchResults(data.results || []);
+				} else {
+					setSearchResults([]);
+				}
+			} catch {
+				setSearchResults([]);
+			}
+			setLoadingResults(false);
+		}, 300),
+		[],
+	);
+
+	useEffect(() => {
+		if (searchValue.trim()) {
+			fetchResults(searchValue.trim());
+		} else {
+			setSearchResults([]);
+		}
+	}, [searchValue, fetchResults]);
 
 	// Add this effect to fetch the database user
 	useEffect(() => {
@@ -63,6 +113,13 @@ export function NavBar() {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	// Debug: log search results
+	useEffect(() => {
+		if (searchResults) {
+			console.log('Search Results:', searchResults);
+		}
+	}, [searchResults]);
 
 	return (
 		<header
@@ -117,17 +174,23 @@ export function NavBar() {
 					className="relative flex w-[25vw] items-center focus-within:border-primary focus-within:ring-primary focus-within:ring-1 focus-within:ring-opacity-50 rounded-md pl-2 border border-border overflow-hidden"
 					onSubmit={(e) => {
 						e.preventDefault();
-						const formData = new FormData(e.target);
-						const query = formData.get("query");
-						if (query && query.trim()) {
+						if (searchValue && searchValue.trim()) {
 							window.location.href = `/search/${encodeURIComponent(
-								query.trim(),
+								searchValue.trim(),
 							)}`;
 						}
 					}}>
 					<Input
 						type="text"
 						name="query"
+						ref={inputRef}
+						value={searchValue}
+						onChange={(e) => {
+							setSearchValue(e.target.value);
+							setShowDropdown(true);
+						}}
+						onFocus={() => setShowDropdown(true)}
+						onBlur={() => setTimeout(() => setShowDropdown(false), 300)} // Increased timeout
 						placeholder="Search products..."
 						className="w-full py-2 bg-muted border-none outline-none ring-0 rounded-md text-sm 
 												focus-visible:ring-0 focus-visible:border-none focus-visible:outline-none transition-colors"
@@ -138,6 +201,44 @@ export function NavBar() {
 						type="submit">
 						<Icon icon="mdi:magnify" className="h-4 w-4" />
 					</Button>
+					{/* Dropdown for search results */}
+					{showDropdown && (searchResults.length > 0 || loadingResults) && (
+						<ul
+							className="absolute left-0 top-full z-50 mt-1 w-full bg-white dark:bg-background border border-border rounded-md shadow-lg max-h-56 overflow-auto"
+							onMouseDown={e => e.preventDefault()} // Prevent dropdown from closing on click
+						>
+							{loadingResults && (
+								<li className="px-4 py-2 text-sm text-muted-foreground">
+									Searching...
+								</li>
+							)}
+							{searchResults.map((item) => (
+								<li
+									key={item.id || item._id || item.slug || item.name}
+									className="px-4 py-2 cursor-pointer hover:bg-primary/10 text-sm text-foreground"
+									onMouseDown={() => {
+										setSearchValue(item.name || item.title || item.slug);
+										setShowDropdown(false);
+										window.location.href = `/product/${
+											item.slug || item.id || item._id
+										}`;
+									}}
+								>
+									{item.name || item.title}
+								</li>
+							))}
+							{!loadingResults &&
+								searchResults.length === 0 &&
+								searchValue.trim() && (
+									<li className="px-4 py-2 text-sm text-muted-foreground">
+										No results found
+									</li>
+								)}
+						</ul>
+					)}
+
+
+ 
 				</form>
 
 				{/* Action Buttons - Updated with brand colors */}
@@ -251,7 +352,7 @@ export function NavBar() {
 					) : (
 						<Link
 							href="/login"
-							className="inline-flex items-center gap-1.5 rounded-md border border-primary/50 bg-background px-4 py-1.5 text-sm font-medium text-primary hover:bg-primary hover:text-white transition-colors duration-200">
+							className="inline-flex items-center gap-1.5 rounded-md border border-primary/50 hover:bg-background px-4 py-1.5 text-sm font-medium hover:text-primary bg-primary  transition-colors duration-200 text-white">
 							<span>LOGIN</span>
 						</Link>
 					)}

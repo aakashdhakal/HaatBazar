@@ -62,11 +62,6 @@ export default async function Home() {
 			color: "bg-secondary/10 text-secondary",
 		},
 		{
-			name: "Pantry",
-			icon: "mdi:spice",
-			color: "bg-primary/10 text-primary",
-		},
-		{
 			name: "Meat & Seafood",
 			icon: "mdi:fish",
 			color: "bg-secondary/10 text-secondary",
@@ -74,9 +69,9 @@ export default async function Home() {
 	];
 
 	return (
-		<main className="min-h-screen bg-muted/30 container mx-auto">
+		<main className="min-h-screen md:container md:mx-auto pb-20 md:pb-0">
 			{/* Hero Section with Search */}
-			<section className="bg-card rounded-lg overflow-hidden">
+			<section className=" md:rounded-lg overflow-hidden">
 				<div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl overflow-hidden">
 					<div className="flex flex-col md:flex-row items-center">
 						<div className="md:w-1/2 p-8 md:p-12 flex flex-col gap-4">
@@ -115,7 +110,7 @@ export default async function Home() {
 									priority
 								/>
 							</div>
-							<div className="absolute bottom-8 right-8 bg-card p-3 rounded-lg shadow-lg">
+							<div className="absolute bottom-8 right-8  p-3 rounded-lg shadow-lg">
 								<div className="flex items-center gap-2">
 									<Icon
 										icon="mdi:clock-fast"
@@ -130,9 +125,9 @@ export default async function Home() {
 			</section>
 
 			{/* Categories - Prominently placed for better ecommerce navigation */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
-					<div className="flex justify-between items-center mb-4">
+					<div className="flex justify-between items-center mb-3 md:mb-4">
 						<h2 className="text-xl font-bold text-foreground">
 							Shop by Category
 						</h2>
@@ -143,12 +138,12 @@ export default async function Home() {
 						</Link>
 					</div>
 
-					<div className="grid grid-cols-4 md:grid-cols-8 gap-2 md:gap-3">
+					<div className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-3">
 						{categories.map((category) => (
 							<Link
 								key={category.name}
 								href={`/category/${category.name.toLowerCase()}`}>
-								<div className="flex flex-col items-center p-2 rounded-lg hover:shadow-md transition-all bg-card border border-border hover:border-primary/20">
+								<div className="flex flex-col items-center p-2 rounded-lg hover:shadow-md transition-all  border border-border hover:border-primary/20">
 									<div
 										className={`w-10 h-10 md:w-12 md:h-12 ${category.color} rounded-full flex items-center justify-center mb-1`}>
 										<Icon
@@ -167,7 +162,7 @@ export default async function Home() {
 			</section>
 
 			{/* Promotional Offers Section */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-foreground">
@@ -266,7 +261,7 @@ export default async function Home() {
 			</section>
 
 			{/* Today's Deals */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-foreground">
@@ -288,7 +283,7 @@ export default async function Home() {
 			</section>
 
 			{/* Category Products - Vegetables (New ecommerce-focused section) */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<div className="flex items-center gap-2">
@@ -321,7 +316,7 @@ export default async function Home() {
 			</section>
 
 			{/* Category Products - Fruits (New ecommerce-focused section) */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<div className="flex items-center gap-2">
@@ -357,7 +352,7 @@ export default async function Home() {
 			</section>
 
 			{/* Best Sellers - New ecommerce-focused section */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<div className="flex items-center gap-2">
@@ -384,7 +379,7 @@ export default async function Home() {
 			</section>
 
 			{/* Fresh Arrivals */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="flex justify-between items-center mb-4">
 						<h2 className="text-xl font-bold text-foreground">New Arrivals</h2>
@@ -404,7 +399,7 @@ export default async function Home() {
 			</section>
 
 			{/* Features - Same as original but with added "Shop Now" links */}
-			<section className="py-6 bg-card mt-4 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 md:rounded-lg px-4 md:px-0">
 				<div className="">
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 						<div className="flex flex-col gap-3 p-4 border border-border rounded-lg hover:border-primary/20 transition-colors">
@@ -485,7 +480,7 @@ export default async function Home() {
 			</section>
 
 			{/* Download App Section - Condensed with more shopping focus */}
-			<section className="py-6 bg-card mt-4 mb-6 rounded-lg">
+			<section className="py-4 md:py-6  mt-2 md:mt-4 mb-6 md:rounded-lg px-4 md:px-0">
 				<div className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl p-6">
 					<div className="flex flex-col md:flex-row items-center justify-between">
 						<div className="mb-4 md:mb-0">
@@ -511,7 +506,7 @@ export default async function Home() {
 
 						<div className="flex gap-4">
 							<div className="text-center">
-								<div className="bg-card p-3 rounded-full shadow-sm mb-2">
+								<div className=" p-3 rounded-full shadow-sm mb-2">
 									<Icon
 										icon="mdi:phone-check"
 										className="w-6 h-6 text-primary"
@@ -521,7 +516,7 @@ export default async function Home() {
 							</div>
 
 							<div className="text-center">
-								<div className="bg-card p-3 rounded-full shadow-sm mb-2">
+								<div className=" p-3 rounded-full shadow-sm mb-2">
 									<Icon
 										icon="mdi:map-marker"
 										className="w-6 h-6 text-secondary"
@@ -531,7 +526,7 @@ export default async function Home() {
 							</div>
 
 							<div className="text-center">
-								<div className="bg-card p-3 rounded-full shadow-sm mb-2">
+								<div className=" p-3 rounded-full shadow-sm mb-2">
 									<Icon
 										icon="mdi:ticket-percent"
 										className="w-6 h-6 text-primary"
