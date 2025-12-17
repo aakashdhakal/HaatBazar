@@ -117,7 +117,7 @@ export function NavBar() {
 	// Debug: log search results
 	useEffect(() => {
 		if (searchResults) {
-			console.log('Search Results:', searchResults);
+			console.log("Search Results:", searchResults);
 		}
 	}, [searchResults]);
 
@@ -205,7 +205,7 @@ export function NavBar() {
 					{showDropdown && (searchResults.length > 0 || loadingResults) && (
 						<ul
 							className="absolute left-0 top-full z-50 mt-1 w-full bg-white dark:bg-background border border-border rounded-md shadow-lg max-h-56 overflow-auto"
-							onMouseDown={e => e.preventDefault()} // Prevent dropdown from closing on click
+							onMouseDown={(e) => e.preventDefault()} // Prevent dropdown from closing on click
 						>
 							{loadingResults && (
 								<li className="px-4 py-2 text-sm text-muted-foreground">
@@ -222,8 +222,7 @@ export function NavBar() {
 										window.location.href = `/product/${
 											item.slug || item.id || item._id
 										}`;
-									}}
-								>
+									}}>
 									{item.name || item.title}
 								</li>
 							))}
@@ -236,9 +235,6 @@ export function NavBar() {
 								)}
 						</ul>
 					)}
-
-
- 
 				</form>
 
 				{/* Action Buttons - Updated with brand colors */}
